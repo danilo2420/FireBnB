@@ -1,0 +1,10 @@
+
+# DATABASE INFORMATION:
+## Docker command that I used to create the postgres DB:
+docker run -d --name postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=FireBnB postgres
+
+## Docker command that I used to create the pgadmin interface:
+docker run -d --name pgadmin -p 8080:80 -e PGADMIN_DEFAULT_EMAIL=root@root.com -e PGADMIN_DEFAULT_PASSWORD=root elestio/pgadmin
+
+## Important:
+You also need to create a docker network and put the containers in it. I created one called 'firebnb_network'
