@@ -1,10 +1,35 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-URL = 'postgresql://root:root@localhost:5432/FireBnb_Database'
-
+session = None
+URL = 'postgresql://root:root@localhost:5432/FireBnB' # This URL depends on the computer's DB
 engine = create_engine(URL)
 
+def testConnection() -> bool:
+    try:
+        engine.connect()
+        ('Connection test: Success')
+        return True
+    except Exception as e:
+        (f'Connection test: Failed. Error: {e}')
+        return False
 
-engine.connect()
-print('Success!!!')
+def getConnection():
+    global session
+    if session is None:
+        _initializeConnection()
+    return session
+
+def _initializeConnection():
+    global session
+
+    engine = create_engine(URL)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    print('Connection was initialized successfully')
+
+def closeConnection():
+    global session
+    if session is not None:
+        session.close()
+        print('Connection closed successfully')
