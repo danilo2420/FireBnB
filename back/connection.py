@@ -8,10 +8,10 @@ engine = create_engine(URL)
 def testConnection() -> bool:
     try:
         engine.connect()
-        ('Connection test: Success')
+        print('Connection test: Success')
         return True
     except Exception as e:
-        (f'Connection test: Failed. Error: {e}')
+        print(f'Connection test: Failed. Error: {e}')
         return False
 
 def getConnection():
