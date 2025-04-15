@@ -16,7 +16,9 @@ session = connection.getConnection()
 
 @app.route('/')
 def helloWorld():
-    return jsonify('Hello'), 200
+
+    user = session.query(User).first()
+    return jsonify(user.name, user.lastName), 200
 
 app.run(debug=True)
 connection.closeConnection()

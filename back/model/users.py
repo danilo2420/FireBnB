@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, Text
+from sqlalchemy.orm import relationship
 from model.model import Base
 
 class User(Base):
@@ -12,3 +13,6 @@ class User(Base):
     description = Column(Text)
     profile_image = Column(Text)
     stars = Column(Integer)
+
+    # Relationships
+    ownedPlaces = relationship('Place', back_populates='owner')
