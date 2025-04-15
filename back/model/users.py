@@ -15,4 +15,8 @@ class User(Base):
     stars = Column(Integer)
 
     # Relationships
+    ## Owner relationship
     ownedPlaces = relationship('Place', back_populates='owner')
+
+    # Renting relationship
+    rentedPlaces = relationship('Place', secondary='rentings', back_populates='renters')

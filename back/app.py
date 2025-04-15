@@ -4,6 +4,7 @@ import sys
 from model import model
 from model.users import User
 from model.places import Place
+from model.rentings import Renting
 
 if not connection.testConnection():
     print("Connection to the DB was not possible. Exiting program...")
@@ -16,7 +17,6 @@ session = connection.getConnection()
 
 @app.route('/')
 def helloWorld():
-
     user = session.query(User).first()
     return jsonify(user.name, user.lastName), 200
 
