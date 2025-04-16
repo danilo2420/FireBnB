@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, Enum, ForeignKey
+from sqlalchemy import Column, Integer, Float, Enum, ForeignKey, String
 from sqlalchemy.orm import relationship
 from model.model import Base
 from model.placeCategoryEnum import PlaceCategory
@@ -7,6 +7,7 @@ class Place(Base):
     __tablename__ = 'places'
 
     id = Column(Integer, primary_key=True)
+    name = Column(String)
     type = Column(Enum(PlaceCategory))
     price_per_night = Column(Float)
     

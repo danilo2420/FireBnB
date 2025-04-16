@@ -6,6 +6,7 @@ class PlaceReview(Base):
     __tablename__ = 'place_reviews'
 
     id = Column(Integer, primary_key=True)
+    place_id = Column(Integer, ForeignKey('places.id'))
     hygiene = Column(Integer)
     post_accuracy = Column(Integer) # How accurate is the post for this particular place?
     service = Column(Integer)
