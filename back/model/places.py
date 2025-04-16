@@ -20,3 +20,6 @@ class Place(Base):
 
     ## With image 
     images = relationship('PlaceImage', back_populates='place')
+
+    ## With place reviews
+    reviews = relationship('PlaceReview', back_populates='place')

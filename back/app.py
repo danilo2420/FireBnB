@@ -7,6 +7,7 @@ from model.places import Place
 from model.rentings import Renting
 from model.user_reviews import UserReview
 from model.place_images import PlaceImage
+from model.place_reviews import PlaceReview
 
 if not connection.testConnection():
     print("Connection to the DB was not possible. Exiting program...")
