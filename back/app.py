@@ -5,6 +5,7 @@ from model import model
 from model.users import User
 from model.places import Place
 from model.rentings import Renting
+from model.user_reviews import UserReview
 
 if not connection.testConnection():
     print("Connection to the DB was not possible. Exiting program...")
