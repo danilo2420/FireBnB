@@ -103,6 +103,54 @@ def create_user():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+@app.route('/users/update', methods=['PUT'])
+def update_user():
+    try:
+        id = request.args.get('id')
+
+        # Exception handling
+        ## Check id argument is not null
+        if id is None:
+            raise Exception('Id cannot be null')
+        ## Check id argument is not empty
+        if len(id) == 0:
+            raise Exception('Id cannot be empty')
+        ## Check id is an int - it throws ValueError if not 
+        int(id)
+
+        # Make query to database
+        user = session.query(User).filter(User.id == id).first()
+
+        # Check an user exists with the id
+        if user is None:
+            raise Exception('No user exists with this id')
+
+        # Update
+        data = request.get_json()
+
+        user.name = data.get('name', user.name)
+        user.lastName = data.get('lastName', user.lastName)
+        user.age = data.get('age', user.age)
+        user.nationality = data.get('nationality', user.nationality)
+        user.description = data.get('description', user.description)
+        user.profile_image = data.get('profile_image', user.profile_image)
+        user.stars = data.get('stars', user.stars)
+
+        session.commit()
+
+        # Format result and send it
+        return jsonify({'message': 'user updated successfully'}), 200
+        
+    except ValueError as e:
+        return jsonify({'error': 'Id has to be an integer'}), 400
+    except Exception as e:
+        code = None
+        if str(e) == 'No user exists with this id':
+            code = 404
+        else:
+            code = 400
+        return jsonify({'error': str(e)}), code
+
 # Run app
 app.run(debug=True)
 connection.closeConnection()
