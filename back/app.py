@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import connection
 import sys
 from model import model
@@ -15,6 +16,7 @@ if not connection.testConnection():
     sys.exit()
 model.createTables()
 app = Flask(__name__)
+CORS(app)
 session = connection.getConnection()
 
 # Endpoints
@@ -62,7 +64,7 @@ def get_user():
 @app.route('/users/getAll')
 def get_all_users():
     users = session.query(User)
-    
+
     result = []
     for row in users:
         user = getUserDict(row)
@@ -81,6 +83,25 @@ def getUserDict(data):
         "profile_image": data.profile_image,
         "stars": data.stars
     }
+
+@app.route('/users/create', methods=['POST'])
+def create_user():
+    try: 
+        data = request.get_json()
+        user = User(
+            name = data.get('name', None),
+            lastName = data.get('lastName', None),
+            age = data.get('age', None),
+            nationality = data.get('nationality', None),
+            description = data.get('description', None),
+            profile_image = data.get('profile_image', None),
+            stars = data.get('stars', None)
+        )
+        session.add(user)
+        session.commit()
+        return jsonify({'message': 'user created successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 # Run app
 app.run(debug=True)
