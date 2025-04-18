@@ -273,7 +273,6 @@ def create_place():
             raise Exception('owner_id cannot be null')
         
         response = requests.get(f'http://localhost:5000/users/get?id={owner_id}')
-        print('response.status_code:', response.status_code)
         if response.status_code != 200:
             raise Exception('no user with the owner_id provided exists')
         
@@ -294,8 +293,42 @@ def create_place():
 
 @app.route('/places/update', methods=['PUT'])
 def update_place():
-    # Should the owner id be updatable?
-    ...
+    try:
+        id = request.args.get('id')
+
+        ## Check id argument is not null
+        if id is None:
+            raise Exception('Id cannot be null')
+        ## Check id argument is not empty
+        if len(id) == 0:
+            raise Exception('Id cannot be empty')
+        ## Check id is an int - it throws ValueError if not 
+        int(id)
+
+        place = session.query(Place).filter(Place.id == id).first()
+        if place is None:
+            raise Exception('No place exists with this id')
+
+        data = request.get_json()
+
+        place.name = data.get('name', place.name)
+        place.type = data.get('type', place.type)
+        place.price_per_night = data.get('price_per_night', place.price_per_night)
+        # owner_id cannot be updated
+
+        session.commit()
+
+        return jsonify({'message': 'place updated successfully'}), 200
+
+    except ValueError as e:
+        return jsonify({'error': 'Id has to be an integer'}), 400
+    except Exception as e:
+        code = None
+        if str(e) == 'No place exists with this id':
+            code = 404
+        else:
+            code = 400
+        return jsonify({'error': str(e)}), code
 
 @app.route('/places/delete', methods=['DELETE'])
 def delete_place():
