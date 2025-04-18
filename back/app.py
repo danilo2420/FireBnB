@@ -190,6 +190,90 @@ def delete_user():
             code = 400
         return jsonify({'error': str(e)}), code
 
+
+## Places
+@app.route('/places/get')
+def get_place():
+    try:
+        id = request.args.get('id')
+
+        # Exception handling
+        ## Check id argument is not null
+        if id is None:
+            raise Exception('Id cannot be null')
+        ## Check id argument is not empty
+        if len(id) == 0:
+            raise Exception('Id cannot be empty')
+        ## Check id is an int - it throws ValueError if not 
+        int(id)
+
+        # Make query to database
+        place = session.query(Place).filter(Place.id == id).first()
+
+        # Check an place exists with the id
+        if place is None:
+            raise Exception('No user exists with this id')
+        
+        result = get_place_dict(place)
+
+        return jsonify(result), 200
+    
+    except ValueError as e:
+        return jsonify({'error': 'Id has to be an integer'}), 400
+    except Exception as e:
+        code = None
+        if str(e) == 'No place exists with this id':
+            code = 404
+        else:
+            code = 400
+        return jsonify({'error': str(e)}), code
+
+@app.route('/places/getAll')
+def get_all_places():
+    places = session.query(Place)
+
+    result = []
+
+    for row in places:
+        place = get_place_dict(row)
+        result.append(place)
+    
+    return jsonify(result), 200
+
+def get_place_dict(data):
+    return {
+        'id': data.id,
+        'name': data.name,
+        'type': data.type,
+        'price_per_night': data.price_per_night,
+        'owner_id': data.owner_id
+    }
+
+'''
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    type = Column(Enum(PlaceCategory))
+    price_per_night = Column(Float)
+    
+    # Relationships
+    ## Owner relationship
+    owner_id = Column(Integer, ForeignKey('users.id'))
+'''
+
+@app.route('/places/create', methods=['POST'])
+def create_place():
+    # A place should have an owner
+    ...
+
+@app.route('/places/update', methods=['PUT'])
+def update_place():
+    # Should the owner id be updatable?
+    ...
+
+@app.route('/places/delete', methods=['DELETE'])
+def delete_place():
+    ...
+
 # Run app
 app.run(debug=True)
 connection.closeConnection()
