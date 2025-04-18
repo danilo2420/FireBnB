@@ -332,7 +332,42 @@ def update_place():
 
 @app.route('/places/delete', methods=['DELETE'])
 def delete_place():
-    ...
+    try:
+        id = request.args.get('id')
+
+        # Exception handling
+        ## Check id argument is not null
+        if id is None:
+            raise Exception('Id cannot be null')
+        ## Check id argument is not empty
+        if len(id) == 0:
+            raise Exception('Id cannot be empty')
+        ## Check id is an int - it throws ValueError if not 
+        int(id)
+
+        # Make query to database
+        place = session.query(Place).filter(Place.id == id).first()
+
+        # Check an user exists with the id
+        if place is None:
+            raise Exception('No place exists with this id')
+
+        # Delete
+        session.delete(place)
+        session.commit()
+
+        # Format result and send it
+        return jsonify({'message': 'place deleted successfully'}), 200
+        
+    except ValueError as e:
+        return jsonify({'error': 'Id has to be an integer'}), 400
+    except Exception as e:
+        code = None
+        if str(e) == 'No place exists with this id':
+            code = 404
+        else:
+            code = 400
+        return jsonify({'error': str(e)}), code
 
 # Run app
 app.run(debug=True)
