@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import requests
 from flask_cors import CORS
 import connection
 import sys
@@ -262,8 +263,34 @@ def get_place_dict(data):
 
 @app.route('/places/create', methods=['POST'])
 def create_place():
-    # A place should have an owner
-    ...
+    try:
+        data = request.get_json()
+
+        # A place should always have an owner
+        owner_id = data.get('owner_id')
+
+        if owner_id is None:
+            raise Exception('owner_id cannot be null')
+        
+        response = requests.get(f'http://localhost:5000/users/get?id={owner_id}')
+        print('response.status_code:', response.status_code)
+        if response.status_code != 200:
+            raise Exception('no user with the owner_id provided exists')
+        
+        # Create and add place
+        place = Place(
+            name = data.get('name', None),
+            type = data.get('type', None),
+            price_per_night = data.get('price_per_night', None),
+            owner_id = data.get('owner_id')
+        )
+
+        session.add(place)
+        session.commit()
+
+        return jsonify({'message': 'place created successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 @app.route('/places/update', methods=['PUT'])
 def update_place():
