@@ -22,5 +22,8 @@ class User(Base):
     ### Renting relationship
     rentedPlaces = relationship('Place', secondary='rentings', back_populates='renters')
 
-    ## With others
-    user_reviews = relationship('UserReview', back_populates='user')
+    ## User reviews
+    host_reviews = relationship('GuestReview', back_populates="host_user")
+    guest_reviews = relationship('GuestReview', back_populates="guest_user")
+
+    #user_reviews = relationship('UserReview', back_populates='user')
