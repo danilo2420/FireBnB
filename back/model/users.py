@@ -13,6 +13,7 @@ class User(Base):
     description = Column(Text)
     profile_image = Column(Text)
     stars = Column(Integer)
+    email = Column(Integer)
 
     # Relationships
     ## With places

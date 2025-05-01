@@ -8,12 +8,8 @@ class Renting(Base):
     __tablename__ = 'rentings'
 
     id = Column(Integer, primary_key=True)
-
-    # Relationship keys
-    user_id = Column(Integer, ForeignKey('users.id'))
+    guest_id = Column(Integer, ForeignKey('users.id'))
     place_id = Column(Integer, ForeignKey('places.id'))
-    
     start_date = Column(Date)
     end_date = Column(Date)
     total_price = Column(Float)
-    to_come = Column(Boolean)

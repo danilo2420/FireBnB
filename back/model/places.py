@@ -7,13 +7,17 @@ class Place(Base):
     __tablename__ = 'places'
 
     id = Column(Integer, primary_key=True)
+    owner_id = Column(Integer, ForeignKey('users.id'))
     name = Column(String)
-    type = Column(Enum(PlaceCategory))
+    #type = Column(Enum(PlaceCategory))
+    type = Column(String)
+    description = Column(String)
     price_per_night = Column(Float)
+    stars = Column(Integer)
     
     # Relationships
     ## Owner relationship
-    owner_id = Column(Integer, ForeignKey('users.id'))
+    
     owner = relationship('User', back_populates='ownedPlaces')
 
     ## Renting relationship
