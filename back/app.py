@@ -10,6 +10,7 @@ from model.rentings import Renting
 from model.guest_reviews import GuestReview
 from model.place_images import PlaceImage
 from model.place_reviews import PlaceReview
+from model.favorite_lists import FavoriteList
 
 # Basic setup
 if not connection.testConnection():

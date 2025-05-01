@@ -26,4 +26,10 @@ class User(Base):
     host_reviews = relationship('GuestReview', back_populates="host_user")
     guest_reviews = relationship('GuestReview', back_populates="guest_user")
 
+    ## Place reviews
+    place_reviews = relationship('PlaceReview', back_populates="guest")
+
+    ## Favorite lists
+    favorite_lists = relationship('FavoriteList', back_populates="user")
+
     #user_reviews = relationship('UserReview', back_populates='user')

@@ -8,7 +8,6 @@ class PlaceImage(Base):
     id = Column(Integer, primary_key=True)
     place_id = Column(Integer, ForeignKey('places.id'))
     title = Column(String)
-    description = Column(String)
     img = Column(Text) # Base64 image?
 
     place = relationship('Place', back_populates='images')
