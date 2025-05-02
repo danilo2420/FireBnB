@@ -13,7 +13,7 @@ class User(Base):
     description = Column(Text)
     profile_image = Column(Text)
     stars = Column(Integer)
-    email = Column(Integer)
+    email = Column(String)
 
     # Relationships
     ## With places
@@ -24,8 +24,8 @@ class User(Base):
     rentedPlaces = relationship('Place', secondary='rentings', back_populates='renters')
 
     ## User reviews
-    host_reviews = relationship('GuestReview', back_populates="host_user")
-    guest_reviews = relationship('GuestReview', back_populates="guest_user")
+    host_reviews = relationship('GuestReview', foreign_keys='GuestReview.host_id', back_populates="host_user")
+    guest_reviews = relationship('GuestReview', foreign_keys='GuestReview.guest_id', back_populates="guest_user")
 
     ## Place reviews
     place_reviews = relationship('PlaceReview', back_populates="guest")
@@ -34,3 +34,15 @@ class User(Base):
     favorite_lists = relationship('FavoriteList', back_populates="user")
 
     #user_reviews = relationship('UserReview', back_populates='user')
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'lastName': self.lastName,
+            'age': self.age,
+            'nationality': self.nationality,
+            'description': self.description,
+            'profile_image': self.profile_image,
+            'stars': self.stars,
+            'email': self.email
+        }

@@ -14,5 +14,5 @@ class GuestReview(Base):
     description = Column(String)
     
     # Relationships
-    host_user = relationship('User', back_populates="host_reviews")
-    guest_user = relationship('User', back_populates="guest_reviews")
+    host_user = relationship('User', foreign_keys=[host_id], back_populates="host_reviews")
+    guest_user = relationship('User', foreign_keys=[guest_id], back_populates="guest_reviews")
