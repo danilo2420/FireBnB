@@ -1,8 +1,9 @@
 from flask_smorest import Blueprint, arguments, response
-from flask import jsonify
+from flask import jsonify, abort
 from blueprints.users_bp.schemas.users_input_schemas import *
 from blueprints.users_bp.schemas.users_output_schemas import *
 from blueprints.users_bp.schemas.schemas import *
+from blueprints.users_bp.schemas.error_schemas import *
 from connection import getConnection
 from model.users import User
 
@@ -38,12 +39,51 @@ def get_user(args):
 
 
 @bp.route('/create', methods=['POST'])
-def create_user():
-    return jsonify('working'), 200
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_user(args):
+    session = getConnection()
+
+    user = User(
+        name = args.get('name'),
+        lastName = args.get('lastName'),
+        age = args.get('age'),
+        nationality = args.get('nationality'),
+        description = args.get('description'),
+        profile_image = args.get('profile_image'),
+        stars = args.get('stars'),
+        email = args.get('email')
+    )
+
+    session.add(user)
+    session.commit()
+
+    return {'message': 'success'}
 
 @bp.route('/update', methods=['PUT'])
-def update_user():
-    return jsonify('working'), 200
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_user(args):
+    session = getConnection()
+    id = args.get('id')
+
+    user = session.query(User).filter(User.id == id).first()
+    if user is None:
+        abort(404)
+
+    user.name = args.get('name', user.name)
+    user.lastName = args.get('lastName', user.lastName)
+    user.age = args.get('age', user.age)
+    user.nationality = args.get('nationality', user.nationality)
+    user.description = args.get('description', user.description)
+    user.profile_image = args.get('profile_image', user.profile_image)
+    user.stars = args.get('stars', user.stars)
+    user.email = args.get('email', user.email)
+    user.password = args.get('password', user.password)
+
+    session.commit()
+
+    return {'message': 'success'}
 
 @bp.route('/delete')
 def delete_user():

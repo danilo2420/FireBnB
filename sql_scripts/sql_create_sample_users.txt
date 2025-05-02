@@ -1,0 +1,11 @@
+INSERT INTO users (name, "lastName", nationality, description, profile_image, stars, email, age, password) VALUES
+('John', 'Doe', 'American', 'A software engineer and tech enthusiast.', NULL, 4, 'john.doe@example.com', 30, 'pass123'),
+('Alice', 'Smith', 'British', 'Loves traveling and photography.', NULL, 5, 'alice.smith@example.com', 28, 'alice456'),
+('Carlos', 'Garcia', 'Spanish', 'Passionate about football and cooking.', NULL, 3, 'carlos.garcia@example.com', 35, 'carlos789'),
+('Emma', 'Johnson', 'Canadian', 'Avid reader and nature lover.', NULL, 4, 'emma.johnson@example.com', 26, 'emma321'),
+('Luca', 'Bianchi', 'Italian', 'Enjoys art, history, and hiking.', NULL, 5, 'luca.bianchi@example.com', 33, 'luca654'),
+('Sophia', 'Miller', 'Australian', 'Expert in digital marketing.', NULL, 4, 'sophia.miller@example.com', 31, 'sophia111'),
+('Max', 'Martinez', 'Mexican', 'Engineer and gamer.', NULL, 3, 'max.martinez@example.com', 29, 'max999'),
+('Olivia', 'Davis', 'American', 'Works as a graphic designer and loves yoga.', NULL, 5, 'olivia.davis@example.com', 27, 'olivia222'),
+('Noah', 'Wilson', 'New Zealand', 'A musician who loves nature and sailing.', NULL, 4, 'noah.wilson@example.com', 32, 'noah000'),
+('Mia', 'Moore', 'Canadian', 'A writer and coffee enthusiast.', NULL, 5, 'mia.moore@example.com', 25, 'mia333');

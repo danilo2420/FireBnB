@@ -14,6 +14,7 @@ class User(Base):
     profile_image = Column(Text)
     stars = Column(Integer)
     email = Column(String)
+    password = Column(String)
 
     # Relationships
     ## With places
