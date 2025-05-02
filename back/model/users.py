@@ -37,6 +37,7 @@ class User(Base):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'name': self.name,
             'lastName': self.lastName,
             'age': self.age,

@@ -2,6 +2,7 @@ from flask_smorest import Blueprint, arguments, response
 from flask import jsonify
 from blueprints.users_bp.schemas.users_input_schemas import *
 from blueprints.users_bp.schemas.users_output_schemas import *
+from blueprints.users_bp.schemas.schemas import *
 from connection import getConnection
 from model.users import User
 
@@ -23,8 +24,18 @@ def get_all_users():
 
 @bp.route('/get')
 @bp.arguments(Get_InputSchema, location='query')
+@bp.response(200, UserSchema)
 def get_user(args):
-    return jsonify('working'), 200
+    id = args['id']
+
+    session = getConnection()
+    user = session.query(User).filter(User.id == id).first()
+
+    if user is None:
+        return dict()
+    else:
+        return user.to_dict()
+
 
 @bp.route('/create', methods=['POST'])
 def create_user():
