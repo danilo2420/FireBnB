@@ -1,0 +1,8 @@
+DROP TABLE place_images;
+DROP TABLE place_reviews;
+DROP TABLE rentings;
+DROP TABLE "contains";
+DROP TABLE favorite_lists;
+DROP TABLE places;
+DROP TABLE guest_reviews;
+DROP TABLE users;

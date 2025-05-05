@@ -1,0 +1,18 @@
+DROP TABLE user_reviews;
+DROP TABLE rentings;
+DROP TABLE place_images;
+DROP TABLE place_reviews;
+DROP TABLE places;
+DROP TABLE users;
+
+***
+CREATE TABLE dogs (
+	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	name VARCHAR(30),
+	owner_id INT,
+	FOREIGN KEY (owner_id) REFERENCES people(ID)
+);
+INSERT INTO dogs (name, owner_id) VALUES
+	('Lucky', 4),
+	('Charlie', 4),
+	('Berta', 3);
