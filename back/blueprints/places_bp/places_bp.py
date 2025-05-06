@@ -1,6 +1,7 @@
 from flask_smorest import Blueprint, abort
 from connection import getConnection
 from model.places import Place
+from model.users import User
 from blueprints.places_bp.schemas.places_output_schemas import *
 from blueprints.places_bp.schemas.places_input_schemas import *
 
@@ -25,8 +26,33 @@ def get_place(args):
         abort(404, message="no place with this id was found")
     return place
 
-def create_place():
-    ...
+@bp.route('/create', methods=['POST'])
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_place(args):
+    owner_id = args.get('owner_id')
+    session = getConnection()
+
+    # Check owner exists
+    owner = session.query(User).filter(User.id == owner_id).first()
+    if owner is None:
+        abort(400, message="owner user does not exist")
+
+    # Create place
+    place = Place(
+        id = args.get('id'),
+        owner_id = args.get('owner_id'),
+        name = args.get('name'),
+        type = args.get('type'),
+        description = args.get('description'),
+        price_per_night = args.get('price_per_night'),
+        stars = args.get('stars')
+    )
+
+    session.add(place)
+    session.commit()
+
+    return {'message': 'place was created successfully'}
 
 def update_place():
     ...
