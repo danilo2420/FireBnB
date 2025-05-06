@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from db_config import *
 
 session = None
-URL = 'postgresql://root:root@localhost:5432/FireBnB' # This URL depends on the computer's DB
+# URL = 'postgresql://root:root@localhost:5432/FireBnB'
+URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost:{DB_PORT}/{DB_NAME}'
 engine = create_engine(URL)
 
 def testConnection() -> bool:

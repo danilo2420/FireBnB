@@ -34,9 +34,6 @@ api = Api(app)
 # Blueprints
 api.register_blueprint(users_bp.bp)
 
-
-
-
 # Endpoints
 @app.route('/')
 def helloWorld():
