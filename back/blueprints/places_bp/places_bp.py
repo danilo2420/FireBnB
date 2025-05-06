@@ -66,7 +66,7 @@ def update_place(args):
     if place is None:
         abort(404, message='no place with this id was found')
 
-    # Update place
+    # Update placelaces WHERE id = 3;
     place.name = args.get('name', place.name)
     place.type = args.get('type', place.type)
     place.description = args.get('description', place.description)
@@ -77,5 +77,20 @@ def update_place(args):
 
     return {'message': 'place was updated successfully'}
 
-def delete_place():
-    ...
+@bp.route('/delete', methods=['DELETE'])
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_place(args):
+    id = args.get('id')
+    session = getConnection()
+
+    # Check place exists
+    place = session.query(Place).filter(Place.id == id).first()
+    if place is None:
+        abort(404, message='no place with this id was found')
+    
+    # Delete place
+    session.delete(place)
+    session.commit()
+
+    return {'message': 'place deleted successfully'}
