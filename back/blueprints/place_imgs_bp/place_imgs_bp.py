@@ -45,8 +45,26 @@ def get_place_imgs_for_place(args):
 
 
 @bp.route('/create', methods=['POST'])
-def create_place_img():
-    ...
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_place_img(args):
+    session = getConnection()
+
+    # Check if place exists
+    place = session.query(Place).filter(Place.id == args.get('place_id')).first()
+    if place is None:
+        abort(404, message='There was no place with this id')
+
+    place_img = PlaceImage(
+        place_id = args.get('place_id'),
+        title = args.get('title'),
+        img = args.get('img')
+    )
+
+    session.add(place_img)
+    session.commit()
+
+    return {'message': 'Image created successfully'}
 
 @bp.route('/update', methods=['PUT'])
 def update_place_img():
