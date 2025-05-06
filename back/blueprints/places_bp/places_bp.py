@@ -54,8 +54,28 @@ def create_place(args):
 
     return {'message': 'place was created successfully'}
 
-def update_place():
-    ...
+@bp.route('update', methods=['PUT'])
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_place(args):
+    id = args.get('id')
+    session = getConnection()
+
+    # Check place exists
+    place = session.query(Place).filter(Place.id == id).first()
+    if place is None:
+        abort(404, message='no place with this id was found')
+
+    # Update place
+    place.name = args.get('name', place.name)
+    place.type = args.get('type', place.type)
+    place.description = args.get('description', place.description)
+    place.price_per_night = args.get('price_per_night', place.price_per_night)
+    place.stars = args.get('stars', place.stars)
+
+    session.commit()
+
+    return {'message': 'place was updated successfully'}
 
 def delete_place():
     ...
