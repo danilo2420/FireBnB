@@ -1,0 +1,11 @@
+INSERT INTO guest_reviews (host_id, guest_id, date, stars, description) VALUES 
+	(2, 3, '2025-04-12', 5, 'The guest was very responsible and took care of the apartment.'),
+	(5, 7, '2025-03-28', 4, 'Good guest, but left the place a bit untidy.'),
+	(4, 9, '2025-05-01', 5, 'Excellent communication and very clean.'),
+	(6, 2, '2025-04-15', 3, 'Okay stay, but was a bit noisy.'),
+	(8, 11, '2025-03-10', 5, 'Wonderful guest, would host again.'),
+	(3, 6, '2025-04-20', 4, 'Pleasant guest, arrived on time and followed rules.'),
+	(9, 10, '2025-05-03', 5, 'Left the place spotless, highly recommended.'),
+	(7, 12, '2025-04-25', 2, 'Guest smoked inside despite rules.'),
+	(10, 5, '2025-03-15', 4, 'Good overall, a little late checking out.'),
+	(11, 8, '2025-04-05', 5, 'Very friendly and respectful guest.');
