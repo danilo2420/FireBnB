@@ -1,5 +1,5 @@
-from flask_smorest import Blueprint, arguments, response
-from flask import jsonify, abort
+from flask_smorest import Blueprint, arguments, response, abort
+from flask import jsonify
 from blueprints.users_bp.schemas.users_input_schemas import *
 from blueprints.users_bp.schemas.users_output_schemas import *
 from blueprints.users_bp.schemas.schemas import *
@@ -24,7 +24,7 @@ def get_all_users():
     return result
 
 @bp.route('/get')
-@bp.arguments(Get_InputSchema, location='query')
+@bp.arguments(Id_InputSchema, location='query')
 @bp.response(200, UserSchema)
 def get_user(args):
     id = args['id']
@@ -85,6 +85,19 @@ def update_user(args):
 
     return {'message': 'success'}
 
-@bp.route('/delete')
-def delete_user():
-    return jsonify('working'), 200
+@bp.route('/delete', methods=['DELETE'])
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_user(args):
+    id = args.get('id')
+
+    session = getConnection()
+
+    user = session.query(User).filter(User.id == id).first()
+    if user is not None:
+        session.delete(user)
+        session.commit()
+        print('User deleted')
+        return {'message': 'User was found and deleted successfully'}
+    else:
+        abort(404, message="No user with this id was found")

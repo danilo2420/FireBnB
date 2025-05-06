@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-class Get_InputSchema(Schema):
+class Id_InputSchema(Schema):
     id = fields.Int(required=True)
 
 class Create_InputSchema(Schema):
