@@ -9,7 +9,7 @@ from model.users import User
 
 bp = Blueprint('users_bp', __name__, url_prefix='/users')
 
-@bp.route('/getAll')
+@bp.route('/get_all')
 @bp.response(200, GetAll_OutputSchema)
 def get_all_users():
     session = getConnection()

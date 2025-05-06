@@ -1,0 +1,12 @@
+INSERT INTO places (owner_id, name, type, description, price_per_night, stars) VALUES
+	(2, 'Cozy Cabin in the Woods', 'Cabin', 'Quiet retreat with forest views and a firepit.', 120.00, 4.8),
+	(3, 'Modern City Apartment', 'Apartment', 'Downtown apartment with fast Wi-Fi and skyline views.', 95.00, 4.5),
+	(4, 'Beachside Bungalow', 'House', 'Steps from the beach, with hammock and outdoor shower.', 150.00, 4.9),
+	(2, 'Lakeview Cottage', 'Cottage', 'Peaceful lakefront spot with kayak access.', 130.00, 4.6),
+	(5, 'Tiny Home Getaway', 'Tiny House', 'Minimalist tiny house with smart features and nature access.', 80.00, 4.7),
+	(6, 'Mountain Lodge', 'Lodge', 'Rustic lodge ideal for skiing and hiking adventures.', 200.00, 4.6),
+	(7, 'Urban Studio Loft', 'Studio', 'Stylish loft near nightlife and transit.', 90.00, 4.4),
+	(4, 'Desert Dome', 'Dome', 'Eco dome with stargazing experience in the desert.', 110.00, 4.8),
+	(8, 'Farm Stay Barn', 'Barn', 'Converted barn with animals and fresh eggs.', 100.00, 4.5),
+	(9, 'Countryside Villa', 'Villa', 'Spacious villa with a pool and vineyard views.', 250.00, 4.9);
+
