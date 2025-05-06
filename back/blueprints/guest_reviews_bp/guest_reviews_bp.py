@@ -8,14 +8,12 @@ from model.users import User
 
 bp = Blueprint('guest_reviews_bp', __name__, url_prefix='/guest_reviews')
 
-# R
 @bp.route('/get_all')
 @bp.response(200, GetAll_OutputSchema)
 def get_all_guest_reviews():
     session = getConnection()
     guest_reviews = session.query(GuestReview).all()
     return {'guest_reviews': guest_reviews}
-
 
 @bp.route('/get')
 @bp.arguments(Id_InputSchema, location='query')
@@ -63,8 +61,23 @@ def get_guest_reviews_for_guest(args):
 # C
 
 @bp.route('/create', methods=['POST'])
-def create_guest_review():
-    ...
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_guest_review(args):
+    session = getConnection()
+
+    guest_review = GuestReview(
+        host_id = args.get('host_id'),
+        guest_id = args.get('guest_id'),
+        date = args.get('date'),
+        stars = args.get('stars'),
+        description = args.get('description')
+    )
+
+    session.add(guest_review)
+    session.commit()
+
+    return {'message': 'success creating guest review'}
 
 # U
 @bp.route('/update', methods=['PUT'])
@@ -75,3 +88,7 @@ def update_guest_review():
 @bp.route('/delete', methods=['DELETE'])
 def delete_guest_review():
     ...
+
+# Delete for all hosts
+
+# Delete for all guests
