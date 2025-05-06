@@ -1,0 +1,4 @@
+INSERT INTO place_images (place_id, title) VALUES
+	(5, 'Cool image'),
+	(7, 'Outside image'),
+	(4, 'Landscape image');
