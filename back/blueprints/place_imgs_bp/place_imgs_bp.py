@@ -3,6 +3,8 @@ from blueprints.place_imgs_bp.schemas.place_imgs_input_schemas import *
 from blueprints.place_imgs_bp.schemas.place_imgs_output_schemas import *
 from connection import getConnection
 from model.place_images import PlaceImage
+from model.schemas.placeImgSchema import PlaceImgSchema
+from model.places import Place
 
 bp = Blueprint('place_imgs_bp', __name__, url_prefix='/place_imgs')
 
@@ -14,8 +16,33 @@ def get_all_place_imgs():
     return {'place_imgs': place_imgs}
 
 @bp.route('/get')
-def get_place_img():
-    ...
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, PlaceImgSchema)
+def get_place_img(args):
+    id = args.get('id')
+    session = getConnection()
+
+    place_img = session.query(PlaceImage).filter(PlaceImage.id == id).first()
+    if place_img is None:
+        abort(404, message='no place image was found with this id')
+
+    return place_img
+
+# Return images for a particular place (given its id)
+@bp.route('get_imgs_for_place')
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, GetImgsForPlace_OutputSchema)
+def get_place_imgs_for_place(args):
+    id = args.get('id')
+    session = getConnection()
+
+    # Check place exists
+    place = session.query(Place).filter(Place.id == id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+    
+    return {'place_imgs': place.images}
+
 
 @bp.route('/create', methods=['POST'])
 def create_place_img():
@@ -28,3 +55,5 @@ def update_place_img():
 @bp.route('/delete', methods=['DELETE'])
 def delete_place_img():
     ...
+
+# delete all images for a place?

@@ -6,3 +6,6 @@ class Success_OutputSchema(Schema):
 
 class GetAll_OutputSchema(Schema):
     place_imgs = fields.List(fields.Nested(PlaceImgSchema))
+
+class GetImgsForPlace_OutputSchema(Schema):
+    place_imgs = fields.List(fields.Nested(PlaceImgSchema))
