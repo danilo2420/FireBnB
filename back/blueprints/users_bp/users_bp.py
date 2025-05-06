@@ -7,7 +7,7 @@ from blueprints.users_bp.schemas.error_schemas import *
 from connection import getConnection
 from model.users import User
 
-bp = Blueprint('users_bp', 'users_bp', url_prefix='/users')
+bp = Blueprint('users_bp', __name__, url_prefix='/users')
 
 @bp.route('/getAll')
 @bp.response(200, GetAll_OutputSchema)
