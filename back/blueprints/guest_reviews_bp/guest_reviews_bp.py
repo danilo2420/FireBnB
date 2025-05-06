@@ -116,5 +116,37 @@ def delete_guest_review(args):
 
 
 # Delete for all hosts
+@bp.route('/delete_hosts_guest_reviews', methods=['DELETE'])
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_guest_review_for_host(args):
+    id = args.get('id')
+    session = getConnection()
+
+    host = session.query(User).filter(User.id == id).first()
+    if host is None:
+        abort(404, message='no user was found with this id')
+    
+    for guest_review in host.host_reviews:
+        session.delete(guest_review)
+    session.commit()
+
+    return {'message': 'host\'s guest reviews was deleted successfully'}
 
 # Delete for all guests
+@bp.route('/delete_guests_guest_reviews', methods=['DELETE'])
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_guest_review_for_host(args):
+    id = args.get('id')
+    session = getConnection()
+
+    guest = session.query(User).filter(User.id == id).first()
+    if guest is None:
+        abort(404, message='no user was found with this id')
+    
+    for guest_review in guest.guest_reviews:
+        session.delete(guest_review)
+    session.commit()
+
+    return {'message': 'guest\'s guest reviews was deleted successfully'}
