@@ -7,3 +7,8 @@ class Create_InputSchema(Schema):
     place_id = fields.Int(required=True)
     title = fields.Str()
     img = fields.Str() # Should be required=True, probably
+
+class Update_InputSchema(Schema):
+    id = fields.Int(required=True)
+    title = fields.Str()
+    img = fields.Str() # Should be required=True, probably
