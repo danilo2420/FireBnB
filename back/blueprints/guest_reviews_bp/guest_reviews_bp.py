@@ -58,8 +58,6 @@ def get_guest_reviews_for_guest(args):
     
     return {'guest_reviews': guest.guest_reviews}
 
-# C
-
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)
 @bp.response(200, Success_OutputSchema)
@@ -81,13 +79,41 @@ def create_guest_review(args):
 
 # U
 @bp.route('/update', methods=['PUT'])
-def update_guest_review():
-    ...
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_guest_review(args):
+    id = args.get('id')
+    session = getConnection()
+
+    guest_review = session.query(GuestReview).filter(GuestReview.id == id).first()
+    if guest_review is None:
+        abort(404, message="no guest review was found with this id")
+
+    guest_review.date = args.get('date', guest_review.date)
+    guest_review.stars = args.get('stars', guest_review.stars)
+    guest_review.description = args.get('description', guest_review.description)
+
+    session.commit()
+
+    return {'message': 'Guest review was updated successfully'}
 
 # D
 @bp.route('/delete', methods=['DELETE'])
-def delete_guest_review():
-    ...
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_guest_review(args):
+    id = args.get('id')
+    session = getConnection()
+
+    guest_review = session.query(GuestReview).filter(GuestReview.id == id).first()
+    if guest_review is None:
+        abort(404, message='no guest review was found with this id')
+
+    session.delete(guest_review)
+    session.commit()
+
+    return {'message': 'Guest review was deleted successfully'}
+
 
 # Delete for all hosts
 
