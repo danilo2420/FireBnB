@@ -136,5 +136,55 @@ def update_renting(args):
 
 
 @bp.route('/delete', methods=['DELETE'])
-def delete_renting():
-    ...
+@bp.arguments(Delete_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_renting(args):
+    key = list(args.keys())[0]
+    val = args.get(key)
+
+    match key:
+        case 'id':
+            deleteRentingById(val)
+        case 'guest':
+            deleteRentingForGuest(val)
+        case 'place':
+            deleteRentingForPlace(val)
+        case _:
+            print('something wrong about query input arguments')
+            return {'message': 'something wrong about query input arguments'}
+        
+    return {'message': 'rentings deleted successfully'}
+
+def deleteRentingById(id):
+    session = getConnection()
+
+    renting = session.query(Renting).filter(Renting.id == id).first()
+    if renting is None:
+        abort(404, message='no renting was found with this id')
+    
+    session.delete(renting)
+    session.commit()
+
+def deleteRentingForGuest(guest_id):
+    session = getConnection()
+
+    guest = session.query(User).filter(User.id == guest_id).first()
+    if guest is None:
+        abort(404, message='no user was found with this id')
+
+    for renting in guest.rentings:
+        session.delete(renting)
+
+    session.commit()
+
+def deleteRentingForPlace(place_id):
+    session = getConnection()
+
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+
+    for renting in place.rentings:
+        session.delete(renting)
+
+    session.commit()

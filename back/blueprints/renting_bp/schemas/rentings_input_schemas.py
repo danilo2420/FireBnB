@@ -22,3 +22,13 @@ class Update_InputSchema(Schema):
     start_date = fields.Date()
     end_date = fields.Date()
     total_price = fields.Float()
+
+class Delete_InputSchema(Schema):
+    id = fields.Int()
+    guest = fields.Int()
+    place = fields.Int()
+
+    @validates_schema
+    def validate_schema(self, data, **kwargs):
+        if len(data) != 1:
+            raise ValidationError('Query should have one (and only one) parameter')
