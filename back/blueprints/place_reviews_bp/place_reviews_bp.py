@@ -69,14 +69,45 @@ def getPlaceReviewForPlace(place_id):
     
     return place.reviews
 
-@bp.route('/create')
-def create_place_reviews():
-    ...
+@bp.route('/create', methods=['POST'])
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_place_reviews(args):
+    session = getConnection()
+
+    place_review = PlaceReview(
+        guest_id = args.get('guest_id'),
+        place_id = args.get('place_id'),
+        date = args.get('date'),
+        description = args.get('description'),
+        stars = args.get('stars')
+    )
+
+    session.add(place_review)
+    session.commit()
+
+    return {'message': 'place review created successfully'}
 
 
-@bp.route('/update')
-def update_place_reviews():
-    ...
+@bp.route('/update', methods=['PUT'])
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_place_reviews(args):
+    session = getConnection()
+    id = args.get('id')
+
+    place_review = session.query(PlaceReview).filter(PlaceReview.id == id).first()
+    if place_review is None:
+        abort(404, message='no place review was found with this id')
+
+    place_review.date = args.get('date', place_review.date)
+    place_review.description = args.get('description', place_review.description)
+    place_review.stars = args.get('stars', place_review.stars)
+
+    session.commit()
+
+    return {'message': 'place review updated successfully'}
+
 
 
 @bp.route('/delete')
