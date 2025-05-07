@@ -9,3 +9,10 @@ class Get_InputSchema(Schema):
     def validate_schema(self, data, **kwargs):
         if len(data) > 1:
             raise ValidationError('Query should not have more than one parameter')
+        
+class Create_InputSchema(Schema):
+    guest_id = fields.Int(required=True)
+    place_id = fields.Int(required=True)
+    start_date = fields.Date()
+    end_date = fields.Date()
+    total_price = fields.Float()

@@ -1,6 +1,8 @@
 from flask_smorest import Blueprint, abort
 from blueprints.renting_bp.schemas.rentings_input_schemas import *
 from blueprints.renting_bp.schemas.rentings_output_schemas import *
+from blueprints.general_input_output_schemas.general_input_schemas import *
+from blueprints.general_input_output_schemas.general_output_schemas import *
 from connection import getConnection
 from model.places import Place
 from model.rentings import Renting
@@ -84,8 +86,34 @@ def getRentingsForPlace(place_id):
 
 
 @bp.route('/create', methods=['POST'])
-def create_renting():
-    ...
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_renting(args):
+    session = getConnection()
+    # Check guest user exists
+    guest_id = args.get('guest_id')
+    guest = session.query(User).filter(User.id == guest_id).first()
+    if guest is None:
+        abort(404, message='guest user was not found with this id')
+
+    # Check place exists
+    place_id = args.get('place_id')
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='place was not found with this id')
+
+    renting = Renting(
+        guest_id = guest_id,
+        place_id = place_id,
+        start_date = args.get('start_date'),
+        end_date = args.get('end_date'),
+        total_price = args.get('total_price')
+    )
+
+    session.add(renting)
+    session.commit()
+
+    return {'message': 'renting added successfully'}
 
 
 @bp.route('/update', methods=['PUT'])
