@@ -2,6 +2,7 @@ from flask_smorest import Blueprint, abort
 from blueprints.renting_bp.schemas.rentings_input_schemas import *
 from blueprints.renting_bp.schemas.rentings_output_schemas import *
 from connection import getConnection
+from model.places import Place
 from model.rentings import Renting
 from model.users import User
 
@@ -46,7 +47,7 @@ def get_rentings(args):
             case 'guest':
                 result.extend(getRentingsForGuest(val))
             case 'place':
-                result.append(getRentingsForPlace(val))
+                result.extend(getRentingsForPlace(val))
             case _:
                 print('something wrong about query input arguments')
     return {'rentings': result}
@@ -73,7 +74,13 @@ def getRentingsForGuest(guest_id):
     return guest.rentings
 
 def getRentingsForPlace(place_id):
-    ...
+    session = getConnection()
+
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+
+    return place.rentings
 
 
 @bp.route('/create', methods=['POST'])
