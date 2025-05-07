@@ -5,6 +5,7 @@ from blueprints.general_input_output_schemas.general_output_schemas import *
 from blueprints.favorite_lists_bp.schemas.favorite_lists_input_schemas import *
 from blueprints.favorite_lists_bp.schemas.favorite_lists_output_schemas import *
 from model.favorite_lists import FavoriteList
+from model.places import Place
 from model.users import User
 
 bp = Blueprint('favorite_lists_bp', __name__, url_prefix='/favorite_lists')
@@ -61,20 +62,51 @@ def get_favorite_lists(args):
 
     return {'places': favorite_list.places}
 
-'''
-    Get one by id
-    Get user's lists
-'''
 
-@bp.route('create', methods=['CREATE'])
-def create_favorite_lists():
-    ...
+@bp.route('create', methods=['POST'])
+@bp.arguments(Create_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_favorite_lists(args):
+    session = getConnection()
+
+    favorite_list = FavoriteList(
+        user_id = args.get('user_id'),
+        name = args.get('name')
+    )
+
+    session.add(favorite_list)
+    session.commit()
+
+    return {'message': 'favorite list created successfully'}
+
+@bp.route('update', methods=['PUT'])
+def update_favorite_lists():
+    ... # TODO: this
 
 ## Add place to list too
+@bp.route('add_place_to_list', methods=['PUT'])
+@bp.arguments(AddPlace_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def add_place_to_list(args):
+    session = getConnection()
+    
+    id = args.get('id')
+    favorite_list = session.query(FavoriteList).filter(FavoriteList.id == id).first()
+    if favorite_list is None:
+        abort(404, message='no favorite list was found with this id')
 
-@bp.route('update', methods=['UPDATE'])
-def update_favorite_lists():
-    ...
+    place_id = args.get('place_id')
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+
+    if place in favorite_list.places:
+        abort(400, message="place already exists in list")
+        
+    favorite_list.places.append(place)
+    session.commit()
+
+    return {'message': 'place added to list successfully'}
 
 @bp.route('delete', methods=['DELETE'])
 def delete_favorite_lists():
