@@ -1,0 +1,50 @@
+-- Create users
+
+INSERT INTO users (name, "lastName", nationality, description, profile_image, stars, email, age, password) VALUES
+('John', 'Doe', 'American', 'A software engineer and tech enthusiast.', NULL, 4, 'john.doe@example.com', 30, 'pass123'),
+('Alice', 'Smith', 'British', 'Loves traveling and photography.', NULL, 5, 'alice.smith@example.com', 28, 'alice456'),
+('Carlos', 'Garcia', 'Spanish', 'Passionate about football and cooking.', NULL, 3, 'carlos.garcia@example.com', 35, 'carlos789'),
+('Emma', 'Johnson', 'Canadian', 'Avid reader and nature lover.', NULL, 4, 'emma.johnson@example.com', 26, 'emma321'),
+('Luca', 'Bianchi', 'Italian', 'Enjoys art, history, and hiking.', NULL, 5, 'luca.bianchi@example.com', 33, 'luca654'),
+('Sophia', 'Miller', 'Australian', 'Expert in digital marketing.', NULL, 4, 'sophia.miller@example.com', 31, 'sophia111'),
+('Max', 'Martinez', 'Mexican', 'Engineer and gamer.', NULL, 3, 'max.martinez@example.com', 29, 'max999'),
+('Olivia', 'Davis', 'American', 'Works as a graphic designer and loves yoga.', NULL, 5, 'olivia.davis@example.com', 27, 'olivia222'),
+('Noah', 'Wilson', 'New Zealand', 'A musician who loves nature and sailing.', NULL, 4, 'noah.wilson@example.com', 32, 'noah000'),
+('Mia', 'Moore', 'Canadian', 'A writer and coffee enthusiast.', NULL, 5, 'mia.moore@example.com', 25, 'mia333');
+
+
+-- Create places
+
+INSERT INTO places (owner_id, name, type, description, price_per_night, stars) VALUES
+	(1, 'Cozy Cabin in the Woods', 'Cabin', 'Quiet retreat with forest views and a firepit.', 120.00, 4.8),
+	(2, 'Modern City Apartment', 'Apartment', 'Downtown apartment with fast Wi-Fi and skyline views.', 95.00, 4.5),
+	(3, 'Beachside Bungalow', 'House', 'Steps from the beach, with hammock and outdoor shower.', 150.00, 4.9),
+	(4, 'Lakeview Cottage', 'Cottage', 'Peaceful lakefront spot with kayak access.', 130.00, 4.6),
+	(5, 'Tiny Home Getaway', 'Tiny House', 'Minimalist tiny house with smart features and nature access.', 80.00, 4.7),
+	(6, 'Mountain Lodge', 'Lodge', 'Rustic lodge ideal for skiing and hiking adventures.', 200.00, 4.6),
+	(7, 'Urban Studio Loft', 'Studio', 'Stylish loft near nightlife and transit.', 90.00, 4.4),
+	(4, 'Desert Dome', 'Dome', 'Eco dome with stargazing experience in the desert.', 110.00, 4.8),
+	(8, 'Farm Stay Barn', 'Barn', 'Converted barn with animals and fresh eggs.', 100.00, 4.5),
+	(9, 'Countryside Villa', 'Villa', 'Spacious villa with a pool and vineyard views.', 250.00, 4.9);
+
+
+-- Create guest reviews
+
+INSERT INTO guest_reviews (host_id, guest_id, date, stars, description) VALUES 
+	(2, 3, '2025-04-12', 5, 'The guest was very responsible and took care of the apartment.'),
+	(5, 7, '2025-03-28', 4, 'Good guest, but left the place a bit untidy.'),
+	(4, 9, '2025-05-01', 5, 'Excellent communication and very clean.'),
+	(6, 2, '2025-04-15', 3, 'Okay stay, but was a bit noisy.'),
+	(8, 7, '2025-03-10', 5, 'Wonderful guest, would host again.'),
+	(3, 6, '2025-04-20', 4, 'Pleasant guest, arrived on time and followed rules.'),
+	(1, 10, '2025-05-03', 5, 'Left the place spotless, highly recommended.'),
+	(7, 3, '2025-04-25', 2, 'Guest smoked inside despite rules.'),
+	(10, 5, '2025-03-15', 4, 'Good overall, a little late checking out.'),
+	(6, 8, '2025-04-05', 5, 'Very friendly and respectful guest.');
+	
+-- Create place images
+
+INSERT INTO place_images (place_id, title) VALUES
+	(5, 'Cool image'),
+	(7, 'Outside image'),
+	(4, 'Landscape image');

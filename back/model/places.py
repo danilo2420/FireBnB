@@ -30,4 +30,4 @@ class Place(Base):
     reviews = relationship('PlaceReview', back_populates='place')
 
     ## With favorite_lists
-    favorite_lists = relationship('FavoriteList', secondary='contains')
+    favorite_lists = relationship('FavoriteList', secondary='contains', back_populates='places')
