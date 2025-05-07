@@ -70,7 +70,7 @@ def getRentingsForGuest(guest_id):
     if guest is None:
         abort(404, message='no user was found with this id')
     
-    return guest.rentedPlaces
+    return guest.rentings
 
 def getRentingsForPlace(place_id):
     ...

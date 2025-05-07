@@ -21,7 +21,8 @@ class Place(Base):
     owner = relationship('User', back_populates='ownedPlaces')
 
     ## Renting relationship
-    renters = relationship('User', secondary='rentings', back_populates='rentedPlaces')
+    #renters = relationship('User', secondary='rentings', back_populates='rentedPlaces')
+    rentings = relationship('Renting', back_populates='place')
 
     ## With image 
     images = relationship('PlaceImage', back_populates='place')

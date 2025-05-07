@@ -13,3 +13,6 @@ class Renting(Base):
     start_date = Column(Date)
     end_date = Column(Date)
     total_price = Column(Float)
+
+    guest = relationship('User', back_populates='rentings')
+    place = relationship('Place', back_populates='rentings')
