@@ -110,6 +110,48 @@ def update_place_reviews(args):
 
 
 
-@bp.route('/delete')
-def delete_place_reviews():
-    ...
+@bp.route('/delete', methods=['DELETE'])
+@bp.arguments(Delete_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_place_reviews(args):
+    session = getConnection()
+    key = list(args.keys())[0]
+    val = args.get(key)
+
+    match key:
+        case 'id':
+            deletePlaceReviewById(session, val)
+        case 'guest_id':
+            deletePlaceReviewsForGuest(session, val)
+        case 'place_id':
+            deletePlaceReviewsForPlace(session, val)
+        case _:
+            print('There was a problem with the URL query arguments')
+
+    return {'message': 'places were deleted successfully'}
+
+def deletePlaceReviewById(session, id):
+    place_review = session.query(PlaceReview).filter(PlaceReview.id == id).first()
+    if place_review is None:
+        abort(404, message='no place review was found with this id')
+    
+    session.delete(place_review)
+    session.commit()
+
+def deletePlaceReviewsForGuest(session, guest_id):
+    guest = session.query(User).filter(User.id == guest_id).first()
+    if guest is None:
+        abort(404, message='no user was found with this id')
+
+    for place_review in guest.place_reviews:
+        session.delete(place_review)
+    session.commit()
+
+def deletePlaceReviewsForPlace(session, place_id):
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+
+    for place_review in place.reviews:
+        session.delete(place_review)
+    session.commit()

@@ -22,3 +22,13 @@ class Update_InputSchema(Schema):
     date = fields.Date()
     description = fields.Str()
     stars = fields.Int()
+
+class Delete_InputSchema(Schema):
+    id = fields.Int()
+    guest_id = fields.Int()
+    place_id = fields.Int()
+
+    @validates_schema
+    def validate_data(self, data, **kwargs):
+        if len(data) != 1:
+            raise ValidationError('you have to input 1 (and only 1) query argument')
