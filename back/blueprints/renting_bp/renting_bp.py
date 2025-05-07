@@ -117,8 +117,22 @@ def create_renting(args):
 
 
 @bp.route('/update', methods=['PUT'])
-def update_renting():
-    ...
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_renting(args):
+    id = args.get('id')
+    session = getConnection()
+
+    renting = session.query(Renting).filter(Renting.id == id).first()
+    if renting is None:
+        abort(404, message='no renting was found with this id')
+    
+    renting.start_date = args.get('start_date', renting.start_date)
+    renting.end_date = args.get('end_date', renting.end_date)
+    renting.total_price = args.get('total_price', renting.total_price)
+    session.commit()
+
+    return {'message': 'renting updated successfully'}
 
 
 @bp.route('/delete', methods=['DELETE'])

@@ -16,3 +16,9 @@ class Create_InputSchema(Schema):
     start_date = fields.Date()
     end_date = fields.Date()
     total_price = fields.Float()
+
+class Update_InputSchema(Schema):
+    id = fields.Int(required=True)
+    start_date = fields.Date()
+    end_date = fields.Date()
+    total_price = fields.Float()
