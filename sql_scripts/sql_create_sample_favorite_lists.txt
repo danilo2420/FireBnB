@@ -1,0 +1,12 @@
+INSERT INTO favorite_lists (user_id, name) VALUES 
+	(1, 'My dream vacations'),
+	(2, 'Honeymoon ideas'),
+	(3, 'Weekend getaways'),
+	(4, 'Summer trips'),
+	(5, 'Winter retreats'),
+	(6, 'City breaks'),
+	(7, 'Beach spots'),
+	(8, 'Mountain escapes'),
+	(9, 'Places to revisit'),
+	(10, 'Romantic stays');
+
