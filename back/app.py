@@ -17,6 +17,7 @@ from blueprints.users_bp import users_bp
 from blueprints.places_bp import places_bp
 from blueprints.place_imgs_bp import place_imgs_bp
 from blueprints.guest_reviews_bp import guest_reviews_bp
+from blueprints.renting_bp import renting_bp
 
 # Basic setup
 if not connection.testConnection():
@@ -39,6 +40,7 @@ api.register_blueprint(users_bp.bp)
 api.register_blueprint(places_bp.bp)
 api.register_blueprint(place_imgs_bp.bp)
 api.register_blueprint(guest_reviews_bp.bp)
+api.register_blueprint(renting_bp.bp)
 
 # Endpoints
 @app.route('/')

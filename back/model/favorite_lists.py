@@ -10,4 +10,4 @@ class FavoriteList(Base):
     place_id = Column(Integer, ForeignKey('places.id'))
 
     user = relationship('User', back_populates="favorite_lists")
-    places = relationship('Place', secondary='contains')
+    places = relationship('Place', secondary='contains', back_populates='favorite_lists')
