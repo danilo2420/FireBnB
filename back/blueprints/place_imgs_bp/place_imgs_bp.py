@@ -11,8 +11,8 @@ from model.places import Place
 bp = Blueprint('place_imgs_bp', __name__, url_prefix='/place_imgs')
 
 @bp.route('/get')
-@bp.arguments(Get_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
+@bp.arguments(PlaceImgGet_InputSchema, location='query')
+@bp.response(200, PlaceImgGetAll_OutputSchema)
 def get_place_imgs(args):
     if len(args) == 0:
         return getAllPlaceImgs()
@@ -53,7 +53,7 @@ def getPlaceImgsForPlace(place_id):
     return {'place_imgs': place.images}
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(PlaceImgCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_place_img(args):
     session = getConnection()
@@ -75,7 +75,7 @@ def create_place_img(args):
     return {'message': 'Image created successfully'}
 
 @bp.route('/update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(PlaceImgUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_place_img(args):
     id = args.get('id')
@@ -92,7 +92,7 @@ def update_place_img(args):
     return {'message': 'image updated successfully'}
 
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Delete_InputSchema, location='query')
+@bp.arguments(PlaceImgDelete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
 def delete_place_imgs(args):
     key = list(args.keys())[0]

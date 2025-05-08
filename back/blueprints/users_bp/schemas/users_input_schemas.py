@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 class Id_InputSchema(Schema):
     id = fields.Int(required=True)
 
-class Create_InputSchema(Schema):
+class UserCreate_InputSchema(Schema):
     name = fields.Str(required=True)
     lastName = fields.Str(required=True)
     age = fields.Int()
@@ -14,7 +14,7 @@ class Create_InputSchema(Schema):
     email = fields.Str(required=True)
     password = fields.Str(required=True)
 
-class Update_InputSchema(Schema):
+class UserUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
     name = fields.Str()
     lastName = fields.Str()

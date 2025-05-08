@@ -13,7 +13,7 @@ bp = Blueprint('renting_bp', __name__, url_prefix='/rentings')
 # This one works a little differently than the rest; let's see what happens
 @bp.route('/get')
 @bp.arguments(Get_InputSchema, location='query')
-@bp.response(200, Get_OutputSchema)
+@bp.response(200, RentingGet_OutputSchema)
 def get_rentings(args):
     result = []
     if len(args) == 0:
@@ -64,7 +64,7 @@ def getRentingsForPlace(place_id):
 
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(RentingCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_renting(args):
     session = getConnection()
@@ -95,7 +95,7 @@ def create_renting(args):
 
 
 @bp.route('/update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(RentingUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_renting(args):
     id = args.get('id')
@@ -114,7 +114,7 @@ def update_renting(args):
 
 
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Delete_InputSchema, location='query')
+@bp.arguments(RentingDelete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
 def delete_renting(args):
     key = list(args.keys())[0]

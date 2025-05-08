@@ -12,7 +12,7 @@ bp = Blueprint('place_reviews_bp', __name__, url_prefix='/place_reviews')
 
 @bp.route('/get')
 @bp.arguments(Get_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
+@bp.response(200, PlaceReviewGetAll_OutputSchema)
 def get_place_reviews(args):
     # Return all
     if len(args) == 0:
@@ -70,7 +70,7 @@ def getPlaceReviewForPlace(place_id):
     return place.reviews
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(PlaceReviewCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_place_reviews(args):
     session = getConnection()
@@ -90,7 +90,7 @@ def create_place_reviews(args):
 
 
 @bp.route('/update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(PlaceReviewUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_place_reviews(args):
     session = getConnection()
@@ -109,7 +109,7 @@ def update_place_reviews(args):
     return {'message': 'place review updated successfully'}
 
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Delete_InputSchema, location='query')
+@bp.arguments(PlaceReviewDelete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
 def delete_place_reviews(args):
     session = getConnection()

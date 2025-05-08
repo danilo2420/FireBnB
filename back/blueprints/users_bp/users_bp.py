@@ -13,7 +13,7 @@ bp = Blueprint('users_bp', __name__, url_prefix='/users')
 
 @bp.route('/get')
 @bp.arguments(IdOptional_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
+@bp.response(200, UserGetAll_OutputSchema)
 def get(args):
     id = args.get('id')
     
@@ -43,7 +43,7 @@ def getUser(id):
         return {"users": [user]}
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(UserCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_user(args):
     session = getConnection()
@@ -65,7 +65,7 @@ def create_user(args):
     return {'message': 'success'}
 
 @bp.route('/update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(UserUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_user(args):
     session = getConnection()

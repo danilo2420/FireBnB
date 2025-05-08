@@ -11,8 +11,8 @@ from model.users import User
 bp = Blueprint('favorite_lists_bp', __name__, url_prefix='/favorite_lists')
 
 @bp.route('get')
-@bp.arguments(Get_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
+@bp.arguments(FavoriteListGet_InputSchema, location='query')
+@bp.response(200, FavoriteListGetAll_OutputSchema)
 def get_favorite_lists(args):
     key = list(args.keys())[0]
     val = args.get(key)
@@ -64,7 +64,7 @@ def get_favorite_lists(args):
 
 
 @bp.route('create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(FavoriteListCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_favorite_lists(args):
     session = getConnection()
@@ -80,7 +80,7 @@ def create_favorite_lists(args):
     return {'message': 'favorite list created successfully'}
 
 @bp.route('update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(FavoriteListUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_favorite_lists(args):
     session = getConnection()

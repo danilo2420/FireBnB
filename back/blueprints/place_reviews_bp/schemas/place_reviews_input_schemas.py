@@ -10,20 +10,20 @@ class Get_InputSchema(Schema):
         if len(data) > 1:
             raise ValidationError('you cant input more than 1 query argument')
 
-class Create_InputSchema(Schema):
+class PlaceReviewCreate_InputSchema(Schema):
     guest_id = fields.Int(required=True)
     place_id = fields.Int(required=True)
     date = fields.Date()
     description = fields.Str()
     stars = fields.Int()
 
-class Update_InputSchema(Schema):
+class PlaceReviewUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
     date = fields.Date()
     description = fields.Str()
     stars = fields.Int()
 
-class Delete_InputSchema(Schema):
+class PlaceReviewDelete_InputSchema(Schema):
     id = fields.Int()
     guest_id = fields.Int()
     place_id = fields.Int()

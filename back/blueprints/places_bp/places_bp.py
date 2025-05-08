@@ -11,7 +11,7 @@ bp = Blueprint('places_bp', __name__, url_prefix='/places')
 
 @bp.route('/get')
 @bp.arguments(IdOptional_InputSchema, location='query')
-@bp.response(200, Get_OutputSchema)
+@bp.response(200, PlaceGet_OutputSchema)
 def get_places(args):
     if len(args) == 0:
         return getAllPlaces()
@@ -32,7 +32,7 @@ def getPlace(id):
     return {'places': [place]}
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(PlaceCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_place(args):
     owner_id = args.get('owner_id')
@@ -60,7 +60,7 @@ def create_place(args):
     return {'message': 'place was created successfully'}
 
 @bp.route('update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(PlaceUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_place(args):
     id = args.get('id')

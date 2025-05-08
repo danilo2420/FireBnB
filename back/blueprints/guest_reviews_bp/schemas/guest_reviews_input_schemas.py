@@ -1,9 +1,6 @@
 from marshmallow import Schema, fields, validates_schema, ValidationError
 
-class Id_InputSchema(Schema):
-    id = fields.Int(required=True)
-
-class Get_InputSchema(Schema):
+class GuestReviewGet_InputSchema(Schema):
     id = fields.Int()
     host_id = fields.Int()
     guest_id = fields.Int()
@@ -13,21 +10,21 @@ class Get_InputSchema(Schema):
         if len(data) > 1:
             raise ValidationError('You cannot input more than one query argument')
 
-class Create_InputSchema(Schema):
+class GuestReviewCreate_InputSchema(Schema):
     host_id = fields.Int(required=True)
     guest_id = fields.Int(required=True)
     date = fields.Date()
     stars = fields.Int()
     description = fields.Str()
 
-class Update_InputSchema(Schema):
+class GuestReviewUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
     date = fields.Date()
     stars = fields.Int()
     description = fields.Str()
 
 # This is the same as the Get one, but you can't choose to delete all
-class Delete_InputSchema(Schema):
+class GuestReviewDelete_InputSchema(Schema):
     id = fields.Int()
     host_id = fields.Int()
     guest_id = fields.Int()

@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, ValidationError, validates_schema
 
-class Get_InputSchema(Schema):
+class PlaceImgGet_InputSchema(Schema):
     id = fields.Int()
     place_id = fields.Int()
 
@@ -9,17 +9,17 @@ class Get_InputSchema(Schema):
         if len(data) > 1:
             raise ValidationError('You cannot input more than one argument')
 
-class Create_InputSchema(Schema):
+class PlaceImgCreate_InputSchema(Schema):
     place_id = fields.Int(required=True)
     title = fields.Str()
     img = fields.Str() # Should be required=True, probably
 
-class Update_InputSchema(Schema):
+class PlaceImgUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
     title = fields.Str()
     img = fields.Str() # Should be required=True, probably
 
-class Delete_InputSchema(Schema):
+class PlaceImgDelete_InputSchema(Schema):
     id = fields.Int()
     place_id = fields.Int()
 

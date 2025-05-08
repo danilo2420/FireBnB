@@ -1,6 +1,8 @@
 from flask_smorest import Blueprint, abort
 from blueprints.guest_reviews_bp.schemas.guest_reviews_input_schemas import *
 from blueprints.guest_reviews_bp.schemas.guest_reviews_output_schemas import *
+from blueprints.general_input_output_schemas.general_input_schemas import *
+from blueprints.general_input_output_schemas.general_output_schemas import *
 from connection import getConnection
 from model.guest_reviews import GuestReview
 from model.schemas.guestReviewSchema import GuestReviewSchema
@@ -9,8 +11,8 @@ from model.users import User
 bp = Blueprint('guest_reviews_bp', __name__, url_prefix='/guest_reviews')
 
 @bp.route('/get')
-@bp.arguments(Get_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
+@bp.arguments(GuestReviewGet_InputSchema, location='query')
+@bp.response(200, GuestReviewGetAll_OutputSchema)
 def get_guest_reviews(args):
     if len(args) == 0:
         return getAllGuestReviews()
@@ -65,7 +67,7 @@ def getGuestsGuestReviews(guest_id):
     return {'guest_reviews': guest.guest_reviews}
 
 @bp.route('/create', methods=['POST'])
-@bp.arguments(Create_InputSchema)
+@bp.arguments(GuestReviewCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def create_guest_review(args):
     session = getConnection()
@@ -84,7 +86,7 @@ def create_guest_review(args):
     return {'message': 'success creating guest review'}
 
 @bp.route('/update', methods=['PUT'])
-@bp.arguments(Update_InputSchema)
+@bp.arguments(GuestReviewUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def update_guest_review(args):
     id = args.get('id')
@@ -103,7 +105,7 @@ def update_guest_review(args):
     return {'message': 'Guest review was updated successfully'}
 
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Delete_InputSchema, location='query')
+@bp.arguments(GuestReviewDelete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
 def delete_guest_review(args):
     key = list(args.keys())[0]

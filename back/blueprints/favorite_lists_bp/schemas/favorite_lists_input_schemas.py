@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validates, ValidationError, validates_schema
 
 
-class Get_InputSchema(Schema):
+class FavoriteListGet_InputSchema(Schema):
     id = fields.Int()
     user_id = fields.Int()
 
@@ -11,7 +11,7 @@ class Get_InputSchema(Schema):
         if len(data) != 1:
             raise ValidationError('you must input one (and only one) query argument')
 
-class Create_InputSchema(Schema):
+class FavoriteListCreate_InputSchema(Schema):
     user_id = fields.Int(required=True)
     name = fields.Str()
 
@@ -19,7 +19,7 @@ class LinkPlace_InputSchema(Schema):
     id = fields.Int(required=True) # favorite list's id
     place_id = fields.Int(required=True)
 
-class Update_InputSchema(Schema):
+class FavoriteListUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
     name = fields.Str()
 
