@@ -11,22 +11,19 @@ class Get_InputSchema(Schema):
         if len(data) != 1:
             raise ValidationError('you must input one (and only one) query argument')
 
-
 class Create_InputSchema(Schema):
     user_id = fields.Int(required=True)
     name = fields.Str()
 
-class AddPlace_InputSchema(Schema):
-    id = fields.Int(required=True)
+class LinkPlace_InputSchema(Schema):
+    id = fields.Int(required=True) # favorite list's id
     place_id = fields.Int(required=True)
 
-'''
 class Update_InputSchema(Schema):
     id = fields.Int(required=True)
-    date = fields.Date()
-    description = fields.Str()
-    stars = fields.Int()
+    name = fields.Str()
 
+'''
 class Delete_InputSchema(Schema):
     id = fields.Int()
     guest_id = fields.Int()

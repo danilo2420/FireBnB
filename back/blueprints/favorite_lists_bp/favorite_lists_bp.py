@@ -80,12 +80,25 @@ def create_favorite_lists(args):
     return {'message': 'favorite list created successfully'}
 
 @bp.route('update', methods=['PUT'])
-def update_favorite_lists():
-    ... # TODO: this
+@bp.arguments(Update_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def update_favorite_lists(args):
+    session = getConnection()
+    id = args.get('id')
 
-## Add place to list too
+    favorite_list = session.query(FavoriteList).filter(FavoriteList.id == id).first()
+    if favorite_list is None:
+        abort(404, message='no favorite list was found with this id')
+    
+    favorite_list.name = args.get('name', favorite_list.name)
+
+    session.commit()
+
+    return {'message': 'favorite list updated successfully'}
+
+## Add place to list
 @bp.route('add_place_to_list', methods=['PUT'])
-@bp.arguments(AddPlace_InputSchema)
+@bp.arguments(LinkPlace_InputSchema)
 @bp.response(200, Success_OutputSchema)
 def add_place_to_list(args):
     session = getConnection()
@@ -109,7 +122,53 @@ def add_place_to_list(args):
     return {'message': 'place added to list successfully'}
 
 @bp.route('delete', methods=['DELETE'])
-def delete_favorite_lists():
-    ...
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, Success_OutputSchema)
+def delete_favorite_lists(args):
+    id = args.get('id')
+    session = getConnection()
 
-## Remove place from list too
+    favorite_list = session.query(FavoriteList).filter(FavoriteList.id == id).first()
+    if favorite_list is None:
+        abort(404, message='no favorite list was found with this id')
+
+    session.delete(favorite_list)
+    session.commit()
+
+    return {'message': 'list deleted successfully'}
+
+## Remove place from list
+@bp.route('remove_place_from_list', methods=['PUT'])
+@bp.arguments(LinkPlace_InputSchema)
+@bp.response(200, Success_OutputSchema)
+def add_place_to_list(args):
+    session = getConnection()
+    
+    id = args.get('id')
+    favorite_list = session.query(FavoriteList).filter(FavoriteList.id == id).first()
+    if favorite_list is None:
+        abort(404, message='no favorite list was found with this id')
+    
+
+    place_id = args.get('place_id')
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(404, message='no place was found with this id')
+
+    if place not in favorite_list.places:
+        abort(400, message="place is not in list")
+        
+    favorite_list.places.remove(place)
+    session.commit()
+    return {'message': 'place removed from list successfully'}
+    
+    '''
+    place_id = args.get('place_id')
+    for place in favorite_list.places:
+        if place.id == place_id:
+            favorite_list.places.remove(place)
+            session.commit()
+            return {'message': 'place removed from list successfully'}
+    
+    abort(400, message="place is not in list")
+    '''
