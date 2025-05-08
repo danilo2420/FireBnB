@@ -4,11 +4,47 @@ from blueprints.users_bp.schemas.users_input_schemas import *
 from blueprints.users_bp.schemas.users_output_schemas import *
 from blueprints.users_bp.schemas.schemas import *
 from blueprints.users_bp.schemas.error_schemas import *
+from blueprints.general_input_output_schemas.general_input_schemas import *
+from blueprints.general_input_output_schemas.general_output_schemas import *
 from connection import getConnection
 from model.users import User
 
 bp = Blueprint('users_bp', __name__, url_prefix='/users')
 
+
+
+@bp.route('/get')
+@bp.arguments(IdOptional_InputSchema, location='query')
+@bp.response(200, GetAll_OutputSchema)
+def get(args):
+    id = args.get('id')
+    
+    if id is None:
+        return getAllUsers()
+    else:
+        return getUser(id)
+
+def getAllUsers():
+    session = getConnection()
+    users = session.query(User)
+
+    result = []
+    for user in users:
+        result.append(user.to_dict())
+
+    result = {'users': result}
+
+    return result
+
+def getUser(id):
+    session = getConnection()
+    user = session.query(User).filter(User.id == id).first()
+    if user is None:
+        abort(404, message='no user was found with this id')
+    else:
+        return {"users": [user]}
+
+'''
 @bp.route('/get_all')
 @bp.response(200, GetAll_OutputSchema)
 def get_all_users():
@@ -36,7 +72,7 @@ def get_user(args):
         return dict()
     else:
         return user.to_dict()
-
+'''
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)
