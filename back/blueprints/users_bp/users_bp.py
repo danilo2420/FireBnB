@@ -11,8 +11,6 @@ from model.users import User
 
 bp = Blueprint('users_bp', __name__, url_prefix='/users')
 
-
-
 @bp.route('/get')
 @bp.arguments(IdOptional_InputSchema, location='query')
 @bp.response(200, GetAll_OutputSchema)
@@ -43,36 +41,6 @@ def getUser(id):
         abort(404, message='no user was found with this id')
     else:
         return {"users": [user]}
-
-'''
-@bp.route('/get_all')
-@bp.response(200, GetAll_OutputSchema)
-def get_all_users():
-    session = getConnection()
-    users = session.query(User)
-
-    result = []
-    for user in users:
-        result.append(user.to_dict())
-
-    result = {'users': result}
-
-    return result
-
-@bp.route('/get')
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, UserSchema)
-def get_user(args):
-    id = args['id']
-
-    session = getConnection()
-    user = session.query(User).filter(User.id == id).first()
-
-    if user is None:
-        return dict()
-    else:
-        return user.to_dict()
-'''
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)

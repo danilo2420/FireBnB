@@ -8,55 +8,62 @@ from model.users import User
 
 bp = Blueprint('guest_reviews_bp', __name__, url_prefix='/guest_reviews')
 
-@bp.route('/get_all')
+@bp.route('/get')
+@bp.arguments(Get_InputSchema, location='query')
 @bp.response(200, GetAll_OutputSchema)
-def get_all_guest_reviews():
+def get_guest_reviews(args):
+    if len(args) == 0:
+        return getAllGuestReviews()
+    
+    key = list(args.keys())[0]
+    val = args.get(key)
+
+    match key:
+        case 'id':
+            return getGuestReviewById(val)
+        case 'host_id':
+            return getHostsGuestReviews(val)
+        case 'guest_id':
+            return getGuestsGuestReviews(val)
+        case _:
+            print('Error with the input arguments')
+    
+    abort(400)
+
+def getAllGuestReviews():
     session = getConnection()
     guest_reviews = session.query(GuestReview).all()
     return {'guest_reviews': guest_reviews}
 
-@bp.route('/get')
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, GuestReviewSchema)
-def get_guest_review(args):
-    id = args.get('id')
+def getGuestReviewById(id):
     session = getConnection()
 
     guest_review = session.query(GuestReview).filter(GuestReview.id == id).first()
     if guest_review is None:
         abort(404, message='no guest review was found with this id')
     
-    return guest_review 
+    return {'guest_reviews': [guest_review]} 
 
-## Get all host's reviews
-@bp.route('/get_all_for_host')
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
-def get_guest_reviews_for_host(args):
-    id = args.get('id')
+def getHostsGuestReviews(host_id):
     session = getConnection()
 
     # Check host exists
-    host = session.query(User).filter(User.id == id).first()
+    host = session.query(User).filter(User.id == host_id).first()
     if host is None:
         abort(404, message='host user was not found with this id')
     
     return {'guest_reviews': host.host_reviews}
 
-## Get all guest's reviews
-@bp.route('/get_all_for_guest')
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, GetAll_OutputSchema)
-def get_guest_reviews_for_guest(args):
-    id = args.get('id')
+def getGuestsGuestReviews(guest_id):
     session = getConnection()
 
     # Check host exists
-    guest = session.query(User).filter(User.id == id).first()
+    guest = session.query(User).filter(User.id == guest_id).first()
     if guest is None:
         abort(404, message='guest user was not found with this id')
     
     return {'guest_reviews': guest.guest_reviews}
+
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)
