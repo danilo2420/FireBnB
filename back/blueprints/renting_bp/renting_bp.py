@@ -10,28 +10,6 @@ from model.users import User
 
 bp = Blueprint('renting_bp', __name__, url_prefix='/rentings')
 
-@bp.route('/hello')
-def test():
-    return 'world'
-
-'''
-Get
-    All
-    Get all user's rentings
-    Get all place's rentings
-
-    * Other good ones:
-        Get past
-        Get active
-        Get to come
-
-Createguest=10
-Update
-Delete
-    Delete user's rentings
-    Delete places's rentings
-'''
-
 # This one works a little differently than the rest; let's see what happens
 @bp.route('/get')
 @bp.arguments(Get_InputSchema, location='query')

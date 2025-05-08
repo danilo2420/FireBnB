@@ -108,8 +108,6 @@ def update_place_reviews(args):
 
     return {'message': 'place review updated successfully'}
 
-
-
 @bp.route('/delete', methods=['DELETE'])
 @bp.arguments(Delete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
