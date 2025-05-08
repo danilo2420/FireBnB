@@ -7,7 +7,6 @@ class FavoriteListGet_InputSchema(Schema):
 
     @validates_schema
     def validate_data(self, data, **kwargs):
-        print(data)
         if len(data) != 1:
             raise ValidationError('you must input one (and only one) query argument')
 

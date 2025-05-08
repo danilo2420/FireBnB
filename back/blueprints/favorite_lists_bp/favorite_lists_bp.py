@@ -58,8 +58,6 @@ def get_favorite_lists(args):
     if favorite_list is None:
         abort(404, message='no favorite list was found with this id')
 
-    print(favorite_list.places)
-
     return {'places': favorite_list.places}
 
 
