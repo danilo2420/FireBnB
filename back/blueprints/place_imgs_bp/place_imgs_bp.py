@@ -74,7 +74,6 @@ def create_place_img(args):
 
     return {'message': 'Image created successfully'}
 
-    
 @bp.route('/update', methods=['PUT'])
 @bp.arguments(Update_InputSchema)
 @bp.response(200, Success_OutputSchema)
@@ -93,10 +92,21 @@ def update_place_img(args):
     return {'message': 'image updated successfully'}
 
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Id_InputSchema, location='query')
+@bp.arguments(Delete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
-def delete_place_img(args):
-    id = args.get('id')
+def delete_place_imgs(args):
+    key = list(args.keys())[0]
+    val = args.get(key)
+
+    match key:
+        case 'id':
+            return deletePlaceImgById(val)
+        case 'place_id':
+            return deletePlaceImgsForPlace(val)
+
+    abort(400)
+
+def deletePlaceImgById(id):
     session = getConnection()
 
     place_img = session.query(PlaceImage).filter(PlaceImage.id == id).first()
@@ -108,14 +118,10 @@ def delete_place_img(args):
 
     return {'message': 'image deleted successfully'}
 
-@bp.route('/delete_imgs_for_place', methods=['DELETE'])
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, Success_OutputSchema)
-def delete_place_imgs_for_place(args):
-    id = args.get('id')
+def deletePlaceImgsForPlace(place_id):
     session = getConnection()
 
-    place = session.query(Place).filter(Place.id == id).first()
+    place = session.query(Place).filter(Place.id == place_id).first()
     if place is None:
         abort(404, message='no place was found with this id')
 

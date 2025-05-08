@@ -18,3 +18,12 @@ class Update_InputSchema(Schema):
     id = fields.Int(required=True)
     title = fields.Str()
     img = fields.Str() # Should be required=True, probably
+
+class Delete_InputSchema(Schema):
+    id = fields.Int()
+    place_id = fields.Int()
+
+    @validates_schema
+    def validate_schema(self, data, **kwargs):
+        if len(data) != 1:
+            raise ValidationError('You have to input one (and only one) argument')
