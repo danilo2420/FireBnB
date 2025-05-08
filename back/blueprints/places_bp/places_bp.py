@@ -4,27 +4,32 @@ from model.places import Place
 from model.users import User
 from blueprints.places_bp.schemas.places_output_schemas import *
 from blueprints.places_bp.schemas.places_input_schemas import *
+from blueprints.general_input_output_schemas.general_input_schemas import *
+from blueprints.general_input_output_schemas.general_output_schemas import *
 
 bp = Blueprint('places_bp', __name__, url_prefix='/places')
 
-@bp.route('/get_all')
-@bp.response(200, GetAll_OutputSchema)
-def get_all_places():
+@bp.route('/get')
+@bp.arguments(IdOptional_InputSchema, location='query')
+@bp.response(200, Get_OutputSchema)
+def get_places(args):
+    if len(args) == 0:
+        return getAllPlaces()
+    
+    id = args.get('id')
+    return getPlace(id)
+
+def getAllPlaces():
     session = getConnection()
     places = session.query(Place).all()
     return {"places": places}
 
-@bp.route('/get')
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, PlaceSchema)
-def get_place(args):
-    id = args.get('id')
-    print('id is', id)
+def getPlace(id):
     session = getConnection()
     place = session.query(Place).filter(Place.id == id).first()
     if place is None:
         abort(404, message="no place with this id was found")
-    return place
+    return {'places': [place]}
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)

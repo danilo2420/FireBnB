@@ -4,5 +4,5 @@ from model.schemas.placeSchema import PlaceSchema
 class Success_OutputSchema(Schema):
     message = fields.Str()
 
-class GetAll_OutputSchema(Schema):
+class Get_OutputSchema(Schema):
     places = fields.List(fields.Nested(PlaceSchema))
