@@ -1,7 +1,13 @@
-from marshmallow import Schema, fields, validates, ValidationError
+from marshmallow import Schema, fields, ValidationError, validates_schema
 
-class Id_InputSchema(Schema):
-    id = fields.Int(required=True)
+class Get_InputSchema(Schema):
+    id = fields.Int()
+    place_id = fields.Int()
+
+    @validates_schema
+    def validate_schema(self, data, **kwargs):
+        if len(data) > 1:
+            raise ValidationError('You cannot input more than one argument')
 
 class Create_InputSchema(Schema):
     place_id = fields.Int(required=True)
