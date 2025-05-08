@@ -49,10 +49,12 @@ api.register_blueprint(favorite_lists_bp.bp)
 # Endpoints
 @app.route('/')
 def helloWorld():
-    return jsonify('Hello'), 200
+    result = {'Hey bro': 'This is working my friend'}
+    return jsonify(result), 200
 
 # Run app
 if __name__ == '__main__':
-    app.run()
+    # app.run()
+    app.run(host='0.0.0.0')
 
 connection.closeConnection()
