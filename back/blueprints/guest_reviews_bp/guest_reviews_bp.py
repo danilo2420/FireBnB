@@ -64,7 +64,6 @@ def getGuestsGuestReviews(guest_id):
     
     return {'guest_reviews': guest.guest_reviews}
 
-
 @bp.route('/create', methods=['POST'])
 @bp.arguments(Create_InputSchema)
 @bp.response(200, Success_OutputSchema)
@@ -84,7 +83,6 @@ def create_guest_review(args):
 
     return {'message': 'success creating guest review'}
 
-# U
 @bp.route('/update', methods=['PUT'])
 @bp.arguments(Update_InputSchema)
 @bp.response(200, Success_OutputSchema)
@@ -104,56 +102,63 @@ def update_guest_review(args):
 
     return {'message': 'Guest review was updated successfully'}
 
-# D
 @bp.route('/delete', methods=['DELETE'])
-@bp.arguments(Id_InputSchema, location='query')
+@bp.arguments(Delete_InputSchema, location='query')
 @bp.response(200, Success_OutputSchema)
 def delete_guest_review(args):
-    id = args.get('id')
+    key = list(args.keys())[0]
+    val = args.get(key)
+
+    match key:
+        case 'id':
+            return deleteGuestReviewById(val)
+        case 'host_id':
+            return deleteHostsGuestReviews(val)
+        case 'guest_id':
+            return deleteGuestsGuestReviews(val)
+        case _:
+            print('Error with the input arguments')
+    
+    abort(404)
+
+def deleteGuestReviewById(id):
     session = getConnection()
 
     guest_review = session.query(GuestReview).filter(GuestReview.id == id).first()
     if guest_review is None:
         abort(404, message='no guest review was found with this id')
-
+    
     session.delete(guest_review)
     session.commit()
 
-    return {'message': 'Guest review was deleted successfully'}
+    return {'message': 'guest review was deleted successfully'}
 
-
-# Delete for all hosts
-@bp.route('/delete_hosts_guest_reviews', methods=['DELETE'])
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, Success_OutputSchema)
-def delete_guest_review_for_host(args):
-    id = args.get('id')
+def deleteHostsGuestReviews(host_id):
     session = getConnection()
 
-    host = session.query(User).filter(User.id == id).first()
+    # Check host exists
+    host = session.query(User).filter(User.id == host_id).first()
     if host is None:
-        abort(404, message='no user was found with this id')
+        abort(404, message='host user was not found with this id')
     
-    for guest_review in host.host_reviews:
-        session.delete(guest_review)
+    for review in host.host_reviews:
+        session.delete(review)
+    
     session.commit()
+    
+    return {'message': 'guest reviews were deleted successfully'}
 
-    return {'message': 'host\'s guest reviews was deleted successfully'}
-
-# Delete for all guests
-@bp.route('/delete_guests_guest_reviews', methods=['DELETE'])
-@bp.arguments(Id_InputSchema, location='query')
-@bp.response(200, Success_OutputSchema)
-def delete_guest_review_for_host(args):
-    id = args.get('id')
+def deleteGuestsGuestReviews(guest_id):
     session = getConnection()
 
-    guest = session.query(User).filter(User.id == id).first()
+    # Check host exists
+    guest = session.query(User).filter(User.id == guest_id).first()
     if guest is None:
-        abort(404, message='no user was found with this id')
-    
-    for guest_review in guest.guest_reviews:
-        session.delete(guest_review)
+        abort(404, message='guest user was not found with this id')
+
+    for review in guest.guest_reviews:
+        session.delete(review)
+
     session.commit()
 
-    return {'message': 'guest\'s guest reviews was deleted successfully'}
+    return {'message': 'guest reviews were deleted successfully'}
