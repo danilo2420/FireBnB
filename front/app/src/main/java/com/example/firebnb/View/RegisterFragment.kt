@@ -6,15 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.firebnb.R
+import com.example.firebnb.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
+    var _binding: FragmentRegisterBinding? = null
+    val binding: FragmentRegisterBinding
+        get() = checkNotNull(_binding) {"Trying to access null binding"}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
+        initializeBinding(inflater, container)
+
+        return binding.root
+    }
+
+    private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
