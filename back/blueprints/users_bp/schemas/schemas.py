@@ -10,4 +10,5 @@ class UserSchema(Schema):
     profile_image = fields.Str()
     stars = fields.Int()
     email = fields.Str()
+    password = fields.Str()
     

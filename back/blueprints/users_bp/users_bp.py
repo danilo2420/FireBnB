@@ -28,7 +28,8 @@ def getAllUsers():
 
     result = []
     for user in users:
-        result.append(user.to_dict())
+        #result.append(user.to_dict())
+        result.append(user)
 
     result = {'users': result}
 
