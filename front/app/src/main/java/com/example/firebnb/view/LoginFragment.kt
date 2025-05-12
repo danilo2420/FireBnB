@@ -25,11 +25,6 @@ class LoginFragment : Fragment() {
         initializeBinding(inflater, container)
         initializeEvents()
 
-        Log.d("myMessage", "Before method call")
-        // testApi()
-        testAuth()
-
-
         return binding.root
     }
 
@@ -47,34 +42,6 @@ class LoginFragment : Fragment() {
             val navController = findNavController()
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             navController.navigate(action)
-        }
-    }
-
-    fun testApi() {
-        lifecycleScope.launch {
-            try {
-                Log.d("myMessage", "Hello")
-                FirebnbRepository()
-                    .getAllUsers()
-                    .forEach { user -> Log.d("myMessage", user.toString()) }
-            } catch (e:Exception) {
-                Log.d("myMessage", e.toString())
-            }
-        }
-    }
-
-    fun testAuth() {
-        lifecycleScope.launch {
-            try {
-                Log.d("myMessage", "We got in auth method")
-                val email = "john.doe@example.com"
-                val password = "pass123"
-                val verified = FirebnbRepository()
-                    .authUser(email, password)
-                Log.d("myMessage", "Was the user verified? ${verified}")
-            } catch (e:Exception) {
-                Log.d("myMessage", e.toString())
-            }
         }
     }
 
