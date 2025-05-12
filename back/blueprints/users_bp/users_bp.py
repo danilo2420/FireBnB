@@ -8,8 +8,26 @@ from blueprints.general_input_output_schemas.general_input_schemas import *
 from blueprints.general_input_output_schemas.general_output_schemas import *
 from connection import getConnection
 from model.users import User
+from sqlalchemy.sql import and_
 
 bp = Blueprint('users_bp', __name__, url_prefix='/users')
+
+@bp.route('/auth', methods=['POST'])
+@bp.arguments(Auth_InputSchema)
+@bp.response(200, Auth_OutputSchema)
+def authenticate_user(args):
+    user_email = args.get('email')
+    password = args.get('password')
+    session = getConnection()
+
+    user = session.query(User).filter(and_(
+        User.email.ilike(user_email),
+        User.password.ilike(password)
+    )).first()
+
+    if user is None:
+        return {'verified': False}
+    return {'verified': True}
 
 @bp.route('/get')
 @bp.arguments(IdOptional_InputSchema, location='query')

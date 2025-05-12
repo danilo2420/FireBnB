@@ -1,5 +1,9 @@
 from marshmallow import Schema, fields
 
+class Auth_InputSchema(Schema):
+    email = fields.Email(required=True)
+    password = fields.Str(required=True)
+
 class Id_InputSchema(Schema):
     id = fields.Int(required=True)
 
