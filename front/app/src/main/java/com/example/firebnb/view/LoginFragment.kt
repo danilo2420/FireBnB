@@ -26,7 +26,8 @@ class LoginFragment : Fragment() {
         initializeEvents()
 
         Log.d("myMessage", "Before method call")
-        testApi()
+        // testApi()
+        testAuth()
 
 
         return binding.root
@@ -56,6 +57,21 @@ class LoginFragment : Fragment() {
                 FirebnbRepository()
                     .getAllUsers()
                     .forEach { user -> Log.d("myMessage", user.toString()) }
+            } catch (e:Exception) {
+                Log.d("myMessage", e.toString())
+            }
+        }
+    }
+
+    fun testAuth() {
+        lifecycleScope.launch {
+            try {
+                Log.d("myMessage", "We got in auth method")
+                val email = "john.doe@example.com"
+                val password = "pass123"
+                val verified = FirebnbRepository()
+                    .authUser(email, password)
+                Log.d("myMessage", "Was the user verified? ${verified}")
             } catch (e:Exception) {
                 Log.d("myMessage", e.toString())
             }
