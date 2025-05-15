@@ -16,10 +16,10 @@ bp = Blueprint('users_bp', __name__, url_prefix='/users')
 @bp.arguments(Auth_InputSchema)
 @bp.response(200, Auth_OutputSchema)
 def authenticate_user(args):
-    user_email = args.get('email')
-    password = args.get('password')
+    user_email = args.get('email').strip()
+    password = args.get('password').strip()
     session = getConnection()
-
+    
     user = session.query(User).filter(and_(
         User.email.ilike(user_email),
         User.password.ilike(password)
