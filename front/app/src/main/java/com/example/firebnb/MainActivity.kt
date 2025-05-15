@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Log.d("myMessage", "Before method call")
-        // testApi()
+        testApi()
         testAuth()
 
         setContentView(R.layout.activity_main)

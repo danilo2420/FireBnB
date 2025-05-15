@@ -7,23 +7,48 @@
     android:layout_height="match_parent"
     tools:context=".view.LoginFragment" >
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/btnLoginCreateAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp"
+        android:text="Create account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginEnter" />
+
+    <EditText
+        android:id="@+id/edtLoginEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
+        android:ems="10"
+        android:hint="Enter email"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnGoToRegister"
+    <EditText
+        android:id="@+id/edtLoginPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to register"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Enter password"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/edtLoginEmail" />
+
+    <Button
+        android:id="@+id/btnLoginEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Log in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtLoginPassword" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
