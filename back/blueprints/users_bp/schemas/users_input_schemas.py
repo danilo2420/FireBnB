@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates_schema, ValidationError
 
 class Auth_InputSchema(Schema):
     email = fields.Email(required=True)
@@ -6,6 +6,15 @@ class Auth_InputSchema(Schema):
 
 class Id_InputSchema(Schema):
     id = fields.Int(required=True)
+
+class Get_InputSchema(Schema):
+    id = fields.Str()
+    email = fields.Str()
+
+    @validates_schema
+    def validate_schema(self, data, **kwargs):
+        if len(data) != 1:
+            raise ValidationError("Endpoint must receive one argument")
 
 class UserCreate_InputSchema(Schema):
     name = fields.Str(required=True)

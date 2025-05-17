@@ -30,15 +30,22 @@ def authenticate_user(args):
     return {'verified': True}
 
 @bp.route('/get')
-@bp.arguments(IdOptional_InputSchema, location='query')
+@bp.arguments(Get_InputSchema, location='query')
 @bp.response(200, UserGetAll_OutputSchema)
 def get(args):
     id = args.get('id')
+    if id is not None:
+        if id is None:
+            return getAllUsers()
+        else:
+            return getUser(id)
+        
+    email = args.get('email')
+    if email is not None:
+        return getUserByEmail(email)
     
-    if id is None:
-        return getAllUsers()
-    else:
-        return getUser(id)
+    return {'users': []}
+    
 
 def getAllUsers():
     session = getConnection()
@@ -60,6 +67,15 @@ def getUser(id):
         abort(404, message='no user was found with this id')
     else:
         return {"users": [user]}
+    
+def getUserByEmail(email):
+    session = getConnection()
+
+    user = session.query(User).filter(User.email.ilike(email)).first()
+    if user is None:
+        return {'users': []}
+    else:
+        return {'users': [user]}
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(UserCreate_InputSchema)
