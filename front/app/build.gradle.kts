@@ -48,6 +48,7 @@ dependencies {
     // moshi
     implementation("com.squareup.moshi:moshi:1.15.1")
     implementation("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+    implementation(libs.androidx.navigation.ui.ktx)
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.firebnb.MainActivity
 import com.example.firebnb.databinding.FragmentLoginBinding
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
@@ -38,8 +39,18 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        setBottomNavVisibility(false)
         // This logs out the user whenever the login fragment appears (even when popping back into it)
         Session.logOut()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean) {
+        val mainActivity = activity as MainActivity
+        mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {
@@ -63,6 +74,7 @@ class LoginFragment : Fragment() {
 
                         val navController = findNavController()
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                        setBottomNavVisibility(true)
                         navController.navigate(action)
                     } else {
                         showToast("User is does not exist or data is not correct", requireContext())
