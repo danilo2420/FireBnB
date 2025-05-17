@@ -12,6 +12,7 @@ import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
@@ -41,30 +42,13 @@ class RegisterFragment : Fragment() {
     private fun initializeEvents() {
         binding.btnCreateUser.setOnClickListener {
             lifecycleScope.launch {
-                val name = binding.edtName.text.toString()
-                val lastName = binding.edtName.text.toString()
-                val age = binding.edtAge.text.toString().toInt()
-                val nationality = binding.edtNationality.text.toString()
-                val email = binding.edtEmail.text.toString()
-                val password = binding.edtPassword.text.toString()
-
-                val user: User = User(
-                    null,
-                    name,
-                    lastName,
-                    age,
-                    nationality,
-                    null,
-                    null,
-                    null,
-                    email,
-                    password
-                )
                 try {
-                    val success = FirebnbRepository().createUser(user)
+                    val user = createUserFromInput()
 
-                    if(success) {
-                        showToast("Success creating user", requireContext())
+                    val success = FirebnbRepository().createUser(user)
+                    if (success) {
+                        showToast("User was created successfully", requireContext())
+                        delay(2000)
                         val navController = findNavController()
                         navController.popBackStack()
                     } else {
@@ -74,11 +58,30 @@ class RegisterFragment : Fragment() {
                     showToast("There was an error", requireContext())
                     logError(e)
                 }
-
-                // Send info to endpoint and check answer
             }
-
         }
+    }
+
+    fun createUserFromInput(): User {
+        val name = binding.edtName.text.toString()
+        val lastName = binding.edtName.text.toString()
+        val age = binding.edtAge.text.toString().toInt()
+        val nationality = binding.edtNationality.text.toString()
+        val email = binding.edtEmail.text.toString()
+        val password = binding.edtPassword.text.toString()
+
+        return User(
+            null,
+            name,
+            lastName,
+            age,
+            nationality,
+            null,
+            null,
+            null,
+            email,
+            password
+        )
     }
 
 }

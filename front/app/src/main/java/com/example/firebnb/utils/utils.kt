@@ -15,3 +15,7 @@ fun showToast(message: String, context: Context) {
 fun logError(e: Exception) {
     Log.d("myError", "Error: ${e}")
 }
+
+fun logMessage(message: String) {
+    Log.d("myMessage", message)
+}

@@ -24,8 +24,9 @@ interface FirebnbApi {
 
     @GET("users/get")
     suspend fun getUser(
-        @Query("id") id:Int
-    ): User
+        @Query("id") id: Int? = null,
+        @Query("email") email: String? = null
+    ): Users
 
     @POST("users/create")
     suspend fun createUser(
