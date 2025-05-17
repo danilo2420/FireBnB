@@ -16,12 +16,11 @@ class FirebnbRepository {
             .create()
     }
 
-    // Endpoint methods
-    //// Authentication
+    // USER
     suspend fun authUser(email: String, password: String): Boolean = firebnbApi.authUser(AuthInput(email, password)).verified
 
-    //// Others
     suspend fun getAllUsers(): List<User> = firebnbApi.getAllUsers().users
-    suspend fun getUser(id:Int): User = firebnbApi.getUser(id)
-
+    suspend fun getUser(id: Int): User? = firebnbApi.getUser(id = id).users.firstOrNull()
+    suspend fun getUserByEmail(email: String): User? = firebnbApi.getUser(email = email).users.firstOrNull()
+    suspend fun createUser(user: User): Boolean = firebnbApi.createUser(user).message.contains("success")
 }
