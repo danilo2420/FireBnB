@@ -83,6 +83,9 @@ def getUserByEmail(email):
 def create_user(args):
     session = getConnection()
 
+    if userEmailExists(args.get('email')):
+        abort(400, 'Email is already in use')
+
     user = User(
         name = args.get('name'),
         lastName = args.get('lastName'),
@@ -98,6 +101,11 @@ def create_user(args):
     session.commit()
 
     return {'message': 'success'}
+
+def userEmailExists(email):
+    session = getConnection()
+    user = session.query(User).filter(User.email.ilike(email)).first()
+    return user is not None
 
 @bp.route('/update', methods=['PUT'])
 @bp.arguments(UserUpdate_InputSchema)
