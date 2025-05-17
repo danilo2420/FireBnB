@@ -7,20 +7,47 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.example.firebnb.databinding.ActivityMainBinding
 import com.example.firebnb.model.api.FirebnbRepository
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initializeBinding()
+
+        configureBottomNavMenu()
 
         Log.d("myMessage", "Before method call")
         testApi()
         testAuth()
 
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
     }
 
+    private fun initializeBinding() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private fun configureBottomNavMenu() {
+        val navController = getNavController()
+        NavigationUI.setupWithNavController(binding.menuBottomNav, navController)
+    }
+
+    private fun getNavController(): NavController {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container_view)
+            as NavHostFragment
+        return navHostFragment.navController
+    }
+
+    // API TESTS
     fun testApi() {
         lifecycleScope.launch {
             try {
