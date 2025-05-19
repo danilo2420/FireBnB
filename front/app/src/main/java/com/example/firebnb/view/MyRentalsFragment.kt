@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentalsBinding
+import com.example.firebnb.view.rentalFragments.RentalsViewPagerAdapter
 
 
 class MyRentalsFragment : Fragment() {
@@ -19,6 +20,7 @@ class MyRentalsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        initializeViewPager()
 
         return binding.root
     }
@@ -30,6 +32,10 @@ class MyRentalsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initializeViewPager() {
+        binding.viewPagerRentals.adapter = RentalsViewPagerAdapter(this)
     }
 
 }
