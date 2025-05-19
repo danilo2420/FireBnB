@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
             initializeRecyclerView()
         }
     }
-    
+
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
             showToast("You clicked on " + holder.place.name, requireContext())

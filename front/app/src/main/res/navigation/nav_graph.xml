@@ -41,7 +41,11 @@
         android:id="@+id/myPropertiesFragment"
         android:name="com.example.firebnb.view.MyPropertiesFragment"
         android:label="fragment_my_properties"
-        tools:layout="@layout/fragment_my_properties" />
+        tools:layout="@layout/fragment_my_properties" >
+        <action
+            android:id="@+id/action_myPropertiesFragment_to_propertyDetailFragment"
+            app:destination="@id/propertyDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myRentalsFragment"
         android:name="com.example.firebnb.view.MyRentalsFragment"
@@ -52,6 +56,15 @@
         android:name="com.example.firebnb.view.PlaceDetailFragment"
         android:label="fragment_place_detail"
         tools:layout="@layout/fragment_place_detail" >
+        <argument
+            android:name="place"
+            app:argType="com.example.firebnb.model.Place" />
+    </fragment>
+    <fragment
+        android:id="@+id/propertyDetailFragment"
+        android:name="com.example.firebnb.view.PropertyDetailFragment"
+        android:label="fragment_property_detail"
+        tools:layout="@layout/fragment_property_detail" >
         <argument
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
