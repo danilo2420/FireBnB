@@ -1,6 +1,7 @@
 package com.example.firebnb.model
 
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Place(
@@ -11,4 +12,4 @@ data class Place(
     val description: String,
     val price_per_night: Float,
     val stars: Int
-)
+): Serializable

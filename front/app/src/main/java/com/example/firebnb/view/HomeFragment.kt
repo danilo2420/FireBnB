@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
@@ -56,8 +57,15 @@ class HomeFragment : Fragment() {
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
             showToast("You clicked on " + holder.place.name, requireContext())
+            navigateToPlaceDetail(holder.place)
         }
         binding.recyclerHome.adapter = adapter
+    }
+
+    fun navigateToPlaceDetail(place: Place) {
+        val navController = findNavController()
+        val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(place)
+        navController.navigate(action)
     }
 
 }

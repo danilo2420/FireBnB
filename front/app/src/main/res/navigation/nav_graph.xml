@@ -32,7 +32,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.firebnb.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_placeDetailFragment"
+            app:destination="@id/placeDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPropertiesFragment"
         android:name="com.example.firebnb.view.MyPropertiesFragment"
@@ -43,4 +47,13 @@
         android:name="com.example.firebnb.view.MyRentalsFragment"
         android:label="fragment_my_rentals"
         tools:layout="@layout/fragment_my_rentals" />
+    <fragment
+        android:id="@+id/placeDetailFragment"
+        android:name="com.example.firebnb.view.PlaceDetailFragment"
+        android:label="fragment_place_detail"
+        tools:layout="@layout/fragment_place_detail" >
+        <argument
+            android:name="place"
+            app:argType="com.example.firebnb.model.Place" />
+    </fragment>
 </navigation>
