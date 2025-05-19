@@ -8,7 +8,7 @@ class PlaceHolder (val binding: ItemPlaceBinding) : RecyclerView.ViewHolder (bin
 
     lateinit var place: Place
 
-    fun setPlace(_p: Place) {
+    fun linkPlace(_p: Place) {
         this.place = _p
 
         binding.txtName.text = place.name

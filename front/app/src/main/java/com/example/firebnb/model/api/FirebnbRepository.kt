@@ -1,5 +1,6 @@
 package com.example.firebnb.model.api
 
+import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import retrofit2.Retrofit
@@ -16,11 +17,15 @@ class FirebnbRepository {
             .create()
     }
 
-    // USER
+    // USERS
     suspend fun authUser(email: String, password: String): Boolean = firebnbApi.authUser(AuthInput(email, password)).verified
 
     suspend fun getAllUsers(): List<User> = firebnbApi.getAllUsers().users
     suspend fun getUser(id: Int): User? = firebnbApi.getUser(id = id).users.firstOrNull()
     suspend fun getUserByEmail(email: String): User? = firebnbApi.getUser(email = email).users.firstOrNull()
     suspend fun createUser(user: User): Boolean = firebnbApi.createUser(user).message.contains("success")
+
+
+    // PLACES
+    suspend fun getAllPlaces(): List<Place> = firebnbApi.getPlaces().places
 }

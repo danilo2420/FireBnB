@@ -1,6 +1,8 @@
 package com.example.firebnb.model
 
-@JsonClass(generate_adapter = true)
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class Place(
     val id: Int,
     val owner_id: Int,

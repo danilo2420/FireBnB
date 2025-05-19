@@ -21,7 +21,7 @@ class PlaceAdapter (
 
     override fun onBindViewHolder(holder: PlaceHolder, position: Int) {
         val place = places.get(position)
-        holder.setPlace(place)
+        holder.linkPlace(place)
         holder.binding.root.setOnClickListener{
             lambda(holder)
         }

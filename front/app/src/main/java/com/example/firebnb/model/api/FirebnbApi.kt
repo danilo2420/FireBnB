@@ -1,8 +1,10 @@
 package com.example.firebnb.model.api
 
+import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.AuthResponse
+import com.example.firebnb.model.api.responses.PlaceListResponse
 import com.example.firebnb.model.api.responses.SuccessResponse
 import com.example.firebnb.model.api.responses.Users
 import retrofit2.http.Body
@@ -32,5 +34,9 @@ interface FirebnbApi {
     suspend fun createUser(
         @Body user: User
     ): SuccessResponse
+
+    // PLACE
+    @GET("places/get")
+    suspend fun getPlaces(): PlaceListResponse
 
 }
