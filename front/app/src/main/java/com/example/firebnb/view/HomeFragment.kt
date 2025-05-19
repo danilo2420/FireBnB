@@ -9,6 +9,8 @@ import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.showToast
+import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
 
 
 class HomeFragment : Fragment() {
@@ -21,10 +23,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        initializeRecyclerView()
 
         val user: User? = Session.user
-        if (user != null)
-            binding.edtMessage.text = "This is your user: ${user.name}"
+
 
         return binding.root
     }
@@ -36,6 +38,13 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initializeRecyclerView() {
+        val adapter = PlaceAdapter(places) { holder ->
+            showToast("You clicked on " + holder.place.name, requireContext())
+        }
+        binding.recyclerHome.adapter = adapter
     }
 
 }
