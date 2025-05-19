@@ -48,7 +48,10 @@ class HomeFragment : Fragment() {
 
     private fun loadPlaces() {
         lifecycleScope.launch {
-            places = FirebnbRepository().getAllPlaces()
+            places = FirebnbRepository()
+                .getAllPlacesForUser(
+                    checkNotNull(Session.user){"User is null"}
+                )
             initializeRecyclerView()
         }
     }
