@@ -28,7 +28,11 @@ class FirebnbRepository {
 
     // PLACES
     suspend fun getAllPlaces(): List<Place> = firebnbApi.getPlaces().places
+    // This one returns all the places except for the user's properties
     suspend fun getAllPlacesForUser(user: User): List<Place> =
         firebnbApi.getPlaces().places.filter { place -> place.owner_id != user.id }
+    // This one only returns the user's properties
+    suspend fun getAllPropertiesForUser(user: User): List<Place> =
+        firebnbApi.getPlaces().places.filter { place -> place.owner_id == user.id }
 
 }

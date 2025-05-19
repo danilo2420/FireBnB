@@ -49,14 +49,11 @@ class HomeFragment : Fragment() {
     private fun loadPlaces() {
         lifecycleScope.launch {
             places = FirebnbRepository()
-                .getAllPlacesForUser(
-                    checkNotNull(Session.user){"User is null"}
-                )
+                .getAllPlacesForUser(Session.getNonNullUser())
             initializeRecyclerView()
         }
     }
-
-    // TODO: I should only get the places that the user does not own
+    
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
             showToast("You clicked on " + holder.place.name, requireContext())

@@ -18,4 +18,7 @@ object Session {
         logMessage("Log out method was run")
         this.user = null
     }
+
+    fun getNonNullUser() =
+        checkNotNull(user){"User is null in session object and it tried to be accessed"}
 }
