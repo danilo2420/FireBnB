@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentProfileBinding
 import com.example.firebnb.model.User
@@ -25,9 +26,11 @@ class ProfileFragment : Fragment() {
         initializeBinding(inflater, container)
         user = Session.getNonNullUser()
         showUserData()
+        initializeEvents()
 
         return binding.root
     }
+
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -48,6 +51,15 @@ class ProfileFragment : Fragment() {
             txtStars2.text = "Stars: ${user.stars.toString()}"
             // Add image
         }
+    }
+
+    private fun initializeEvents() {
+        binding.btnGoToEditProfile.setOnClickListener {
+            val navController = findNavController()
+            val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+            navController.navigate(action)
+        }
+
     }
 
 }
