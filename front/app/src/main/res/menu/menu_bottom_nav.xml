@@ -13,4 +13,8 @@
         android:id="@+id/myPropertiesFragment"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="My properties" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="My profile" />
 </menu>

@@ -16,12 +16,6 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_myRentalsFragment"
-            app:destination="@id/myRentalsFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_myPropertiesFragment2"
-            app:destination="@id/myPropertiesFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -69,4 +63,9 @@
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.firebnb.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
