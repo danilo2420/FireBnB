@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentProfileBinding
+import com.example.firebnb.model.User
+import com.example.firebnb.session.Session
 
 
 class ProfileFragment : Fragment() {
@@ -14,11 +16,15 @@ class ProfileFragment : Fragment() {
     val binding: FragmentProfileBinding
         get() = checkNotNull(_binding) {"Trying to access wrong binding"}
 
+    lateinit var user: User
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        user = Session.getNonNullUser()
+        showUserData()
 
         return binding.root
     }
@@ -30,6 +36,18 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showUserData() {
+        binding.apply {
+            txtName2.text = "Name: ${user.name} ${user.lastName}"
+            txtAge2.text = "Age: ${user.age}"
+            txtDescription2.text = "Description: ${user.description}"
+            txtEmail2.text = "Email: ${user.email}"
+            txtNationality2.text = "Nationality: ${user.nationality}"
+            txtStars2.text = "Stars: ${user.stars.toString()}"
+            // Add image
+        }
     }
 
 }
