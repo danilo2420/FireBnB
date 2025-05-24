@@ -8,6 +8,7 @@ import com.example.firebnb.model.api.responses.PlaceListResponse
 import com.example.firebnb.model.api.responses.SuccessResponse
 import com.example.firebnb.model.api.responses.Users
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -39,6 +40,11 @@ interface FirebnbApi {
     @PUT("users/update")
     suspend fun updateUser(
         @Body user: User
+    ): SuccessResponse
+
+    @DELETE("users/delete")
+    suspend fun deleteUser(
+        @Query("id") id: Int
     ): SuccessResponse
 
     // PLACE

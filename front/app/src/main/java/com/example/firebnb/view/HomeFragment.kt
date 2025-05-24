@@ -13,6 +13,8 @@ import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
 import kotlinx.coroutines.launch
@@ -33,7 +35,6 @@ class HomeFragment : Fragment() {
         loadPlaces()
         val user: User? = Session.user
 
-
         return binding.root
     }
 
@@ -48,9 +49,16 @@ class HomeFragment : Fragment() {
 
     private fun loadPlaces() {
         lifecycleScope.launch {
-            places = FirebnbRepository()
-                .getAllPlacesForUser(Session.getNonNullUser())
-            initializeRecyclerView()
+            try {
+                val _user = Session.getNonNullUser()
+                logMessage("USER: " + _user.toString())
+                places = FirebnbRepository()
+                    .getAllPlacesForUser(_user)
+                initializeRecyclerView()
+            } catch (e: Exception) {
+                logError(e)
+            }
+
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
@@ -58,6 +59,11 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun initializeEvents() {
+        initializeBtnSave()
+        initializeBtnDeleteProfile()
+    }
+
+    private fun initializeBtnSave() {
         binding.btnSave.setOnClickListener {
             lifecycleScope.launch {
                 try {
@@ -79,6 +85,32 @@ class EditProfileFragment : Fragment() {
                     logError(e)
                 }
             }
+        }
+    }
+
+    private fun initializeBtnDeleteProfile() {
+        binding.btnDeleteProfile.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Delete profile")
+                .setMessage("All your data will be permanently deleted")
+                .setPositiveButton("Yes") {_, _, ->
+                    lifecycleScope.launch {
+                        try {
+                            val success = FirebnbRepository().deleteUser(checkNotNull(user.id))
+                            if(success) {
+                                showToast("User deleted successfully", requireContext())
+                                val navController = findNavController()
+                                val action = EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                                navController.navigate(action)
+                            }
+                        } catch (e: Exception) {
+                            showToast("There was an error", requireContext())
+                            logError(e)
+                        }
+                    }
+                }
+                .setNegativeButton("No", null)
+                .show()
         }
     }
 
