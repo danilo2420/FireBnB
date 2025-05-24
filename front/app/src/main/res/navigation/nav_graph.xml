@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_myPropertiesFragment_to_propertyDetailFragment"
             app:destination="@id/propertyDetailFragment" />
+        <action
+            android:id="@+id/action_myPropertiesFragment_to_createPropertyFragment"
+            app:destination="@id/createPropertyFragment" />
     </fragment>
     <fragment
         android:id="@+id/myRentalsFragment"
@@ -96,4 +99,9 @@
             android:id="@+id/action_editPropertyFragment_to_myPropertiesFragment"
             app:destination="@id/myPropertiesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createPropertyFragment"
+        android:name="com.example.firebnb.view.CreatePropertyFragment"
+        android:label="fragment_create_property"
+        tools:layout="@layout/fragment_create_property" />
 </navigation>

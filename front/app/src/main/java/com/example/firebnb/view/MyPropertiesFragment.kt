@@ -31,6 +31,7 @@ class MyPropertiesFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         loadPlaces()
+        initializeEvents()
 
         return binding.root
     }
@@ -42,6 +43,14 @@ class MyPropertiesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initializeEvents() {
+        binding.btnCreateProperty.setOnClickListener {
+            val navController = findNavController()
+            val action = MyPropertiesFragmentDirections.actionMyPropertiesFragmentToCreatePropertyFragment()
+            navController.navigate(action)
+        }
     }
 
     private fun loadPlaces() {
