@@ -92,5 +92,8 @@
         <argument
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
+        <action
+            android:id="@+id/action_editPropertyFragment_to_myPropertiesFragment"
+            app:destination="@id/myPropertiesFragment" />
     </fragment>
 </navigation>

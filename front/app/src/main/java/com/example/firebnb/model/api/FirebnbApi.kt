@@ -63,4 +63,9 @@ interface FirebnbApi {
         @Body place: Place
     ): SuccessResponse
 
+    @DELETE("places/delete")
+    suspend fun deletePlace(
+        @Query("id") id: Int
+    ): SuccessResponse
+
 }

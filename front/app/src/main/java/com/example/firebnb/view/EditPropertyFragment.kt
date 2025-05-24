@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
@@ -60,7 +61,7 @@ class EditPropertyFragment : Fragment() {
 
     private fun initializeEvents() {
         initializeBtnSaveProfile()
-
+        initializeBtnDeleteProperty()
     }
 
     private fun initializeBtnSaveProfile() {
@@ -85,6 +86,36 @@ class EditPropertyFragment : Fragment() {
                     logError(e)
                 }
 
+            }
+        }
+    }
+
+    private fun initializeBtnDeleteProperty() {
+        binding.btnDeleteProperty.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Delete property")
+                .setMessage("Are you sure? It will be permanently deleted")
+                .setPositiveButton("Yes", { _, _ -> deletePlace()})
+                .setNegativeButton("No", null)
+                .show()
+        }
+    }
+
+    private fun deletePlace() {
+        lifecycleScope.launch {
+            try {
+                val success = FirebnbRepository().deletePlace(place.id)
+                if (success) {
+                    showToast("Property was deleted successfully", requireContext())
+                    val navController = findNavController()
+                    val action = EditPropertyFragmentDirections.actionEditPropertyFragmentToMyPropertiesFragment()
+                    navController.navigate(action)
+                } else {
+                    showToast("There was an error with the API", requireContext())
+                }
+            } catch (e: Exception) {
+                showToast("There was an error", requireContext())
+                logError(e)
             }
         }
     }

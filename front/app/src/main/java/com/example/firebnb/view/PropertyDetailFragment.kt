@@ -30,7 +30,7 @@ class PropertyDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
-        initializeEvents()
+        //initializeEvents()
         loadPlaceId()
 
         return binding.root
@@ -60,6 +60,7 @@ class PropertyDetailFragment : Fragment() {
             try {
                 place = FirebnbRepository().getPlace(placeId)
                 showData()
+                initializeEvents()
             } catch (e: Exception) {
                 showToast("There was an error", requireContext())
                 logError(e)
@@ -82,7 +83,6 @@ class PropertyDetailFragment : Fragment() {
             val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place)
             navController.navigate(action)
         }
-
     }
 
 }

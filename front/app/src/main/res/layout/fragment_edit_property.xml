@@ -112,7 +112,7 @@
         android:id="@+id/btnDeleteProperty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete profile"
+        android:text="Delete property"
         app:layout_constraintBottom_toBottomOf="@+id/btnSaveProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnSaveProfile"
