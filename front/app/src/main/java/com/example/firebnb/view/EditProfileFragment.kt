@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentEditProfileBinding
 import com.example.firebnb.model.User
@@ -61,25 +62,23 @@ class EditProfileFragment : Fragment() {
             lifecycleScope.launch {
                 try {
                     val _user = getUserFromInput()
-                    logMessage(_user.toString())
-
                     val success = FirebnbRepository().updateUser(_user)
 
                     if(success) {
                         showToast("Profile updated successfully", requireContext())
+                        val userUpdated = Session.updateUser()
+                        if(userUpdated) {
+                            findNavController().popBackStack()
+                        } else {
+                            showToast("There was some type of error updating the global user inside the app tho", requireContext())
+                        }
                     } else {
                         showToast("There was an error", requireContext())
                     }
                 } catch (e: Exception) {
                     logError(e)
                 }
-
             }
-            // API call
-
-            // Update session user
-
-            // Notify other previous fragment?
         }
     }
 

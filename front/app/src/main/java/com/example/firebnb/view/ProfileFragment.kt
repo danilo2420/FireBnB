@@ -10,6 +10,7 @@ import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentProfileBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.logMessage
 
 
 class ProfileFragment : Fragment() {
@@ -24,11 +25,14 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        initializeEvents()
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         user = Session.getNonNullUser()
         showUserData()
-        initializeEvents()
-
-        return binding.root
     }
 
 
