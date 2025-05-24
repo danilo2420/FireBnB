@@ -54,7 +54,6 @@ class MyPropertiesFragment : Fragment() {
 
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places){ holder ->
-            showToast("Hello there my boi", requireContext())
             navigateToPropertyDetail(holder.place)
         }
         binding.recyclerProperties.adapter = adapter

@@ -5,12 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.databinding.FragmentMyPropertiesBinding
 import com.example.firebnb.databinding.FragmentPropertyDetailBinding
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.launch
 
 class PropertyDetailFragment : Fragment() {
     var _binding: FragmentPropertyDetailBinding? = null
@@ -18,6 +23,7 @@ class PropertyDetailFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access a null binding"}
 
     lateinit var place: Place
+    var placeId: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,10 +31,15 @@ class PropertyDetailFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         initializeEvents()
-        loadPlace()
-        showData()
+        loadPlaceId()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadPlace()
+        // showData()
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -40,8 +51,20 @@ class PropertyDetailFragment : Fragment() {
         _binding = null
     }
 
+    private fun loadPlaceId() {
+        this.placeId = PropertyDetailFragmentArgs.fromBundle(requireArguments()).place.id
+    }
+
     private fun loadPlace() {
-        this.place = PropertyDetailFragmentArgs.fromBundle(requireArguments()).place
+        lifecycleScope.launch {
+            try {
+                place = FirebnbRepository().getPlace(placeId)
+                showData()
+            } catch (e: Exception) {
+                showToast("There was an error", requireContext())
+                logError(e)
+            }
+        }
     }
 
     private fun showData() {

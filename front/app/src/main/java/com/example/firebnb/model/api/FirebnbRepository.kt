@@ -36,5 +36,7 @@ class FirebnbRepository {
     // This one only returns the user's properties
     suspend fun getAllPropertiesForUser(user: User): List<Place> =
         firebnbApi.getPlaces().places.filter { place -> place.owner_id == user.id }
+    suspend fun getPlace(id: Int): Place = firebnbApi.getPlace(id).places.first()
+    suspend fun updatePlace(place: Place): Boolean = firebnbApi.updatePlace(place).message.contains("success")
 
 }
