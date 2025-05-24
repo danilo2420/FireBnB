@@ -10,6 +10,7 @@ import com.example.firebnb.model.api.responses.Users
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface FirebnbApi {
@@ -32,6 +33,11 @@ interface FirebnbApi {
 
     @POST("users/create")
     suspend fun createUser(
+        @Body user: User
+    ): SuccessResponse
+
+    @PUT("users/update")
+    suspend fun updateUser(
         @Body user: User
     ): SuccessResponse
 

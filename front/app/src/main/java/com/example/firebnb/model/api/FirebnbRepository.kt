@@ -24,6 +24,7 @@ class FirebnbRepository {
     suspend fun getUser(id: Int): User? = firebnbApi.getUser(id = id).users.firstOrNull()
     suspend fun getUserByEmail(email: String): User? = firebnbApi.getUser(email = email).users.firstOrNull()
     suspend fun createUser(user: User): Boolean = firebnbApi.createUser(user).message.contains("success")
+    suspend fun updateUser(user: User): Boolean = firebnbApi.updateUser(user).message.contains("success")
 
 
     // PLACES

@@ -5,10 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentEditProfileBinding
 import com.example.firebnb.model.User
+import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.logMessage
+import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.launch
 
 class EditProfileFragment : Fragment() {
     var _binding: FragmentEditProfileBinding? = null
@@ -52,7 +58,28 @@ class EditProfileFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnSave.setOnClickListener {
-            val _user = getUserFromInput()
+            lifecycleScope.launch {
+                try {
+                    val _user = getUserFromInput()
+                    logMessage(_user.toString())
+
+                    val success = FirebnbRepository().updateUser(_user)
+
+                    if(success) {
+                        showToast("Profile updated successfully", requireContext())
+                    } else {
+                        showToast("There was an error", requireContext())
+                    }
+                } catch (e: Exception) {
+                    logError(e)
+                }
+
+            }
+            // API call
+
+            // Update session user
+
+            // Notify other previous fragment?
         }
     }
 
@@ -65,7 +92,16 @@ class EditProfileFragment : Fragment() {
         val nationality = binding.edtNationality2.text.toString()
 
         return User(
-            -1, name, lastName, age, nationality, description, user.profile_image, user.stars, email, user.password
+            Session.getNonNullUser().id,
+            name,
+            lastName,
+            age,
+            nationality,
+            description,
+            user.profile_image,
+            user.stars,
+            email,
+            user.password
         )
     }
 
