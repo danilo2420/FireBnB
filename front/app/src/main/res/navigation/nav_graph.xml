@@ -62,6 +62,9 @@
         <argument
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
+        <action
+            android:id="@+id/action_propertyDetailFragment_to_editPropertyFragment"
+            app:destination="@id/editPropertyFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -80,5 +83,14 @@
         <action
             android:id="@+id/action_editProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPropertyFragment"
+        android:name="com.example.firebnb.view.EditPropertyFragment"
+        android:label="fragment_edit_property"
+        tools:layout="@layout/fragment_edit_property" >
+        <argument
+            android:name="place"
+            app:argType="com.example.firebnb.model.Place" />
     </fragment>
 </navigation>

@@ -66,4 +66,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPropertyPrice" />
+
+    <Button
+        android:id="@+id/btnEditProperty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit property"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPropertyStars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

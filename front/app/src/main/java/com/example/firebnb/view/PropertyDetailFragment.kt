@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.databinding.FragmentMyPropertiesBinding
@@ -23,6 +24,7 @@ class PropertyDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        initializeEvents()
         loadPlace()
         showData()
 
@@ -49,6 +51,15 @@ class PropertyDetailFragment : Fragment() {
         binding.txtPropertyDescription.text = "Description: ${this.place.description}"
         binding.txtPropertyPrice.text = "Price: ${this.place.price_per_night}"
         binding.txtPropertyStars.text = "Stars: ${this.place.stars}"
+    }
+
+    private fun initializeEvents() {
+        binding.btnEditProperty.setOnClickListener {
+            val navController = findNavController()
+            val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place)
+            navController.navigate(action)
+        }
 
     }
+
 }
