@@ -18,6 +18,7 @@ class PlaceCreate_InputSchema(Schema):
         
 class PlaceUpdate_InputSchema(Schema):
     id = fields.Int(required=True)
+    owner_id = fields.Int()
     name = fields.Str()
     type = fields.Str()
     description = fields.Str()

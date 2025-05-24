@@ -80,7 +80,7 @@ def update_place(args):
 
     session.commit()
 
-    return {'message': 'place was updated successfully'}
+    return {'message': 'success'}
 
 @bp.route('/delete', methods=['DELETE'])
 @bp.arguments(Id_InputSchema, location='query')
@@ -98,4 +98,4 @@ def delete_place(args):
     session.delete(place)
     session.commit()
 
-    return {'message': 'place deleted successfully'}
+    return {'message': 'success'}
