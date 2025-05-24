@@ -24,8 +24,7 @@ class PropertyDetailFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         loadPlace()
-
-        binding.textView2.text = "You chose " + this.place.name
+        showData()
 
         return binding.root
     }
@@ -43,4 +42,13 @@ class PropertyDetailFragment : Fragment() {
         this.place = PropertyDetailFragmentArgs.fromBundle(requireArguments()).place
     }
 
+    private fun showData() {
+        binding.txtPropertyName.text = "Name: ${this.place.name}"
+        binding.txtPropertyOwner.text = "Owner id: " + (if (place.owner_id != null) place.owner_id else "-")
+        binding.txtPropertyType.text = "Type: ${this.place.type}"
+        binding.txtPropertyDescription.text = "Description: ${this.place.description}"
+        binding.txtPropertyPrice.text = "Price: ${this.place.price_per_night}"
+        binding.txtPropertyStars.text = "Stars: ${this.place.stars}"
+
+    }
 }

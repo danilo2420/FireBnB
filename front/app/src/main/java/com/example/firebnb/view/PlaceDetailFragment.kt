@@ -24,7 +24,6 @@ class PlaceDetailFragment : Fragment() {
         initializeBinding(inflater, container)
         loadPlace()
 
-
         return binding.root
     }
 
@@ -38,6 +37,7 @@ class PlaceDetailFragment : Fragment() {
     }
 
     private fun loadPlace() {
+        // I might have to change this so that if the place is modified the output of the fragment is modified too
         this.place = PlaceDetailFragmentArgs.fromBundle(requireArguments()).place
         binding.textView3.text = "You chose " + place.name
     }

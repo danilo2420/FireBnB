@@ -32,7 +32,6 @@ class MyPropertiesFragment : Fragment() {
         initializeBinding(inflater, container)
         loadPlaces()
 
-
         return binding.root
     }
 
