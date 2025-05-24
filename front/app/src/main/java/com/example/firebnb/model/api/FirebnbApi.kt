@@ -56,7 +56,10 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): PlaceListResponse
 
-    // Create place
+    @POST("places/create")
+    suspend fun createPlace(
+        @Body place: Place
+    ): SuccessResponse
 
     @PUT("places/update")
     suspend fun updatePlace(

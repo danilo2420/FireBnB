@@ -46,7 +46,7 @@ class MyPropertiesFragment : Fragment() {
     }
 
     private fun initializeEvents() {
-        binding.btnCreateProperty.setOnClickListener {
+        binding.btnGoToCreateProperty.setOnClickListener {
             val navController = findNavController()
             val action = MyPropertiesFragmentDirections.actionMyPropertiesFragmentToCreatePropertyFragment()
             navController.navigate(action)

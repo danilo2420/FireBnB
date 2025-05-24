@@ -5,8 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentCreatePropertyBinding
+import com.example.firebnb.model.Place
+import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.session.Session
+import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.launch
 
 class CreatePropertyFragment : Fragment() {
 
@@ -19,7 +27,7 @@ class CreatePropertyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
-
+        initializeEvents()
 
         return binding.root
     }
@@ -28,9 +36,53 @@ class CreatePropertyFragment : Fragment() {
         _binding = FragmentCreatePropertyBinding.inflate(inflater, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
+
+    private fun initializeEvents() {
+        binding.btnCreateProperty.setOnClickListener {
+            lifecycleScope.launch {
+                try {
+                    // get data
+                    val place = getPlaceFromInput()
+
+                    // send it to api
+                    val success = FirebnbRepository().createPlace(place)
+                    if (success) {
+                        showToast("Place was created successfully", requireContext())
+                        findNavController().popBackStack()
+                    } else {
+                        showToast("There was a problem", requireContext())
+                    }
+
+                    // navigate back if successful
+                    // is recycler view updating successfully?
+                } catch (e: Exception) {
+                    logError(e)
+                }
+
+            }
+        }
+    }
+
+    private fun getPlaceFromInput(): Place {
+        val id = -1 // sqlalchemy should ignore this
+        val name = binding.edtCreatePropertyName.text.toString()
+        val type = binding.edtCreatePropertyType.text.toString()
+        val description = binding.edtCreatePropertyDescription.text.toString()
+        val price = binding.edtCreatePropertyPrice.text.toString().toFloat()
+
+        return Place(
+            id,
+            Session.getNonNullUser().id,
+            name,
+            type,
+            description,
+            price,
+            0
+        )
+    }
 }
