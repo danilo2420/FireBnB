@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentalsBinding
+import com.example.firebnb.view.rentalFragments.RentalsViewPagerAdapter
+import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MyRentalsFragment : Fragment() {
@@ -19,6 +22,8 @@ class MyRentalsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        initializeViewPager()
+        configureTabLayout()
 
         return binding.root
     }
@@ -30,6 +35,21 @@ class MyRentalsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initializeViewPager() {
+        binding.viewPagerRentals.adapter = RentalsViewPagerAdapter(this)
+    }
+
+    private fun configureTabLayout() {
+        TabLayoutMediator(binding.tabLayoutRentals, binding.viewPagerRentals){tab, position ->
+            tab.text = when(position){
+                    0 -> "To come"
+                    1 -> "Current rentals"
+                    2 -> "Past rentals"
+                    else -> "Wrong position"
+                }
+        }.attach()
     }
 
 }
