@@ -144,7 +144,6 @@ def delete_user(args):
     if user is not None:
         session.delete(user)
         session.commit()
-        print('User deleted')
-        return {'message': 'User was found and deleted successfully'}
+        return {'message': 'success'}
     else:
         abort(404, message="No user with this id was found")
