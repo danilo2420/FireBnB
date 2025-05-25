@@ -17,7 +17,7 @@ import retrofit2.http.Query
 interface FirebnbApi {
 
 
-    // USER
+    // USER ******************************
     @POST("users/auth")
     suspend fun authUser(
         @Body authInput: AuthInput
@@ -47,7 +47,8 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): SuccessResponse
 
-    // PLACE
+
+    // PLACE ******************************
     @GET("places/get")
     suspend fun getPlaces(): PlaceListResponse
 
@@ -71,4 +72,11 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): SuccessResponse
 
+
+    // RENTING ******************************
+
+    @POST("rentings/create")
+    suspend fun createRenting(
+        @Body renting: Renting
+    ): SuccessResponse
 }

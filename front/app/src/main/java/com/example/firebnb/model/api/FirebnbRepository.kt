@@ -27,7 +27,6 @@ class FirebnbRepository {
     suspend fun updateUser(user: User): Boolean = firebnbApi.updateUser(user).message.contains("success")
     suspend fun deleteUser(id: Int): Boolean = firebnbApi.deleteUser(id).message.contains("success")
 
-
     // PLACES
     suspend fun getAllPlaces(): List<Place> = firebnbApi.getPlaces().places
     // This one returns all the places except for the user's properties
@@ -40,5 +39,8 @@ class FirebnbRepository {
     suspend fun createPlace(place: Place): Boolean = firebnbApi.createPlace(place).message.contains("success")
     suspend fun updatePlace(place: Place): Boolean = firebnbApi.updatePlace(place).message.contains("success")
     suspend fun deletePlace(id: Int): Boolean = firebnbApi.deletePlace(id).message.contains("success")
+
+    // RENTINGS
+    suspend fun createRenting(renting: Renting): Boolean = firebnbApi.createRenting(renting).message.contains("success")
 
 }
