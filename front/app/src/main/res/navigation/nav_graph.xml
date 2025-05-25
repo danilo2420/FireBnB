@@ -56,6 +56,9 @@
         <argument
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
+        <action
+            android:id="@+id/action_placeDetailFragment_to_rentPlaceFragment"
+            app:destination="@id/rentPlaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/propertyDetailFragment"
@@ -104,4 +107,9 @@
         android:name="com.example.firebnb.view.CreatePropertyFragment"
         android:label="fragment_create_property"
         tools:layout="@layout/fragment_create_property" />
+    <fragment
+        android:id="@+id/rentPlaceFragment"
+        android:name="com.example.firebnb.view.RentPlaceFragment"
+        android:label="fragment_rent_place"
+        tools:layout="@layout/fragment_rent_place" />
 </navigation>
