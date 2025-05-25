@@ -116,4 +116,9 @@
             android:name="place"
             app:argType="com.example.firebnb.model.Place" />
     </fragment>
+    <fragment
+        android:id="@+id/myRentals2Fragment"
+        android:name="com.example.firebnb.view.MyRentals2Fragment"
+        android:label="fragment_my_rentals2"
+        tools:layout="@layout/fragment_my_rentals2" />
 </navigation>

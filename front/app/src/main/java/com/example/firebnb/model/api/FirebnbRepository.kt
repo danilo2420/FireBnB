@@ -11,7 +11,7 @@ class FirebnbRepository {
     val firebnbApi: FirebnbApi
     init {
         firebnbApi = Retrofit.Builder()
-            .baseUrl("http://192.168.1.178:5000/") // 10.0.2.2 for emulator
+            .baseUrl("http://192.168.1.179:5000/") // 10.0.2.2 for emulator
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

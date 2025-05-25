@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Home" />
     <item
-        android:id="@+id/myRentalsFragment"
+        android:id="@+id/myRentals2Fragment"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="My rentals" />
     <item
