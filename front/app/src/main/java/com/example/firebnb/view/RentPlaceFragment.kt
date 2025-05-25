@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentRentPlaceBinding
+import com.example.firebnb.model.Place
 
 class RentPlaceFragment : Fragment() {
 
@@ -14,11 +15,14 @@ class RentPlaceFragment : Fragment() {
     val binding: FragmentRentPlaceBinding
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
+    lateinit var place: Place
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        loadPlace()
 
         return binding.root
     }
@@ -30,6 +34,10 @@ class RentPlaceFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun loadPlace() {
+        this.place = RentPlaceFragmentArgs.fromBundle(requireArguments()).place
     }
 
 }

@@ -56,7 +56,7 @@ class PlaceDetailFragment : Fragment() {
     private fun initializeEvents() {
         binding.btnGoToRentPlace.setOnClickListener {
             val navController = findNavController()
-            val action = PlaceDetailFragmentDirections.actionPlaceDetailFragmentToRentPlaceFragment()
+            val action = PlaceDetailFragmentDirections.actionPlaceDetailFragmentToRentPlaceFragment(place)
             navController.navigate(action)
         }
     }

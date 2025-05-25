@@ -111,5 +111,9 @@
         android:id="@+id/rentPlaceFragment"
         android:name="com.example.firebnb.view.RentPlaceFragment"
         android:label="fragment_rent_place"
-        tools:layout="@layout/fragment_rent_place" />
+        tools:layout="@layout/fragment_rent_place" >
+        <argument
+            android:name="place"
+            app:argType="com.example.firebnb.model.Place" />
+    </fragment>
 </navigation>
