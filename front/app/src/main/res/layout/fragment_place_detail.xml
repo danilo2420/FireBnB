@@ -8,12 +8,62 @@
     tools:context=".view.PlaceDetailFragment" >
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtPlaceDetailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place Detail Fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="130dp"
+        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtPlaceDetailType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailName" />
+
+    <TextView
+        android:id="@+id/txtPlaceDetailDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailType" />
+
+    <TextView
+        android:id="@+id/txtPlaceDetailPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailDescription" />
+
+    <TextView
+        android:id="@+id/txtPlaceDetailStars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailPrice" />
+
+    <Button
+        android:id="@+id/btnGoToRentPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rent this place"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailStars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,7 @@ class PlaceDetailFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         loadPlace()
+        showData()
 
         return binding.root
     }
@@ -37,9 +38,17 @@ class PlaceDetailFragment : Fragment() {
     }
 
     private fun loadPlace() {
-        // I might have to change this so that if the place is modified the output of the fragment is modified too
         this.place = PlaceDetailFragmentArgs.fromBundle(requireArguments()).place
-        binding.textView3.text = "You chose " + place.name
+    }
+
+    private fun showData() {
+        binding.apply {
+            txtPlaceDetailName.setText("Name: ${place.name}")
+            txtPlaceDetailType.setText("Type: ${place.type}")
+            txtPlaceDetailDescription.setText("Description: ${place.description}")
+            txtPlaceDetailPrice.setText("Price: ${place.price_per_night.toString()}")
+            txtPlaceDetailStars.setText("Stars: ${place.stars.toString()}")
+        }
     }
 
 }
