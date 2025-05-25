@@ -3,6 +3,7 @@ package com.example.firebnb.model.api
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
+import com.example.firebnb.model.api.responses.RentingPreview
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -41,6 +42,8 @@ class FirebnbRepository {
     suspend fun deletePlace(id: Int): Boolean = firebnbApi.deletePlace(id).message.contains("success")
 
     // RENTINGS
+    suspend fun getRentingPreviewList(id: Int): List<RentingPreview> =
+        firebnbApi.getRentingPreviews(id).previews
     suspend fun createRenting(renting: Renting): Boolean = firebnbApi.createRenting(renting).message.contains("success")
 
 }

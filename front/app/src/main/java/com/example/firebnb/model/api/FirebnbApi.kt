@@ -5,6 +5,7 @@ import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.AuthResponse
 import com.example.firebnb.model.api.responses.PlaceListResponse
+import com.example.firebnb.model.api.responses.RentingPreviewList
 import com.example.firebnb.model.api.responses.SuccessResponse
 import com.example.firebnb.model.api.responses.Users
 import retrofit2.http.Body
@@ -74,6 +75,10 @@ interface FirebnbApi {
 
 
     // RENTING ******************************
+    @GET("rentings/get_previews")
+    suspend fun getRentingPreviews(
+        @Query("id") id: Int
+    ): RentingPreviewList
 
     @POST("rentings/create")
     suspend fun createRenting(
