@@ -10,9 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentals2Binding
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.responses.RentingPreview
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import com.example.firebnb.view.rentingsRecyclerView.RentingPreviewAdapter
 import kotlinx.coroutines.launch
 
 
@@ -22,14 +24,20 @@ class MyRentals2Fragment : Fragment() {
     val binding: FragmentMyRentals2Binding
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
+    lateinit var previews: List<RentingPreview>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
-        loadRentingPreviews()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadRentingPreviews()
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -41,17 +49,24 @@ class MyRentals2Fragment : Fragment() {
         _binding = null
     }
 
-
     private fun loadRentingPreviews() {
         lifecycleScope.launch {
             try {
-                val previews = FirebnbRepository().getRentingPreviewList(checkNotNull(Session.getNonNullUser().id))
+                previews = FirebnbRepository().getRentingPreviewList(checkNotNull(Session.getNonNullUser().id))
                 previews.forEach { preview -> Log.d("myMessage", preview.toString()) }
+                initializeRecyclerView()
             } catch (e: Exception) {
                 showToast("There was an error", requireContext())
                 logError(e)
             }
         }
+    }
+
+    private fun initializeRecyclerView() {
+        val adapter = RentingPreviewAdapter(this.previews) { holder ->
+            showToast("You chose " + holder.rentingPreview.name + "!", requireContext())
+        }
+        binding.recyclerRentingPreviews.adapter = adapter
     }
 
 }
