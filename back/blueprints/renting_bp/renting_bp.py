@@ -62,6 +62,32 @@ def getRentingsForPlace(place_id):
 
     return place.rentings
 
+@bp.route('/get_previews')
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, RentalPreviewList_OutputSchema)
+def get_rental_previews(args):
+    session = getConnection()
+
+    guest_id = args.get('id')
+    guest = session.query(User).filter(User.id == guest_id).first()
+    if guest is None:
+        abort(404, message="User does not exist")
+
+    rentings = session.query(Renting).filter(Renting.guest_id == guest_id).all()
+    previews = []
+    for renting in rentings:
+        preview = {
+            "place_id": renting.id,
+            "name": renting.place.name,
+            "type": renting.place.type,
+            "start_date": renting.start_date,
+            "end_date": renting.end_date,
+            "total_price": renting.total_price
+        }
+        previews.append(preview)
+    
+    return {"previews": previews}
+
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(RentingCreate_InputSchema)
@@ -91,7 +117,7 @@ def create_renting(args):
     session.add(renting)
     session.commit()
 
-    return {'message': 'renting added successfully'}
+    return {'message': 'success'}
 
 
 @bp.route('/update', methods=['PUT'])

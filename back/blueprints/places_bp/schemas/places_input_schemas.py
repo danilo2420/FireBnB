@@ -4,6 +4,7 @@ class Id_InputSchema(Schema):
     id = fields.Int(required=True)
 
 class PlaceCreate_InputSchema(Schema):
+    id = fields.Int()
     owner_id = fields.Int(required=True)
     name = fields.Str()
     type = fields.Str()

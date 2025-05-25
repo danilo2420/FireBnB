@@ -11,6 +11,7 @@ class Get_InputSchema(Schema):
             raise ValidationError('Query should not have more than one parameter')
         
 class RentingCreate_InputSchema(Schema):
+    id = fields.Int()
     guest_id = fields.Int(required=True)
     place_id = fields.Int(required=True)
     start_date = fields.Date()

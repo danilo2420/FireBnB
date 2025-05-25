@@ -45,7 +45,6 @@ def create_place(args):
 
     # Create place
     place = Place(
-        id = args.get('id'),
         owner_id = args.get('owner_id'),
         name = args.get('name'),
         type = args.get('type'),
@@ -57,7 +56,7 @@ def create_place(args):
     session.add(place)
     session.commit()
 
-    return {'message': 'place was created successfully'}
+    return {'message': 'success'}
 
 @bp.route('update', methods=['PUT'])
 @bp.arguments(PlaceUpdate_InputSchema)
