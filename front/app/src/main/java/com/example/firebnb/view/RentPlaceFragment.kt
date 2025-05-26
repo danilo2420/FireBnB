@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentRentPlaceBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.api.FirebnbRepository
-import com.example.firebnb.model.api.Renting
+import com.example.firebnb.model.Renting
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
-import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 

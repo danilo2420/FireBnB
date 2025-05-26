@@ -1,6 +1,7 @@
 package com.example.firebnb.model.api
 
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.RentingPreview
@@ -12,7 +13,7 @@ class FirebnbRepository {
     val firebnbApi: FirebnbApi
     init {
         firebnbApi = Retrofit.Builder()
-            .baseUrl("http://192.168.1.179:5000/") // 10.0.2.2 for emulator
+            .baseUrl("http://192.168.1.40:5000/") // 10.0.2.2 for emulator
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

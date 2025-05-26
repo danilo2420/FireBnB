@@ -1,6 +1,7 @@
 package com.example.firebnb.model.api
 
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.AuthResponse

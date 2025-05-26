@@ -120,5 +120,18 @@
         android:id="@+id/myRentals2Fragment"
         android:name="com.example.firebnb.view.MyRentals2Fragment"
         android:label="fragment_my_rentals2"
-        tools:layout="@layout/fragment_my_rentals2" />
+        tools:layout="@layout/fragment_my_rentals2" >
+        <action
+            android:id="@+id/action_myRentals2Fragment_to_rentalDetailFragment"
+            app:destination="@id/rentalDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rentalDetailFragment"
+        android:name="com.example.firebnb.view.RentalDetailFragment"
+        android:label="fragment_rental_detail"
+        tools:layout="@layout/fragment_rental_detail" >
+        <argument
+            android:name="rental_id"
+            app:argType="integer" />
+    </fragment>
 </navigation>
