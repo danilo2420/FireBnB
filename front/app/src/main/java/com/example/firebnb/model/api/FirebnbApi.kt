@@ -6,6 +6,7 @@ import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.AuthResponse
 import com.example.firebnb.model.api.responses.PlaceListResponse
+import com.example.firebnb.model.api.responses.RentingList
 import com.example.firebnb.model.api.responses.RentingPreviewList
 import com.example.firebnb.model.api.responses.SuccessResponse
 import com.example.firebnb.model.api.responses.Users
@@ -76,6 +77,11 @@ interface FirebnbApi {
 
 
     // RENTING ******************************
+    @GET("rentings/get")
+    suspend fun getRenting(
+        @Query("id") id: Int
+    ): RentingList
+
     @GET("rentings/get_previews")
     suspend fun getRentingPreviews(
         @Query("id") id: Int
