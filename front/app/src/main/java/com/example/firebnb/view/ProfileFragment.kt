@@ -11,6 +11,7 @@ import com.example.firebnb.databinding.FragmentProfileBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logMessage
+import com.example.firebnb.utils.setImage
 
 
 class ProfileFragment : Fragment() {
@@ -35,7 +36,6 @@ class ProfileFragment : Fragment() {
         showUserData()
     }
 
-
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
     }
@@ -53,7 +53,7 @@ class ProfileFragment : Fragment() {
             txtEmail2.text = "Email: ${user.email}"
             txtNationality2.text = "Nationality: ${user.nationality}"
             txtStars2.text = "Stars: ${user.stars.toString()}"
-            // Add image
+            imgProfile.setImage(user.profile_image)
         }
     }
 
