@@ -158,7 +158,7 @@ def delete_renting(args):
             print('something wrong about query input arguments')
             return {'message': 'something wrong about query input arguments'}
         
-    return {'message': 'rentings deleted successfully'}
+    return {'message': 'success'}
 
 def deleteRentingById(id):
     session = getConnection()
