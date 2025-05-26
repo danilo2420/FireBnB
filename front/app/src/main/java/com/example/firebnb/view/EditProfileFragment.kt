@@ -1,10 +1,13 @@
 package com.example.firebnb.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +16,7 @@ import com.example.firebnb.databinding.FragmentEditProfileBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
@@ -24,6 +28,26 @@ class EditProfileFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access wrong binding"}
 
     lateinit var user: User
+
+    private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        openFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) {
+                val s = getBase64FromFileUri(uri, requireContext())
+                if (s != null) {
+                    Log.d("myMessage", s)
+                } else {
+                    Log.d("myMessage", "Error with the image thingy")
+                }
+            }
+        }
+    }
+
+    private fun openFileChooser() {
+        openFileLauncher.launch(arrayOf("image/*"))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +85,7 @@ class EditProfileFragment : Fragment() {
     private fun initializeEvents() {
         initializeBtnSave()
         initializeBtnDeleteProfile()
+        initializeBtnChooseImage()
     }
 
     private fun initializeBtnSave() {
@@ -134,6 +159,12 @@ class EditProfileFragment : Fragment() {
             email,
             user.password
         )
+    }
+
+    private fun initializeBtnChooseImage() {
+        binding.btnChooseImage.setOnClickListener {
+            openFileChooser()
+        }
     }
 
 }

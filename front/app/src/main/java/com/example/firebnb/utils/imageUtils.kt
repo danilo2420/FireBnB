@@ -1,5 +1,7 @@
 package com.example.firebnb.utils
 
+import android.content.Context
+import android.net.Uri
 import android.widget.ImageView
 import coil3.load
 import kotlin.io.encoding.Base64
@@ -12,5 +14,17 @@ fun ImageView.setImage(image_base64: String?){
         this.load(image)
     } else {
         // default image?
+    }
+}
+
+fun getBase64FromFileUri(uri: Uri, context: Context): String? {
+    try {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes()
+        val base64String = android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT)
+        return base64String
+    } catch (e: Exception) {
+        logError(e)
+        return null
     }
 }
