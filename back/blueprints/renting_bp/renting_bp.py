@@ -77,7 +77,8 @@ def get_rental_previews(args):
     previews = []
     for renting in rentings:
         preview = {
-            "place_id": renting.id,
+            "id": renting.id,
+            "place_id": renting.place.id,
             "name": renting.place.name,
             "type": renting.place.type,
             "start_date": renting.start_date,

@@ -5,6 +5,7 @@ class RentingGet_OutputSchema(Schema):
     rentings = fields.List(fields.Nested(RentingSchema))
 
 class RentalPreview(Schema):
+    id = fields.Int()
     place_id = fields.Int()
     name = fields.Str()
     type = fields.Str()
