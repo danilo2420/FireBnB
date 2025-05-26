@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentals2Binding
 import com.example.firebnb.model.api.FirebnbRepository
@@ -64,7 +65,10 @@ class MyRentals2Fragment : Fragment() {
 
     private fun initializeRecyclerView() {
         val adapter = RentingPreviewAdapter(this.previews) { holder ->
-            showToast("You chose " + holder.rentingPreview.name + "!", requireContext())
+            //showToast("You chose " + holder.rentingPreview.name + "!", requireContext())
+            val navController = findNavController()
+            val action = MyRentals2FragmentDirections.actionMyRentals2FragmentToRentalDetailFragment(holder.rentingPreview.id)
+            navController.navigate(action)
         }
         binding.recyclerRentingPreviews.adapter = adapter
     }
