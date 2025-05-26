@@ -11,14 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentEditProfileBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
-import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -34,13 +32,35 @@ class EditProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         openFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri != null) {
-                val s = getBase64FromFileUri(uri, requireContext())
-                if (s != null) {
-                    Log.d("myMessage", s)
-                } else {
-                    Log.d("myMessage", "Error with the image thingy")
+            try {
+                if (uri != null) {
+                    val image = getBase64FromFileUri(uri, requireContext())
+                    if (image != null) {
+                        updateProfileImage(image)
+                    } else {
+                        Log.d("myMessage", "Error with the image thingy")
+                    }
                 }
+            } catch (e: Exception) {
+                logError(e)
+                showToast("Error in image conversion", requireContext())
+            }
+        }
+    }
+
+    private fun updateProfileImage(image: String) {
+        lifecycleScope.launch {
+            try {
+                user.profile_image = image
+                // Log.d("abcdefg", user.profile_image)
+                val success = FirebnbRepository().updateUser(user)
+                if (success) {
+                    showToast("Success", requireContext())
+                    showUserData()
+                }
+            } catch (e: Exception) {
+                showToast("There was an error updating the profile picture", requireContext())
+                logError(e)
             }
         }
     }
@@ -55,10 +75,14 @@ class EditProfileFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         user = Session.getNonNullUser()
+        
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         showUserData()
         initializeEvents()
-
-        return binding.root
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {

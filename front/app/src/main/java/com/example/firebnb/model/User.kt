@@ -10,7 +10,7 @@ data class User(
     val age: Int?,
     val nationality: String?,
     val description: String?,
-    val profile_image: String?,
+    var profile_image: String?,
     val stars: Int?,
     val email: String?,
     val password: String?
