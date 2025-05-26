@@ -47,5 +47,6 @@ class FirebnbRepository {
     suspend fun getRentingPreviewList(id: Int): List<RentingPreview> =
         firebnbApi.getRentingPreviews(id).previews
     suspend fun createRenting(renting: Renting): Boolean = firebnbApi.createRenting(renting).message.contains("success")
+    suspend fun deleteRenting(id: Int): Boolean = firebnbApi.deleteRenting(id).message.contains("success")
 
 }

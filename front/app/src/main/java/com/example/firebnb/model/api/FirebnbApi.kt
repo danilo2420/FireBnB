@@ -91,4 +91,10 @@ interface FirebnbApi {
     suspend fun createRenting(
         @Body renting: Renting
     ): SuccessResponse
+
+    @DELETE("rentings/delete")
+    suspend fun deleteRenting(
+        @Query("id") id: Int
+    ): SuccessResponse
+
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentRentalDetailBinding
 import com.example.firebnb.model.Renting
@@ -47,6 +48,7 @@ class RentalDetailFragment : Fragment() {
                 renting = FirebnbRepository().getRenting(id)
                 showToast("Place was loaded successfully", requireContext())
                 showData()
+                initializeEvents()
             } catch (e: Exception) {
                 logError(e)
                 showToast("There was an error", requireContext())
@@ -60,7 +62,25 @@ class RentalDetailFragment : Fragment() {
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
             txtRentalDetailPrice.setText("Price: ${renting.total_price}")
         }
+    }
 
+    private fun initializeEvents() {
+        binding.btnDeleteRental.setOnClickListener {
+            lifecycleScope.launch {
+                try {
+                    val success = FirebnbRepository().deleteRenting(renting.id)
+                    if (success) {
+                        showToast("Rental deleted successfully", requireContext())
+                        findNavController().popBackStack()
+                    } else {
+                        showToast("There was an error", requireContext())
+                    }
+                } catch (e: Exception) {
+                    showToast("There was an error", requireContext())
+                    logError(e)
+                }
+            }
+        }
     }
 
 }
