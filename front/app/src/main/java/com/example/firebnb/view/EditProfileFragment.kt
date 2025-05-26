@@ -1,5 +1,6 @@
 package com.example.firebnb.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -31,20 +32,23 @@ class EditProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        openFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            try {
-                if (uri != null) {
-                    val image = getBase64FromFileUri(uri, requireContext())
-                    if (image != null) {
-                        updateProfileImage(image)
-                    } else {
-                        Log.d("myMessage", "Error with the image thingy")
-                    }
-                }
-            } catch (e: Exception) {
-                logError(e)
-                showToast("Error in image conversion", requireContext())
+        openFileLauncher = registerForActivityResult(
+            ActivityResultContracts.OpenDocument()) { uri -> handleUri(uri) }
+    }
+
+    fun handleUri(uri: Uri?) {
+        if (uri == null) return
+
+        try {
+            val image = getBase64FromFileUri(uri, requireContext())
+            if (image != null) {
+                updateProfileImage(image)
+            } else {
+                Log.d("myMessage", "Error with the image thingy")
             }
+        } catch (e: Exception) {
+            logError(e)
+            showToast("Error in image conversion", requireContext())
         }
     }
 
@@ -75,7 +79,7 @@ class EditProfileFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         user = Session.getNonNullUser()
-        
+
         return binding.root
     }
 
