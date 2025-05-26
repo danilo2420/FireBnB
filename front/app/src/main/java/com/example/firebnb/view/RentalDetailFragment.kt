@@ -55,6 +55,11 @@ class RentalDetailFragment : Fragment() {
     }
 
     private fun showData() {
+        binding.apply {
+            txtRentalDetailStartDate.setText("Start date: ${renting.start_date}")
+            txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
+            txtRentalDetailPrice.setText("Price: ${renting.total_price}")
+        }
 
     }
 
