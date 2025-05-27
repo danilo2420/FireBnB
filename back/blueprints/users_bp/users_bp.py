@@ -94,7 +94,8 @@ def create_user(args):
         description = args.get('description'),
         profile_image = args.get('profile_image'),
         stars = args.get('stars'),
-        email = args.get('email')
+        email = args.get('email'),
+        password = args.get('password')
     )
 
     session.add(user)
