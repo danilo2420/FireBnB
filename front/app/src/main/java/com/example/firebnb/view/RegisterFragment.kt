@@ -26,6 +26,7 @@ class RegisterFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
+    private var chosenImage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class RegisterFragment : Fragment() {
             val image = getBase64FromFileUri(uri, requireContext())
             if (image != null) {
                 binding.imgRegisterUser.setImageURI(uri)
+                chosenImage = image
                 // updateProfileImage(image)
             } else {
                 Log.d("myMessage", "Error with the image thingy")
@@ -108,6 +110,8 @@ class RegisterFragment : Fragment() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
 
+        Log.d("myMessage", "Your password is " + password)
+
         return User(
             null,
             name,
@@ -115,7 +119,7 @@ class RegisterFragment : Fragment() {
             age,
             nationality,
             null,
-            null,
+            chosenImage,
             null,
             email,
             password
