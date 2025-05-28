@@ -49,12 +49,12 @@ class ProfileFragment : Fragment() {
 
     private fun showUserData() {
         binding.apply {
-            txtName2.text = "Name: ${user.name} ${user.lastName}"
-            txtAge2.text = "Age: ${user.age}"
-            txtDescription2.text = "Description: ${user.description}"
-            txtEmail2.text = "Email: ${user.email}"
-            txtNationality2.text = "Nationality: ${user.nationality}"
-            txtStars2.text = "Stars: ${user.stars.toString()}"
+            txtName2.text = "${user.name} ${user.lastName}"
+            txtAge2.text = user.age.toString()
+            txtDescription2.text = user.description
+            txtEmail2.text = user.email
+            txtNationality2.text = user.nationality
+            //txtStars2.text = "Stars: ${user.stars.toString()}"
             imgProfile.setImage(user.profile_image)
         }
     }
