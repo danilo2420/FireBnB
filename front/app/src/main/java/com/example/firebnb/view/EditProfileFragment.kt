@@ -12,12 +12,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentEditProfileBinding
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -100,6 +102,8 @@ class EditProfileFragment : Fragment() {
 
     private fun showUserData() {
         binding.apply {
+            if (user.profile_image != null)
+                imgEditProfile.setImage(user.profile_image)
             edtName2.setText(user.name)
             edtLastName2.setText(user.lastName)
             edtAge2.setText(user.age.toString())

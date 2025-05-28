@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider5"
             app:shapeAppearanceOverlay="@style/CircularImage"
-            tools:src="@tools:sample/avatars" />
+            app:srcCompat="@drawable/fire" />
 
         <TextView
             android:id="@+id/textView6"
@@ -204,7 +204,8 @@
             android:text="Delete profile"
             android:padding="12dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/lightOrange"
+            android:backgroundTint="#ff443d"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline9"
             app:layout_constraintStart_toStartOf="@+id/guideline"
