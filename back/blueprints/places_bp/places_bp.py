@@ -2,6 +2,7 @@ from flask_smorest import Blueprint, abort
 from connection import getConnection
 from model.places import Place
 from model.users import User
+from model.place_images import PlaceImage
 from blueprints.places_bp.schemas.places_output_schemas import *
 from blueprints.places_bp.schemas.places_input_schemas import *
 from blueprints.general_input_output_schemas.general_input_schemas import *
@@ -30,6 +31,24 @@ def getPlace(id):
     if place is None:
         abort(404, message="no place with this id was found")
     return {'places': [place]}
+
+@bp.route('/getWithImage')
+@bp.arguments(Id_InputSchema, location='query')
+@bp.response(200, PlaceWithImage_OutputSchema)
+def get_place_with_image(args):
+    place_id = args.get('id')
+    session = getConnection()
+
+    place = session.query(Place).filter(Place.id == place_id).first()
+    if place is None:
+        abort(400, message="place does not exist")
+    
+    image = session.query(PlaceImage).filter(PlaceImage.place_id == place_id).first()
+    
+    return {
+        "place": place,
+        "image": image
+    }
 
 @bp.route('/create', methods=['POST'])
 @bp.arguments(PlaceCreate_InputSchema)
