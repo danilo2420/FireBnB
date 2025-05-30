@@ -13,6 +13,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.firebnb.databinding.ActivityMainBinding
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         configureBottomNavMenu()
 
         Log.d("myMessage", "Before method call")
-        testApi()
-        testAuth()
+
+        test()
 
         setContentView(binding.root)
     }
@@ -72,6 +74,18 @@ class MainActivity : AppCompatActivity() {
                 Log.d("myMessage", "Was the user verified? ${verified}")
             } catch (e:Exception) {
                 Log.d("myMessage", e.toString())
+            }
+        }
+    }
+
+    fun test() {
+        lifecycleScope.launch {
+            try {
+                val placeWithImage = FirebnbRepository().getPlaceWithImage(5)
+                Log.d("myMessage", placeWithImage.toString())
+            } catch (e: Exception) {
+                showToast("There was an error", this@MainActivity)
+                logError(e)
             }
         }
     }

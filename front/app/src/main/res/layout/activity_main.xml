@@ -23,6 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom_nav"
+        android:background="@color/lightBlue"
+        app:itemIconTint="@color/selector_color"
+        app:itemTextColor="@color/selector_color"
         android:visibility="gone"/>
 
 </LinearLayout>
