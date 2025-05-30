@@ -95,12 +95,12 @@
         android:name="com.example.firebnb.view.EditPropertyFragment"
         android:label="fragment_edit_property"
         tools:layout="@layout/fragment_edit_property" >
-        <argument
-            android:name="place"
-            app:argType="com.example.firebnb.model.Place" />
         <action
             android:id="@+id/action_editPropertyFragment_to_myPropertiesFragment"
             app:destination="@id/myPropertiesFragment" />
+        <argument
+            android:name="placeId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/createPropertyFragment"

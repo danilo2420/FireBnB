@@ -80,7 +80,7 @@ class PropertyDetailFragment : Fragment() {
     private fun initializeEvents() {
         binding.btnEditProperty.setOnClickListener {
             val navController = findNavController()
-            val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place)
+            val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place.id)
             navController.navigate(action)
         }
     }

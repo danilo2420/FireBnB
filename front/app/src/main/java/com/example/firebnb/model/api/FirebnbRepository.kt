@@ -4,6 +4,7 @@ import com.example.firebnb.model.Place
 import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
+import com.example.firebnb.model.api.responses.PlaceWithImage
 import com.example.firebnb.model.api.responses.RentingPreview
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -38,6 +39,7 @@ class FirebnbRepository {
     suspend fun getAllPropertiesForUser(user: User): List<Place> =
         firebnbApi.getPlaces().places.filter { place -> place.owner_id == user.id }
     suspend fun getPlace(id: Int): Place = firebnbApi.getPlace(id).places.first()
+    suspend fun getPlaceWithImage(id: Int): PlaceWithImage = firebnbApi.getPlaceWithImage(id)
     suspend fun createPlace(place: Place): Boolean = firebnbApi.createPlace(place).message.contains("success")
     suspend fun updatePlace(place: Place): Boolean = firebnbApi.updatePlace(place).message.contains("success")
     suspend fun deletePlace(id: Int): Boolean = firebnbApi.deletePlace(id).message.contains("success")

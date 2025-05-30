@@ -46,7 +46,10 @@ class EditPropertyFragment : Fragment() {
     }
 
     private fun loadData() {
-        this.place = EditPropertyFragmentArgs.fromBundle(requireArguments()).place
+        val placeId = EditPropertyFragmentArgs.fromBundle(requireArguments()).placeId
+        lifecycleScope.launch {
+            // get object or whatever
+        }
     }
 
     private fun showData() {
