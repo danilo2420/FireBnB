@@ -44,9 +44,7 @@ class EditPropertyFragment : Fragment() {
         try {
             val img = getBase64FromFileUri(uri, requireContext())
             if (img != null) {
-
                 updateLocalImage(img, uri)
-
                 // updateProfileImage(image)
             } else {
                 Log.d("myMessage", "Error with the image thingy")
@@ -59,6 +57,11 @@ class EditPropertyFragment : Fragment() {
 
     fun updateLocalImage(image: String, uri: Uri) {
         binding.imgEditProperty.setImageURI(uri)
+
+        // TODO: I have to update the image in the API
+
+        val remoteImage: PlaceImage
+
         if (this.image != null){
             this.image!!.img = image
         } else {
