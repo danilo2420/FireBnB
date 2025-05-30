@@ -222,7 +222,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edtPropertyPrice" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/imgEditProperty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -242,7 +242,7 @@
             android:text="Choose image"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+            app:layout_constraintTop_toBottomOf="@+id/imgEditProperty" />
 
         <View
             android:id="@+id/divider12"

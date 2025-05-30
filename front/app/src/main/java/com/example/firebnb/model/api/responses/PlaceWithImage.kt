@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PlaceWithImage(
     val place: Place,
-    val image: PlaceImage
+    val image: PlaceImage?
 )

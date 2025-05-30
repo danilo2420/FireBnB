@@ -11,9 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentEditPropertyBinding
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -23,6 +25,7 @@ class EditPropertyFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
     lateinit var place: Place
+    var image: PlaceImage? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +33,7 @@ class EditPropertyFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         loadData()
-        showData()
+        //showData()
         initializeEvents()
 
         return binding.root
@@ -48,7 +51,15 @@ class EditPropertyFragment : Fragment() {
     private fun loadData() {
         val placeId = EditPropertyFragmentArgs.fromBundle(requireArguments()).placeId
         lifecycleScope.launch {
-            // get object or whatever
+            try {
+                val placeWithImage = FirebnbRepository().getPlaceWithImage(placeId)
+                this@EditPropertyFragment.place = placeWithImage.place
+                this@EditPropertyFragment.image = placeWithImage.image
+                showData()
+            } catch (e: Exception) {
+                logError(e)
+                showToast("There was an error", requireContext())
+            }
         }
     }
 
@@ -58,6 +69,9 @@ class EditPropertyFragment : Fragment() {
             edtPropertyType.setText(place.type)
             edtPropertyDescription.setText(place.description)
             edtPropertyPrice.setText(place.price_per_night.toString())
+        }
+        if (this.image != null && this.image!!.img != null) {
+            binding.imgEditProperty.setImage(this.image!!.img)
         }
     }
 
