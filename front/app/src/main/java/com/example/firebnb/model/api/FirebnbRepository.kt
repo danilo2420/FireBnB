@@ -41,6 +41,7 @@ class FirebnbRepository {
         firebnbApi.getPlaces().places.filter { place -> place.owner_id == user.id }
     suspend fun getPlace(id: Int): Place = firebnbApi.getPlace(id).places.first()
     suspend fun getPlaceWithImage(id: Int): PlaceWithImage = firebnbApi.getPlaceWithImage(id)
+    suspend fun getAllPlacesWithImage(): List<PlaceWithImage> = firebnbApi.getAllPlacesWithImage().places_with_img
     suspend fun createPlace(place: Place): Boolean = firebnbApi.createPlace(place).message.contains("success")
     suspend fun updatePlace(place: Place): Boolean = firebnbApi.updatePlace(place).message.contains("success")
     suspend fun deletePlace(id: Int): Boolean = firebnbApi.deletePlace(id).message.contains("success")
