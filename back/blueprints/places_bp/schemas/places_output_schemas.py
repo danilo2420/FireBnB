@@ -8,3 +8,6 @@ class PlaceGet_OutputSchema(Schema):
 class PlaceWithImage_OutputSchema(Schema):
     place = fields.Nested(PlaceSchema)
     image = fields.Nested(PlaceImgSchema)
+
+class PlaceWithImageAll_OutputSchema(Schema):
+    places_with_img = fields.List(fields.Nested(PlaceWithImage_OutputSchema))

@@ -50,6 +50,24 @@ def get_place_with_image(args):
         "image": image
     }
 
+@bp.route('/getWithImage/all')
+@bp.response(200, PlaceWithImageAll_OutputSchema)
+def get_place_with_image():
+    session = getConnection()
+
+    places = session.query(Place).all()
+
+    arr = []
+    for place in places:
+        image = session.query(PlaceImage).filter(PlaceImage.place_id == place.id).first()
+        item = {
+            "place": place,
+            "image": image
+        }
+        arr.append(item)
+
+    return {"places_with_img": arr}
+
 @bp.route('/create', methods=['POST'])
 @bp.arguments(PlaceCreate_InputSchema)
 @bp.response(200, Success_OutputSchema)

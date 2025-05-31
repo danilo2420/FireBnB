@@ -74,6 +74,31 @@ def create_place_img(args):
 
     return {'message': 'Image created successfully'}
 
+@bp.route('upsert', methods=['POST'])
+@bp.arguments(PlaceImgSchema)
+@bp.response(200, Success_OutputSchema)
+def upsert_img(args):
+    img_id = args.get('id')
+    session = getConnection()
+
+    if img_id is None or img_id < 0:
+        place_img = PlaceImage(
+            place_id = args.get('place_id'),
+            title = args.get('title'),
+            img = args.get('img')
+        )
+
+        session.add(place_img)
+        session.commit()
+        return {'message': 'success'}
+    else:
+        place_img = session.query(PlaceImage).filter(PlaceImage.id == img_id).first()
+        place_img.img = args.get('img')
+        session.commit()
+        return {'message': 'success'}
+
+
+
 @bp.route('/update', methods=['PUT'])
 @bp.arguments(PlaceImgUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
