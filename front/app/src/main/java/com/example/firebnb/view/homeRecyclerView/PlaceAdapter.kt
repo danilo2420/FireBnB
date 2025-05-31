@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.databinding.ItemPlaceBinding
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.api.responses.PlaceWithImage
 
 class PlaceAdapter (
-    var places: List<Place>,
+    //var places: List<Place>,
+    var places: List<PlaceWithImage>,
     val lambda: (PlaceHolder) -> Unit
 ) : RecyclerView.Adapter<PlaceHolder>() {
 
@@ -27,7 +29,7 @@ class PlaceAdapter (
         }
     }
 
-    fun setPlaceList(p: List<Place>) {
+    fun setPlaceList(p: List<PlaceWithImage>) {
         this.places = p
         notifyDataSetChanged()
     }

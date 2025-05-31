@@ -23,6 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider5"
             app:shapeAppearanceOverlay="@style/CircularImage"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/fire" />
 
         <TextView

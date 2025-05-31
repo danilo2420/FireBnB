@@ -1,12 +1,14 @@
 package com.example.firebnb.model.api
 
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
 import com.example.firebnb.model.api.responses.AuthResponse
 import com.example.firebnb.model.api.responses.PlaceListResponse
 import com.example.firebnb.model.api.responses.PlaceWithImage
+import com.example.firebnb.model.api.responses.PlaceWithImageList
 import com.example.firebnb.model.api.responses.RentingList
 import com.example.firebnb.model.api.responses.RentingPreviewList
 import com.example.firebnb.model.api.responses.SuccessResponse
@@ -66,6 +68,9 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): PlaceWithImage
 
+    @GET("places/getWithImage/all")
+    suspend fun getAllPlacesWithImage(): PlaceWithImageList
+
     @POST("places/create")
     suspend fun createPlace(
         @Body place: Place
@@ -81,6 +86,11 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): SuccessResponse
 
+    // PLACE IMAGE **************************
+    @POST("place_imgs/upsert")
+    suspend fun upsertPlaceImage(
+        @Body placeImage: PlaceImage
+    ): SuccessResponse
 
     // RENTING ******************************
     @GET("rentings/get")

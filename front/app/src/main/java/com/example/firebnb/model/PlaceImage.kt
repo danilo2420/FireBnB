@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class PlaceImage(
-    val id: Int,
+    val id: Int?,
     @Json(name="place_id") val placeId: Int,
     var img: String?,
     var title: String

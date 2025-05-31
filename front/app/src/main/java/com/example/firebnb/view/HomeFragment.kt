@@ -1,5 +1,6 @@
 package com.example.firebnb.view
 
+import android.graphics.Rect
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.responses.PlaceWithImage
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
@@ -25,7 +28,7 @@ class HomeFragment : Fragment() {
     val binding: FragmentHomeBinding
         get() = checkNotNull(_binding) {"You tried to access the HomeFragment binding at a wrong time"}
 
-    lateinit var places: List<Place>
+    lateinit var places: List<PlaceWithImage>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +55,13 @@ class HomeFragment : Fragment() {
             try {
                 val _user = Session.getNonNullUser()
                 logMessage("USER: " + _user.toString())
+                /*
                 places = FirebnbRepository()
-                    .getAllPlacesForUser(_user)
+                    .getAllPlacesForUser(_user)*/
+                places = FirebnbRepository()
+                    .getAllPlacesWithImage()
+                    .filter { placeWithImg -> placeWithImg.place.owner_id != Session.getNonNullUser().id }
+                    .toList()
                 initializeRecyclerView()
             } catch (e: Exception) {
                 logError(e)
@@ -64,10 +72,19 @@ class HomeFragment : Fragment() {
 
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
-            showToast("You clicked on " + holder.place.name, requireContext())
-            navigateToPlaceDetail(holder.place)
+            showToast("You clicked on " + holder.placeWithImage.place.name, requireContext())
+            navigateToPlaceDetail(holder.placeWithImage.place)
         }
         binding.recyclerHome.adapter = adapter
+        binding.recyclerHome.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.bottom = 30 // bottom margin for each viewholder
+            }
+        })
+
+
     }
 
     fun navigateToPlaceDetail(place: Place) {
