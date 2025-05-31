@@ -11,6 +11,7 @@ import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyPropertiesBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.responses.PlaceWithImage
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
@@ -23,7 +24,7 @@ class MyPropertiesFragment : Fragment() {
     val binding: FragmentMyPropertiesBinding
         get() = checkNotNull(_binding) {"Trying to access MyPropertiesFragment's binding at a wrong time"}
 
-    lateinit var places: List<Place>
+    lateinit var places: List<PlaceWithImage>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,14 +57,17 @@ class MyPropertiesFragment : Fragment() {
     private fun loadPlaces() {
         lifecycleScope.launch {
             places = FirebnbRepository()
-                .getAllPropertiesForUser(Session.getNonNullUser())
+                .getAllPlacesWithImage()
+                .filter { placeWithImage -> placeWithImage.place.owner_id == Session.getNonNullUser().id }
+                .toList()
+//                .getAllPropertiesForUser(Session.getNonNullUser())
             initializeRecyclerView()
         }
     }
 
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places){ holder ->
-            navigateToPropertyDetail(holder.place)
+            navigateToPropertyDetail(holder.placeWithImage.place)
         }
         binding.recyclerProperties.adapter = adapter
     }
