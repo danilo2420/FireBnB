@@ -1,6 +1,7 @@
 package com.example.firebnb.model.api
 
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
@@ -81,6 +82,11 @@ interface FirebnbApi {
         @Query("id") id: Int
     ): SuccessResponse
 
+    // PLACE IMAGE **************************
+    @POST("place_imgs/upsert")
+    suspend fun upsertPlaceImage(
+        @Body placeImage: PlaceImage
+    ): SuccessResponse
 
     // RENTING ******************************
     @GET("rentings/get")

@@ -56,6 +56,34 @@ class EditPropertyFragment : Fragment() {
     }
 
     fun updateLocalImage(image: String, uri: Uri) {
+        lifecycleScope.launch {
+            try {
+                var img_id: Int? = null
+                if (this@EditPropertyFragment.image != null)
+                    img_id = this@EditPropertyFragment.image!!.id
+                
+                val placeImage: PlaceImage = PlaceImage(
+                    img_id, this@EditPropertyFragment.place.id, image, "No title"
+                )
+
+                val success = FirebnbRepository().upsertImage(placeImage)
+
+                if (success) {
+                    showToast("Image updated successfully", requireContext())
+                    binding.imgEditProperty.setImage(image)
+                    this@EditPropertyFragment.image = placeImage
+                } else {
+                    showToast("There was an error uploading the image", requireContext())
+                }
+
+            } catch (e: Exception) {
+                showToast("There was an error uploading the image" , requireContext())
+                logError(e)
+                e.printStackTrace()
+            }
+        }
+
+
         binding.imgEditProperty.setImageURI(uri)
 
         // TODO: I have to update the image in the API
@@ -83,11 +111,15 @@ class EditPropertyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadData()
         //showData()
         initializeEvents()
-
-        return binding.root
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
