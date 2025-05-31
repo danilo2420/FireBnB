@@ -1,5 +1,6 @@
 package com.example.firebnb.view
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentals2Binding
 import com.example.firebnb.model.api.FirebnbRepository
@@ -71,6 +73,13 @@ class MyRentals2Fragment : Fragment() {
             navController.navigate(action)
         }
         binding.recyclerRentingPreviews.adapter = adapter
+        binding.recyclerRentingPreviews.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.bottom = 30 // bottom margin for each viewholder
+            }
+        })
     }
 
 }
