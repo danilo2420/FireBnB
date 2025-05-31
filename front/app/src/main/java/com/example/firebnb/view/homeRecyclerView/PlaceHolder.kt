@@ -13,7 +13,7 @@ class PlaceHolder (val binding: ItemPlaceBinding) : RecyclerView.ViewHolder (bin
 
         binding.txtName.text = place.name
         binding.txtType.text = place.type
-        binding.txtDescription.text = place.description
+        //binding.txtDescription.text = place.description
         binding.txtPrice.text = place.price_per_night.toString()
     }
 

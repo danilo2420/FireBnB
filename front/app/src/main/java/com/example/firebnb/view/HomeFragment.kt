@@ -1,5 +1,6 @@
 package com.example.firebnb.view
 
+import android.graphics.Rect
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
@@ -68,6 +70,15 @@ class HomeFragment : Fragment() {
             navigateToPlaceDetail(holder.place)
         }
         binding.recyclerHome.adapter = adapter
+        binding.recyclerHome.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.bottom = 30 // bottom margin for each viewholder
+            }
+        })
+
+
     }
 
     fun navigateToPlaceDetail(place: Place) {

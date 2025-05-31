@@ -44,7 +44,7 @@ class EditPropertyFragment : Fragment() {
         try {
             val img = getBase64FromFileUri(uri, requireContext())
             if (img != null) {
-                updateLocalImage(img, uri)
+                updateImage(img, uri)
                 // updateProfileImage(image)
             } else {
                 Log.d("myMessage", "Error with the image thingy")
@@ -55,13 +55,13 @@ class EditPropertyFragment : Fragment() {
         }
     }
 
-    fun updateLocalImage(image: String, uri: Uri) {
+    fun updateImage(image: String, uri: Uri) {
         lifecycleScope.launch {
             try {
                 var img_id: Int? = null
                 if (this@EditPropertyFragment.image != null)
                     img_id = this@EditPropertyFragment.image!!.id
-                
+
                 val placeImage: PlaceImage = PlaceImage(
                     img_id, this@EditPropertyFragment.place.id, image, "No title"
                 )
