@@ -72,7 +72,6 @@ class HomeFragment : Fragment() {
 
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
-            showToast("You clicked on " + holder.placeWithImage.place.name, requireContext())
             navigateToPlaceDetail(holder.placeWithImage)
         }
         binding.recyclerHome.adapter = adapter

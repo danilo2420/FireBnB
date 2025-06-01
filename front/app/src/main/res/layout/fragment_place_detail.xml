@@ -5,65 +5,109 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     tools:context=".view.PlaceDetailFragment" >
 
     <TextView
         android:id="@+id/txtPlaceDetailName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/txtPlaceDetailPrice"
+        app:layout_constraintStart_toStartOf="@+id/guideline13"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/txtPlaceDetailType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:text="Type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailName" />
 
     <TextView
         android:id="@+id/txtPlaceDetailDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:text="Description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailType" />
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline14"
+        app:layout_constraintStart_toStartOf="@+id/guideline13"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/txtPlaceDetailPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="Price"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailDescription" />
-
-    <TextView
-        android:id="@+id/txtPlaceDetailStars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Stars"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailPrice" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtPlaceDetailType"
+        app:layout_constraintEnd_toStartOf="@+id/guideline14"
+        app:layout_constraintTop_toTopOf="@+id/txtPlaceDetailType" />
 
     <Button
         android:id="@+id/btnGoToRentPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:layout_marginBottom="42dp"
         android:text="Rent this place"
+        android:padding="12dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/lightOrange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailStars" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailDescription" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/place"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="36dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="About this place:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline13"
+        app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPlaceDetailType" />
 </androidx.constraintlayout.widget.ConstraintLayout>

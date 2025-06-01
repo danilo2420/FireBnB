@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.databinding.FragmentPlaceDetailBinding
 import com.example.firebnb.model.api.PlaceWithImage
+import com.example.firebnb.utils.setImage
 
 
 class PlaceDetailFragment : Fragment() {
@@ -44,11 +45,13 @@ class PlaceDetailFragment : Fragment() {
 
     private fun showData() {
         binding.apply {
-            txtPlaceDetailName.setText("Name: ${placeWithImage.place.name}")
-            txtPlaceDetailType.setText("Type: ${placeWithImage.place.type}")
-            txtPlaceDetailDescription.setText("Description: ${placeWithImage.place.description}")
-            txtPlaceDetailPrice.setText("Price: ${placeWithImage.place.price_per_night.toString()}")
-            txtPlaceDetailStars.setText("Stars: ${placeWithImage.place.stars.toString()}")
+            txtPlaceDetailName.setText(placeWithImage.place.name)
+            txtPlaceDetailType.setText(placeWithImage.place.type)
+            txtPlaceDetailDescription.setText(placeWithImage.place.description)
+            txtPlaceDetailPrice.setText("${placeWithImage.place.price_per_night}$/night")
+            if (placeWithImage.image != null) {
+                imageView3.setImage(placeWithImage.image!!.img)
+            }
         }
     }
 
