@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:text="Your stay"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline20"
         app:layout_constraintStart_toStartOf="@+id/guideline19"

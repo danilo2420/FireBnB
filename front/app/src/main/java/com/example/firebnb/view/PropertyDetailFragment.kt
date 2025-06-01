@@ -12,8 +12,11 @@ import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.databinding.FragmentMyPropertiesBinding
 import com.example.firebnb.databinding.FragmentPropertyDetailBinding
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -22,7 +25,9 @@ class PropertyDetailFragment : Fragment() {
     val binding: FragmentPropertyDetailBinding
         get() = checkNotNull(_binding) {"Trying to access a null binding"}
 
+    lateinit var placeWithImage: PlaceWithImage
     lateinit var place: Place
+    var image: PlaceImage? = null
     var placeId: Int = -1
 
     override fun onCreateView(
@@ -58,7 +63,9 @@ class PropertyDetailFragment : Fragment() {
     private fun loadPlace() {
         lifecycleScope.launch {
             try {
-                place = FirebnbRepository().getPlace(placeId)
+                placeWithImage = FirebnbRepository().getPlaceWithImage(placeId)
+                place = placeWithImage.place
+                image = placeWithImage.image
                 showData()
                 initializeEvents()
             } catch (e: Exception) {
@@ -69,12 +76,15 @@ class PropertyDetailFragment : Fragment() {
     }
 
     private fun showData() {
-        binding.txtPropertyName.text = "Name: ${this.place.name}"
-        binding.txtPropertyOwner.text = "Owner id: " + (if (place.owner_id != null) place.owner_id else "-")
-        binding.txtPropertyType.text = "Type: ${this.place.type}"
-        binding.txtPropertyDescription.text = "Description: ${this.place.description}"
-        binding.txtPropertyPrice.text = "Price: ${this.place.price_per_night}"
-        binding.txtPropertyStars.text = "Stars: ${this.place.stars}"
+        binding.txtPropertyName.text = "${this.place.name}"
+        //binding.txtPropertyOwner.text = "Owner id: " + (if (place.owner_id != null) place.owner_id else "-")
+        binding.txtPropertyType.text = "${this.place.type}"
+        binding.txtPropertyDescription.text = "${this.place.description}"
+        binding.txtPropertyPrice.text = "Price: ${this.place.price_per_night}$/night"
+        //binding.txtPropertyStars.text = "Stars: ${this.place.stars}"
+        if (this.image != null) {
+            binding.imageView5.setImage(this.image!!.img)
+        }
     }
 
     private fun initializeEvents() {

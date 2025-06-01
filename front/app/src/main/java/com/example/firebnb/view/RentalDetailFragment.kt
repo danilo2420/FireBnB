@@ -64,6 +64,7 @@ class RentalDetailFragment : Fragment() {
             txtRentalDetailStartDate.setText("Arrival date: ${renting.start_date}")
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
             txtRentalDetailPrice.setText("Price: ${renting.total_price}$/night")
+            txtRentalDetailPlaceName.setText(this@RentalDetailFragment.placeWithImage.place.name)
         }
     }
 

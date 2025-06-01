@@ -132,29 +132,29 @@
             android:id="@+id/edtPropertyDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:textSize="18sp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
+            android:ems="10"
+            android:inputType="text|textMultiLine"
             android:padding="12dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView36"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintStart_toStartOf="@+id/guideline11"
-            app:layout_constraintTop_toTopOf="@+id/textView36" />
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/textView38" />
 
         <EditText
             android:id="@+id/edtPropertyPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:textSize="18sp"
             android:background="@drawable/rounded_corner"
+            android:ems="10"
+            android:inputType="text"
             android:padding="12dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView36"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+            app:layout_constraintStart_toStartOf="@+id/guideline11"
+            app:layout_constraintTop_toTopOf="@+id/textView36" />
 
         <Button
             android:id="@+id/btnSaveProfile"
@@ -219,7 +219,7 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtPropertyPrice" />
+            app:layout_constraintTop_toBottomOf="@+id/edtPropertyDescription" />
 
         <ImageView
             android:id="@+id/imgEditProperty"
