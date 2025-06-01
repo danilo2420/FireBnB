@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentRentalDetailBinding
+import com.example.firebnb.model.Place
 import com.example.firebnb.model.Renting
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
@@ -21,6 +23,7 @@ class RentalDetailFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
     lateinit var renting: Renting
+    lateinit var placeWithImage: PlaceWithImage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +49,7 @@ class RentalDetailFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 renting = FirebnbRepository().getRenting(id)
-                showToast("Place was loaded successfully", requireContext())
+                placeWithImage = FirebnbRepository().getPlaceWithImage(renting.place_id)
                 showData()
                 initializeEvents()
             } catch (e: Exception) {
@@ -58,9 +61,9 @@ class RentalDetailFragment : Fragment() {
 
     private fun showData() {
         binding.apply {
-            txtRentalDetailStartDate.setText("Start date: ${renting.start_date}")
+            txtRentalDetailStartDate.setText("Arrival date: ${renting.start_date}")
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
-            txtRentalDetailPrice.setText("Price: ${renting.total_price}")
+            txtRentalDetailPrice.setText("Price: ${renting.total_price}$/night")
         }
     }
 
