@@ -46,6 +46,7 @@ class RentPlaceFragment : Fragment() {
 
     private fun loadPlace() {
         this.place = RentPlaceFragmentArgs.fromBundle(requireArguments()).place
+        binding.txtPlaceToRentName.setText(this.place.name)
     }
 
     private fun initializeEvents() {
