@@ -1,6 +1,6 @@
 package com.example.firebnb.model.api.responses
 
-import com.example.firebnb.model.PlaceImage
+import com.example.firebnb.model.api.PlaceWithImage
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

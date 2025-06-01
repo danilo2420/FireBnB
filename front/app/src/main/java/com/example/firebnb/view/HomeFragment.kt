@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.FirebnbRepository
-import com.example.firebnb.model.api.responses.PlaceWithImage
+import com.example.firebnb.model.api.PlaceWithImage
+import com.example.firebnb.model.api.responses.PlaceWithImageList
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
     private fun initializeRecyclerView() {
         val adapter = PlaceAdapter(places) { holder ->
             showToast("You clicked on " + holder.placeWithImage.place.name, requireContext())
-            navigateToPlaceDetail(holder.placeWithImage.place)
+            navigateToPlaceDetail(holder.placeWithImage)
         }
         binding.recyclerHome.adapter = adapter
         binding.recyclerHome.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -87,9 +87,9 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun navigateToPlaceDetail(place: Place) {
+    fun navigateToPlaceDetail(placeWithImage: PlaceWithImage) {
         val navController = findNavController()
-        val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(place)
+        val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(placeWithImage)
         navController.navigate(action)
     }
 

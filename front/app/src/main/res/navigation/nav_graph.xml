@@ -53,12 +53,12 @@
         android:name="com.example.firebnb.view.PlaceDetailFragment"
         android:label="fragment_place_detail"
         tools:layout="@layout/fragment_place_detail" >
-        <argument
-            android:name="place"
-            app:argType="com.example.firebnb.model.Place" />
         <action
             android:id="@+id/action_placeDetailFragment_to_rentPlaceFragment"
             app:destination="@id/rentPlaceFragment" />
+        <argument
+            android:name="placeWithImage"
+            app:argType="com.example.firebnb.model.api.PlaceWithImage" />
     </fragment>
     <fragment
         android:id="@+id/propertyDetailFragment"

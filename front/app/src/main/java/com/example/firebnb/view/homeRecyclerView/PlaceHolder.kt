@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.databinding.ItemPlaceBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.PlaceImage
-import com.example.firebnb.model.api.responses.PlaceWithImage
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.setImage
 
 class PlaceHolder (val binding: ItemPlaceBinding) : RecyclerView.ViewHolder (binding.root) {

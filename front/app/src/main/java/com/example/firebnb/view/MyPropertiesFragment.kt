@@ -9,16 +9,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyPropertiesBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.api.FirebnbRepository
-import com.example.firebnb.model.api.responses.PlaceWithImage
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.session.Session
-import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 
 
 class MyPropertiesFragment : Fragment() {

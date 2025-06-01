@@ -5,7 +5,6 @@ import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.Renting
 import com.example.firebnb.model.User
 import com.example.firebnb.model.api.endpoint_inputs.AuthInput
-import com.example.firebnb.model.api.responses.PlaceWithImage
 import com.example.firebnb.model.api.responses.RentingPreview
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

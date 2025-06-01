@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firebnb.databinding.ItemPlaceBinding
-import com.example.firebnb.model.Place
-import com.example.firebnb.model.api.responses.PlaceWithImage
+import com.example.firebnb.model.api.PlaceWithImage
 
 class PlaceAdapter (
     //var places: List<Place>,
