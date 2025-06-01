@@ -1,17 +1,23 @@
 package com.example.firebnb.view
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentCreatePropertyBinding
 import com.example.firebnb.model.Place
+import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
@@ -21,6 +27,39 @@ class CreatePropertyFragment : Fragment() {
     var _binding: FragmentCreatePropertyBinding? = null
     val binding: FragmentCreatePropertyBinding
         get() = checkNotNull(_binding) {"Trying to access null binding"}
+
+    private var image: PlaceImage? = null
+
+    private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        openFileLauncher = registerForActivityResult(
+            ActivityResultContracts.OpenDocument()) { uri -> handleUri(uri) }
+    }
+
+    private fun openFileChooser() {
+        openFileLauncher.launch(arrayOf("image/*"))
+    }
+
+    fun handleUri(uri: Uri?) {
+        if (uri == null) return
+
+        try {
+            val image = getBase64FromFileUri(uri, requireContext())
+            if (image != null) {
+                // TODO: implement this
+                // this.image = PlaceImage(-1)
+                //updateProfileImage(image)
+
+            } else {
+                Log.d("myMessage", "Error with the image thingy")
+            }
+        } catch (e: Exception) {
+            logError(e)
+            showToast("Error in image conversion", requireContext())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
