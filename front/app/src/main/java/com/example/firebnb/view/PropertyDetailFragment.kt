@@ -62,6 +62,7 @@ class PropertyDetailFragment : Fragment() {
 
     private fun loadPlace() {
         lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 placeWithImage = FirebnbRepository().getPlaceWithImage(placeId)
                 place = placeWithImage.place
@@ -72,6 +73,7 @@ class PropertyDetailFragment : Fragment() {
                 showToast("There was an error", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
@@ -93,6 +95,16 @@ class PropertyDetailFragment : Fragment() {
             val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place.id)
             navController.navigate(action)
         }
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootPropertyDetail.visibility = View.GONE
+        binding.progressbarPropertyDetail.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootPropertyDetail.visibility = View.VISIBLE
+        binding.progressbarPropertyDetail.visibility = View.GONE
     }
 
 }
