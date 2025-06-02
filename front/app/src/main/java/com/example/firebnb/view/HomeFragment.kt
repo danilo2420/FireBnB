@@ -35,8 +35,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        turnProgressbarOff()
         loadPlaces()
-        val user: User? = Session.user
 
         return binding.root
     }
@@ -52,12 +52,10 @@ class HomeFragment : Fragment() {
 
     private fun loadPlaces() {
         lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 val _user = Session.getNonNullUser()
                 logMessage("USER: " + _user.toString())
-                /*
-                places = FirebnbRepository()
-                    .getAllPlacesForUser(_user)*/
                 places = FirebnbRepository()
                     .getAllPlacesWithImage()
                     .filter { placeWithImg -> placeWithImg.place.owner_id != Session.getNonNullUser().id }
@@ -66,7 +64,7 @@ class HomeFragment : Fragment() {
             } catch (e: Exception) {
                 logError(e)
             }
-
+            turnProgressbarOff()
         }
     }
 
@@ -79,17 +77,25 @@ class HomeFragment : Fragment() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
             ) {
-                outRect.bottom = 30 // bottom margin for each viewholder
+                outRect.bottom = 50 // bottom margin for each viewholder
             }
         })
-
-
     }
 
     fun navigateToPlaceDetail(placeWithImage: PlaceWithImage) {
         val navController = findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(placeWithImage)
         navController.navigate(action)
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootHome.alpha = 0.5f
+        binding.progressbarHome.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootHome.alpha = 1f
+        binding.progressbarHome.visibility = View.GONE
     }
 
 }
