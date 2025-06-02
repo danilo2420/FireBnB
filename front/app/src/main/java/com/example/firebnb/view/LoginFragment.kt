@@ -40,6 +40,7 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setBottomNavVisibility(false)
+        turnProgressbarOff()
         // This logs out the user whenever the login fragment appears (even when popping back into it)
         Session.logOut()
     }
@@ -68,11 +69,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun btnLoginEnterClicked() {
+        turnProgressbarOn()
+
         val email = binding.edtLoginEmail.text.toString()
         val password = binding.edtLoginPassword.text.toString()
 
-        if (!validateInput(email, password))
+        if (!validateInput(email, password)){
+            turnProgressbarOff()
             return
+        }
 
         lifecycleScope.launch {
             try {
@@ -87,6 +92,7 @@ class LoginFragment : Fragment() {
                 showToast("There was an error. Please try again.", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
@@ -95,6 +101,14 @@ class LoginFragment : Fragment() {
             showToast("Fields cannot be empty", requireContext())
             return false
         }
+
+        val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        val matches = regex.matches(email)
+        if (!matches) {
+            showToast("Email is not valid", requireContext())
+            return false
+        }
+
         return true
     }
 
@@ -109,6 +123,16 @@ class LoginFragment : Fragment() {
         val navController = findNavController()
         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
         navController.navigate(action)
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootLogin.alpha = 0.5f
+        binding.progressbarLogin.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootLogin.alpha = 1f
+        binding.progressbarLogin.visibility = View.GONE
     }
 
 }
