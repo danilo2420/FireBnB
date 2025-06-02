@@ -14,6 +14,7 @@ import com.example.firebnb.model.Place
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.session.Session
+import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
 import kotlinx.coroutines.launch
 
@@ -30,6 +31,7 @@ class MyPropertiesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        turnProgressbarOff()
         loadPlaces()
         initializeEvents()
 
@@ -55,12 +57,17 @@ class MyPropertiesFragment : Fragment() {
 
     private fun loadPlaces() {
         lifecycleScope.launch {
-            places = FirebnbRepository()
-                .getAllPlacesWithImage()
-                .filter { placeWithImage -> placeWithImage.place.owner_id == Session.getNonNullUser().id }
-                .toList()
-//                .getAllPropertiesForUser(Session.getNonNullUser())
-            initializeRecyclerView()
+            turnProgressbarOn()
+            try {
+                places = FirebnbRepository()
+                    .getAllPlacesWithImage()
+                    .filter { placeWithImage -> placeWithImage.place.owner_id == Session.getNonNullUser().id }
+                    .toList()
+                initializeRecyclerView()
+            } catch (e: Exception) {
+                showToast("There was an error. Try again later", requireContext())
+            }
+            turnProgressbarOff()
         }
     }
 
@@ -73,7 +80,7 @@ class MyPropertiesFragment : Fragment() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
             ) {
-                outRect.bottom = 30 // bottom margin for each viewholder
+                outRect.bottom = 50 // bottom margin for each viewholder
             }
         })
     }
@@ -83,6 +90,16 @@ class MyPropertiesFragment : Fragment() {
         val action = MyPropertiesFragmentDirections
             .actionMyPropertiesFragmentToPropertyDetailFragment(place)
         navController.navigate(action)
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootProperties.visibility = View.GONE
+        binding.progressbarProperties.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootProperties.visibility = View.VISIBLE
+        binding.progressbarProperties.visibility = View.GONE
     }
 
 }

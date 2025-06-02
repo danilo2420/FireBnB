@@ -89,12 +89,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
-        binding.rootHome.alpha = 0.5f
+        binding.rootHome.visibility = View.GONE
         binding.progressbarHome.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
-        binding.rootHome.alpha = 1f
+        binding.rootHome.visibility = View.VISIBLE
         binding.progressbarHome.visibility = View.GONE
     }
 
