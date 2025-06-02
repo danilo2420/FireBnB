@@ -44,10 +44,6 @@ class LoginFragment : Fragment() {
         Session.logOut()
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
     private fun setBottomNavVisibility(visible: Boolean) {
         val mainActivity = activity as MainActivity
         mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
@@ -64,33 +60,55 @@ class LoginFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnLoginEnter.setOnClickListener {
-            lifecycleScope.launch {
-                val email = binding.edtLoginEmail.text.toString()
-                val password = binding.edtLoginPassword.text.toString()
-                try {
-                    if(FirebnbRepository().authUser(email, password)) {
-                        val user = checkNotNull(FirebnbRepository().getUserByEmail(email)) {"User is null"}
-                        Session.logIn(user)
+            btnLoginEnterClicked()
+        }
+        binding.btnLoginCreateAccount.setOnClickListener {
+            btnLoginCreateAccountClicked()
+        }
+    }
 
-                        val navController = findNavController()
-                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                        setBottomNavVisibility(true)
-                        navController.navigate(action)
-                    } else {
-                        showToast("User is does not exist or data is not correct", requireContext())
-                    }
-                } catch (e: Exception) {
-                    showToast("There was an error", requireContext())
-                    logError(e)
+    private fun btnLoginEnterClicked() {
+        val email = binding.edtLoginEmail.text.toString()
+        val password = binding.edtLoginPassword.text.toString()
+
+        if (!validateInput(email, password))
+            return
+
+        lifecycleScope.launch {
+            try {
+                if(FirebnbRepository().authUser(email, password)) {
+                    val user = checkNotNull(FirebnbRepository().getUserByEmail(email)) {"User is null"}
+                    Session.logIn(user)
+                    navigateToHome()
+                } else {
+                    showToast("User does not exist or data is not correct", requireContext())
                 }
+            } catch (e: Exception) {
+                showToast("There was an error. Please try again.", requireContext())
+                logError(e)
             }
         }
+    }
 
-        binding.btnLoginCreateAccount.setOnClickListener {
-            val navController = findNavController()
-            val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-            navController.navigate(action)
+    private fun validateInput(email: String, password: String): Boolean {
+        if (email.isBlank() || password.isBlank()) {
+            showToast("Fields cannot be empty", requireContext())
+            return false
         }
+        return true
+    }
+
+    private fun navigateToHome() {
+        val navController = findNavController()
+        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+        setBottomNavVisibility(true)
+        navController.navigate(action)
+    }
+
+    private fun btnLoginCreateAccountClicked() {
+        val navController = findNavController()
+        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+        navController.navigate(action)
     }
 
 }
