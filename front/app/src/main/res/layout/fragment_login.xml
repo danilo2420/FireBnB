@@ -1,62 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LoginRoot"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="40dp"
     android:background="@drawable/login_background"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".view.LoginFragment" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/fire"/>
-
-    <EditText
-        android:id="@+id/edtLoginEmail"
+    <LinearLayout
+        android:id="@+id/LoginRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:background="@drawable/rounded_corner"
-        android:hint="Enter email"
-        android:inputType="text" />
+        android:layout_height="match_parent"
+        android:padding="40dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center"
+        tools:context=".view.LoginFragment" >
 
-    <EditText
-        android:id="@+id/edtLoginPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter password"
-        android:padding="10dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_corner"
-        android:inputType="textPassword" />
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="120dp"
+            android:src="@drawable/fire"/>
 
-    <Button
-        android:id="@+id/btnLoginEnter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:padding="18dp"
-        android:textSize="20sp"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/lightOrange"
-        android:text="SIGN IN" />
+        <EditText
+            android:id="@+id/edtLoginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:background="@drawable/rounded_corner"
+            android:hint="Enter email"
+            android:inputType="text" />
 
-    <Button
-        android:id="@+id/btnLoginCreateAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/lightOrange"
-        android:text="Create account" />
+        <EditText
+            android:id="@+id/edtLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter password"
+            android:padding="10dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_corner"
+            android:inputType="textPassword" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnLoginEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:padding="18dp"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/lightOrange"
+            android:text="SIGN IN" />
+
+        <Button
+            android:id="@+id/btnLoginCreateAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/lightOrange"
+            android:text="Create account" />
+
+    </LinearLayout>
+
+
+
+</ScrollView>
