@@ -62,6 +62,7 @@ class RegisterFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         initializeEvents()
+        turnProgressbarOff()
 
         return binding.root
     }
@@ -89,11 +90,11 @@ class RegisterFragment : Fragment() {
         val user = createUserFromInput() ?: return
 
         lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 val success = FirebnbRepository().createUser(user)
                 if (success) {
                     showToast("User was created successfully", requireContext())
-                    delay(2000)
                     val navController = findNavController()
                     navController.popBackStack()
                 } else {
@@ -103,6 +104,7 @@ class RegisterFragment : Fragment() {
                 showToast("There was an error", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
@@ -179,6 +181,16 @@ class RegisterFragment : Fragment() {
         }
 
         return true
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootRegister.alpha = 0.5f
+        binding.progressbarRegister.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootRegister.alpha = 1f
+        binding.progressbarRegister.visibility = View.GONE
     }
 
 }

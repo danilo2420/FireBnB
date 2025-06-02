@@ -23,13 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeBinding()
-
         configureBottomNavMenu()
-
-        Log.d("myMessage", "Before method call")
-
-        test()
-
         setContentView(binding.root)
     }
 
@@ -49,21 +43,6 @@ class MainActivity : AppCompatActivity() {
         return navHostFragment.navController
     }
 
-    // API TESTS
-
-    fun test() {
-        lifecycleScope.launch {
-            try {
-                val list = FirebnbRepository().getAllPlacesWithImage()
-                Log.d("myList", list.toString())
-
-            } catch (e: Exception) {
-                showToast("Error with new enpoint", this@MainActivity)
-                e.printStackTrace()
-            }
-        }
-    }
-
-
+    // Test endpoints here
 }
 
