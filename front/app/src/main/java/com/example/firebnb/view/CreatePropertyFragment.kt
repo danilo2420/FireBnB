@@ -80,15 +80,14 @@ class CreatePropertyFragment : Fragment() {
         _binding = null
     }
 
-
     private fun initializeEvents() {
         binding.btnCreateProperty.setOnClickListener {
+            val place = getPlaceFromInput()
+            if (place == null)
+                return@setOnClickListener
+
             lifecycleScope.launch {
                 try {
-                    // get data
-                    val place = getPlaceFromInput()
-
-                    // send it to api
                     val success = FirebnbRepository().createPlace(place)
                     if (success) {
                         showToast("Place was created successfully", requireContext())
@@ -96,9 +95,6 @@ class CreatePropertyFragment : Fragment() {
                     } else {
                         showToast("There was a problem", requireContext())
                     }
-
-                    // navigate back if successful
-                    // is recycler view updating successfully?
                 } catch (e: Exception) {
                     logError(e)
                 }
@@ -107,12 +103,18 @@ class CreatePropertyFragment : Fragment() {
         }
     }
 
-    private fun getPlaceFromInput(): Place {
+    private fun getPlaceFromInput(): Place? {
         val id = -1 // sqlalchemy should ignore this
         val name = binding.edtCreatePropertyName.text.toString()
         val type = binding.edtCreatePropertyType.text.toString()
         val description = binding.edtCreatePropertyDescription.text.toString()
-        val price = binding.edtCreatePropertyPrice.text.toString().toFloat()
+        val price = binding.edtCreatePropertyPrice.text.toString()
+
+        if (!validateInput(name, type, description, price)) {
+            return null
+        }
+
+        val price_ = price.toFloat()
 
         return Place(
             id,
@@ -120,8 +122,27 @@ class CreatePropertyFragment : Fragment() {
             name,
             type,
             description,
-            price,
+            price_,
             0
         )
+    }
+
+    private fun validateInput(name: String, type: String, description: String, price: String): Boolean {
+        if (name.isBlank() ||
+            type.isBlank() ||
+            description.isBlank() ||
+            price.isBlank()) {
+            showToast("Fields cannot be blank", requireContext())
+            return false
+        }
+
+        try {
+            price.toFloat()
+        } catch (e: Exception) {
+            showToast("Price has to be a number", requireContext())
+            return false
+        }
+
+        return true
     }
 }
