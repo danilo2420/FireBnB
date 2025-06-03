@@ -1,5 +1,6 @@
 package com.example.firebnb.view
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentRentPlaceBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.api.FirebnbRepository
@@ -14,7 +16,12 @@ import com.example.firebnb.model.Renting
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class RentPlaceFragment : Fragment() {
 
@@ -67,6 +74,19 @@ class RentPlaceFragment : Fragment() {
                     logError(e)
                 }
             }
+        }
+
+        binding.btnDatePicker.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(requireContext(),
+                { _, year, month, dayOfMonth ->
+                    showToast("${dayOfMonth}-${month}-${year}", requireContext())
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePicker.show()
         }
     }
 
