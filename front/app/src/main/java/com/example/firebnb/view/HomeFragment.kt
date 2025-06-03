@@ -20,6 +20,7 @@ import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -27,6 +28,8 @@ class HomeFragment : Fragment() {
     var _binding: FragmentHomeBinding? = null
     val binding: FragmentHomeBinding
         get() = checkNotNull(_binding) {"You tried to access the HomeFragment binding at a wrong time"}
+
+    private var job: Job? = null
 
     lateinit var places: List<PlaceWithImage>
 
@@ -48,10 +51,11 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun loadPlaces() {
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 val _user = Session.getNonNullUser()
@@ -69,6 +73,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
+        if (!isAdded || _binding == null)
+            return
         val adapter = PlaceAdapter(places) { holder ->
             navigateToPlaceDetail(holder.placeWithImage)
         }
@@ -89,11 +95,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootHome.visibility = View.GONE
         binding.progressbarHome.visibility = View.VISIBLE
+
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootHome.visibility = View.VISIBLE
         binding.progressbarHome.visibility = View.GONE
     }
