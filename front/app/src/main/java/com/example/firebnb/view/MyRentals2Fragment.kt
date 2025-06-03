@@ -34,6 +34,7 @@ class MyRentals2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        turnProgressbarOff()
 
         return binding.root
     }
@@ -54,14 +55,15 @@ class MyRentals2Fragment : Fragment() {
 
     private fun loadRentingPreviews() {
         lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 previews = FirebnbRepository().getRentingPreviewList(checkNotNull(Session.getNonNullUser().id))
-                previews.forEach { preview -> Log.d("myMessage", preview.toString()) }
                 initializeRecyclerView()
             } catch (e: Exception) {
-                showToast("There was an error", requireContext())
+                //showToast("There was an error", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
@@ -77,9 +79,20 @@ class MyRentals2Fragment : Fragment() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
             ) {
-                outRect.bottom = 30 // bottom margin for each viewholder
+                outRect.bottom = 50
             }
         })
     }
+
+    private fun turnProgressbarOn() {
+        binding.rootRentals.visibility = View.GONE
+        binding.progressbarMyRentals.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootRentals.visibility = View.VISIBLE
+        binding.progressbarMyRentals.visibility = View.GONE
+    }
+
 
 }

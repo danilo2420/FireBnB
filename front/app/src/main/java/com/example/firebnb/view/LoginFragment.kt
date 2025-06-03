@@ -40,12 +40,9 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setBottomNavVisibility(false)
+        turnProgressbarOff()
         // This logs out the user whenever the login fragment appears (even when popping back into it)
         Session.logOut()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     private fun setBottomNavVisibility(visible: Boolean) {
@@ -64,33 +61,78 @@ class LoginFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnLoginEnter.setOnClickListener {
-            lifecycleScope.launch {
-                val email = binding.edtLoginEmail.text.toString()
-                val password = binding.edtLoginPassword.text.toString()
-                try {
-                    if(FirebnbRepository().authUser(email, password)) {
-                        val user = checkNotNull(FirebnbRepository().getUserByEmail(email)) {"User is null"}
-                        Session.logIn(user)
-
-                        val navController = findNavController()
-                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                        setBottomNavVisibility(true)
-                        navController.navigate(action)
-                    } else {
-                        showToast("User is does not exist or data is not correct", requireContext())
-                    }
-                } catch (e: Exception) {
-                    showToast("There was an error", requireContext())
-                    logError(e)
-                }
-            }
+            btnLoginEnterClicked()
         }
-
         binding.btnLoginCreateAccount.setOnClickListener {
-            val navController = findNavController()
-            val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-            navController.navigate(action)
+            btnLoginCreateAccountClicked()
         }
+    }
+
+    private fun btnLoginEnterClicked() {
+        turnProgressbarOn()
+
+        val email = binding.edtLoginEmail.text.toString()
+        val password = binding.edtLoginPassword.text.toString()
+
+        if (!validateInput(email, password)){
+            turnProgressbarOff()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                if(FirebnbRepository().authUser(email, password)) {
+                    val user = checkNotNull(FirebnbRepository().getUserByEmail(email)) {"User is null"}
+                    Session.logIn(user)
+                    navigateToHome()
+                } else {
+                    showToast("User does not exist or data is not correct", requireContext())
+                }
+            } catch (e: Exception) {
+                showToast("There was an error. Please try again.", requireContext())
+                logError(e)
+            }
+            turnProgressbarOff()
+        }
+    }
+
+    private fun validateInput(email: String, password: String): Boolean {
+        if (email.isBlank() || password.isBlank()) {
+            showToast("Fields cannot be empty", requireContext())
+            return false
+        }
+
+        val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        val matches = regex.matches(email)
+        if (!matches) {
+            showToast("Email is not valid", requireContext())
+            return false
+        }
+
+        return true
+    }
+
+    private fun navigateToHome() {
+        val navController = findNavController()
+        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+        setBottomNavVisibility(true)
+        navController.navigate(action)
+    }
+
+    private fun btnLoginCreateAccountClicked() {
+        val navController = findNavController()
+        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+        navController.navigate(action)
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootLogin.alpha = 0.5f
+        binding.progressbarLogin.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootLogin.alpha = 1f
+        binding.progressbarLogin.visibility = View.GONE
     }
 
 }

@@ -29,13 +29,16 @@ class ProfileFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         initializeEvents()
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+        turnProgressbarOn()
         user = Session.getNonNullUser()
         showUserData()
+        turnProgressbarOff()
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -65,7 +68,16 @@ class ProfileFragment : Fragment() {
             val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
             navController.navigate(action)
         }
+    }
 
+    private fun turnProgressbarOn() {
+        binding.rootProfile.visibility = View.GONE
+        binding.progressbarProfile.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootProfile.visibility = View.VISIBLE
+        binding.progressbarProfile.visibility = View.GONE
     }
 
 }

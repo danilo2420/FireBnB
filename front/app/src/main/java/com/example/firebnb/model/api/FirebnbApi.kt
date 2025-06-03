@@ -75,6 +75,11 @@ interface FirebnbApi {
         @Body place: Place
     ): SuccessResponse
 
+    @POST("places/createWithImage")
+    suspend fun createPlaceWithImage(
+        @Body placeWithImage: PlaceWithImage
+    ): SuccessResponse
+
     @PUT("places/update")
     suspend fun updatePlace(
         @Body place: Place

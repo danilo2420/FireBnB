@@ -47,6 +47,7 @@ class RentalDetailFragment : Fragment() {
     private fun loadRenting() {
         val id = RentalDetailFragmentArgs.fromBundle(requireArguments()).rentalId
         lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 renting = FirebnbRepository().getRenting(id)
                 placeWithImage = FirebnbRepository().getPlaceWithImage(renting.place_id)
@@ -56,6 +57,7 @@ class RentalDetailFragment : Fragment() {
                 logError(e)
                 showToast("There was an error", requireContext())
             }
+            turnProgressbarOff()
         }
     }
 
@@ -85,6 +87,16 @@ class RentalDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootRentalDetail.visibility = View.GONE
+        binding.progressbarRentalDetail.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootRentalDetail.visibility = View.VISIBLE
+        binding.progressbarRentalDetail.visibility = View.GONE
     }
 
 }

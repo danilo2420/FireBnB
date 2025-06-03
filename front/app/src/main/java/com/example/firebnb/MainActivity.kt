@@ -1,11 +1,15 @@
 package com.example.firebnb
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -23,13 +27,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeBinding()
-
         configureBottomNavMenu()
-
-        Log.d("myMessage", "Before method call")
-
-        test()
-
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.lightBlue)
+        //window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        window.statusBarColor = Color.TRANSPARENT
         setContentView(binding.root)
     }
 
@@ -49,21 +51,6 @@ class MainActivity : AppCompatActivity() {
         return navHostFragment.navController
     }
 
-    // API TESTS
-
-    fun test() {
-        lifecycleScope.launch {
-            try {
-                val list = FirebnbRepository().getAllPlacesWithImage()
-                Log.d("myList", list.toString())
-
-            } catch (e: Exception) {
-                showToast("Error with new enpoint", this@MainActivity)
-                e.printStackTrace()
-            }
-        }
-    }
-
-
+    // Test endpoints here
 }
 

@@ -16,9 +16,11 @@ import com.example.firebnb.databinding.FragmentCreatePropertyBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -48,16 +50,14 @@ class CreatePropertyFragment : Fragment() {
         try {
             val image = getBase64FromFileUri(uri, requireContext())
             if (image != null) {
-                // TODO: implement this
-                // this.image = PlaceImage(-1)
-                //updateProfileImage(image)
-
+                this.image = PlaceImage(-1, -1, image, "")
+                binding.imageView6.setImage(image)
             } else {
-                Log.d("myMessage", "Error with the image thingy")
+                Log.d("myMessage", "There was an error. Please try again")
             }
         } catch (e: Exception) {
             logError(e)
-            showToast("Error in image conversion", requireContext())
+            showToast("There was an error. Please try again", requireContext())
         }
     }
 
@@ -67,6 +67,7 @@ class CreatePropertyFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         initializeEvents()
+        turnProgressbarOff()
 
         return binding.root
     }
@@ -80,39 +81,54 @@ class CreatePropertyFragment : Fragment() {
         _binding = null
     }
 
-
     private fun initializeEvents() {
         binding.btnCreateProperty.setOnClickListener {
-            lifecycleScope.launch {
-                try {
-                    // get data
-                    val place = getPlaceFromInput()
+            Log.d("myCounter", "1")
+            val place = getPlaceFromInput()
+            if (place == null)
+                return@setOnClickListener
 
-                    // send it to api
-                    val success = FirebnbRepository().createPlace(place)
+            Log.d("myCounter", "2")
+
+            lifecycleScope.launch {
+                turnProgressbarOn()
+                try {
+                    Log.d("myCounter", "3")
+                    val placeWithImage = PlaceWithImage(
+                        place,
+                        this@CreatePropertyFragment.image
+                    )
+
+                    val success = FirebnbRepository().createPlaceWithImage(placeWithImage)
                     if (success) {
                         showToast("Place was created successfully", requireContext())
                         findNavController().popBackStack()
                     } else {
                         showToast("There was a problem", requireContext())
                     }
-
-                    // navigate back if successful
-                    // is recycler view updating successfully?
                 } catch (e: Exception) {
                     logError(e)
                 }
-
+                turnProgressbarOff()
             }
+        }
+        binding.btnCreatePropertyImage.setOnClickListener {
+            openFileChooser()
         }
     }
 
-    private fun getPlaceFromInput(): Place {
+    private fun getPlaceFromInput(): Place? {
         val id = -1 // sqlalchemy should ignore this
         val name = binding.edtCreatePropertyName.text.toString()
         val type = binding.edtCreatePropertyType.text.toString()
         val description = binding.edtCreatePropertyDescription.text.toString()
-        val price = binding.edtCreatePropertyPrice.text.toString().toFloat()
+        val price = binding.edtCreatePropertyPrice.text.toString()
+
+        if (!validateInput(name, type, description, price)) {
+            return null
+        }
+
+        val price_ = price.toFloat()
 
         return Place(
             id,
@@ -120,8 +136,37 @@ class CreatePropertyFragment : Fragment() {
             name,
             type,
             description,
-            price,
+            price_,
             0
         )
+    }
+
+    private fun validateInput(name: String, type: String, description: String, price: String): Boolean {
+        if (name.isBlank() ||
+            type.isBlank() ||
+            description.isBlank() ||
+            price.isBlank()) {
+            showToast("Fields cannot be blank", requireContext())
+            return false
+        }
+
+        try {
+            price.toFloat()
+        } catch (e: Exception) {
+            showToast("Price has to be a number", requireContext())
+            return false
+        }
+
+        return true
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootCreateProperty.alpha = 0.5f
+        binding.progressbarCreateProperty.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootCreateProperty.alpha = 1f
+        binding.progressbarCreateProperty.visibility = View.GONE
     }
 }

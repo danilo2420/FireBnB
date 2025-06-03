@@ -3,18 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Home" />
+        android:icon="@drawable/fireblack"
+        android:title="Explore" />
     <item
         android:id="@+id/myRentals2Fragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="My rentals" />
+        android:icon="@drawable/beach"
+        android:title="My trips" />
     <item
         android:id="@+id/myPropertiesFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/home"
         android:title="My properties" />
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="My profile" />
+        android:icon="@drawable/user"
+        android:title="Profile" />
 </menu>
