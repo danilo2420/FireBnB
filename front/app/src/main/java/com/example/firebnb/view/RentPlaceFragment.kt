@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class RentPlaceFragment : Fragment() {
 
@@ -91,7 +93,7 @@ class RentPlaceFragment : Fragment() {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(requireContext(),
                 { _, year, month, dayOfMonth ->
-                    this.arrivalDate = "${year}-${getWithTwoDigits(month)}-${getWithTwoDigits(dayOfMonth)}"
+                    this.arrivalDate = "${year}-${getWithTwoDigits(month+1)}-${getWithTwoDigits(dayOfMonth)}"
                     binding.txtArrivalDate.setText(this.arrivalDate)
                 },
                 calendar.get(Calendar.YEAR),
@@ -105,7 +107,7 @@ class RentPlaceFragment : Fragment() {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(requireContext(),
                 { _, year, month, dayOfMonth ->
-                    this.endDate = "${year}-${getWithTwoDigits(month)}-${getWithTwoDigits(dayOfMonth)}"
+                    this.endDate = "${year}-${getWithTwoDigits(month+1)}-${getWithTwoDigits(dayOfMonth)}"
                     binding.txtEndDate.setText(this.endDate)
                 },
                 calendar.get(Calendar.YEAR),
@@ -122,12 +124,19 @@ class RentPlaceFragment : Fragment() {
         val guest_id = checkNotNull(Session.getNonNullUser().id)
         val start_date = this.arrivalDate
         val end_date = this.endDate
-        val total_price = place.price_per_night // TODO: this would have to be calculated based on the dates
 
         if(start_date == null || end_date == null)
             return null
 
-        // TODO: validateDates()
+        if (!validateDates(start_date, end_date)){
+            turnProgressbarOff()
+            return null
+        }
+
+        val total_price = place.price_per_night * (ChronoUnit.DAYS.between(
+            LocalDate.parse(start_date),
+            LocalDate.parse(end_date)
+        ))
 
         return Renting(
             -1,
@@ -139,25 +148,24 @@ class RentPlaceFragment : Fragment() {
         )
     }
 
-    /*
+
     private fun validateDates(start_date: String, end_date: String): Boolean {
-        val arrival = LocalDate.parse(start_date) // formato "yyyy-MM-dd"
+        val arrival = LocalDate.parse(start_date)
         val departure = LocalDate.parse(end_date)
 
-        if (arrival.isBefore(departure)) {
-            return true
-        } else {
-            showToast("Arrival date has to come before the end date!", requireContext())
+        if (!arrival.isBefore(departure)) {
+            showToast("Arrival date has to come before the end date", requireContext())
             return false
         }
 
         val today = LocalDate.now()
-        if (!arrival.isBefore(today) && !departure.isBefore(today)) {
-            // ambas fechas son hoy o después
-        } else {
-            // alguna fecha es antes de hoy
+        if (arrival.isBefore(today) || departure.isBefore(today)) {
+            showToast("Dates have to take place after today", requireContext())
+            return false
         }
-    }*/
+
+        return true
+    }
 
     private fun getWithTwoDigits(input_: Int): String {
         var input = input_.toString()
