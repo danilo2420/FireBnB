@@ -19,6 +19,7 @@ import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.launch
 
@@ -48,16 +49,14 @@ class CreatePropertyFragment : Fragment() {
         try {
             val image = getBase64FromFileUri(uri, requireContext())
             if (image != null) {
-                // TODO: implement this
-                // this.image = PlaceImage(-1)
-                //updateProfileImage(image)
-
+                this.image = PlaceImage(-1, -1, image, "")
+                binding.imageView6.setImage(image)
             } else {
-                Log.d("myMessage", "Error with the image thingy")
+                Log.d("myMessage", "There was an error. Please try again")
             }
         } catch (e: Exception) {
             logError(e)
-            showToast("Error in image conversion", requireContext())
+            showToast("There was an error. Please try again", requireContext())
         }
     }
 
@@ -100,6 +99,9 @@ class CreatePropertyFragment : Fragment() {
                 }
 
             }
+        }
+        binding.btnCreatePropertyImage.setOnClickListener {
+            openFileChooser()
         }
     }
 
