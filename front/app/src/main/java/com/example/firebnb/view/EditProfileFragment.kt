@@ -61,7 +61,7 @@ class EditProfileFragment : Fragment() {
                 // Log.d("abcdefg", user.profile_image)
                 val success = FirebnbRepository().updateUser(user)
                 if (success) {
-                    showToast("Success", requireContext())
+                    showToast("Profile image updated successfully", requireContext())
                     showUserData()
                 }
             } catch (e: Exception) {
@@ -122,9 +122,12 @@ class EditProfileFragment : Fragment() {
 
     private fun initializeBtnSave() {
         binding.btnSave.setOnClickListener {
+            val _user = getUserFromInput()
+            if (_user == null)
+                return@setOnClickListener
+
             lifecycleScope.launch {
                 try {
-                    val _user = getUserFromInput()
                     val success = FirebnbRepository().updateUser(_user)
 
                     if(success) {
@@ -133,7 +136,7 @@ class EditProfileFragment : Fragment() {
                         if(userUpdated) {
                             findNavController().popBackStack()
                         } else {
-                            showToast("There was some type of error updating the global user inside the app tho", requireContext())
+                            showToast("There was some type of error updating the global user inside the app", requireContext())
                         }
                     } else {
                         showToast("There was an error", requireContext())
@@ -143,6 +146,62 @@ class EditProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getUserFromInput(): User? {
+        val name = binding.edtName2.text.toString()
+        val lastName = binding.edtLastName2.text.toString()
+        val age = binding.edtAge2.text.toString()
+        val description = binding.edtDescription2.text.toString()
+        val email = binding.edtEmail2.text.toString()
+        val nationality = binding.edtNationality2.text.toString()
+
+        if (!validateInput(
+            name, lastName, age, description, email, nationality
+        )) return null
+
+        val ageInt = age.toInt()
+
+        return User(
+            Session.getNonNullUser().id,
+            name,
+            lastName,
+            ageInt,
+            nationality,
+            description,
+            user.profile_image,
+            user.stars,
+            email,
+            user.password
+        )
+    }
+
+    private fun validateInput(name: String, lastName: String, age: String, description: String, email: String, nationality: String): Boolean {
+        if (name.isBlank() ||
+            lastName.isBlank() ||
+            age.isBlank() ||
+            description.isBlank() ||
+            email.isBlank() ||
+            nationality.isBlank()) {
+            showToast("Fields cannot be blank", requireContext())
+            return false
+        }
+
+        try {
+            age.toInt()
+        } catch (e: Exception) {
+            showToast("Age has to be a number", requireContext())
+            return false
+        }
+
+        val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        val matches = regex.matches(email)
+        if (!matches) {
+            showToast("Email is not valid", requireContext())
+            return false
+        }
+
+        return true
     }
 
     private fun initializeBtnDeleteProfile() {
@@ -169,28 +228,6 @@ class EditProfileFragment : Fragment() {
                 .setNegativeButton("No", null)
                 .show()
         }
-    }
-
-    private fun getUserFromInput(): User {
-        val name = binding.edtName2.text.toString()
-        val lastName = binding.edtLastName2.text.toString()
-        val age = binding.edtAge2.text.toString().toInt()
-        val description = binding.edtDescription2.text.toString()
-        val email = binding.edtEmail2.text.toString()
-        val nationality = binding.edtNationality2.text.toString()
-
-        return User(
-            Session.getNonNullUser().id,
-            name,
-            lastName,
-            age,
-            nationality,
-            description,
-            user.profile_image,
-            user.stars,
-            email,
-            user.password
-        )
     }
 
     private fun initializeBtnChooseImage() {
