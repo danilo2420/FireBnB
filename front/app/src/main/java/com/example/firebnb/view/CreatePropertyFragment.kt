@@ -67,6 +67,7 @@ class CreatePropertyFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         initializeEvents()
+        turnProgressbarOff()
 
         return binding.root
     }
@@ -90,6 +91,7 @@ class CreatePropertyFragment : Fragment() {
             Log.d("myCounter", "2")
 
             lifecycleScope.launch {
+                turnProgressbarOn()
                 try {
                     Log.d("myCounter", "3")
                     val placeWithImage = PlaceWithImage(
@@ -107,7 +109,7 @@ class CreatePropertyFragment : Fragment() {
                 } catch (e: Exception) {
                     logError(e)
                 }
-
+                turnProgressbarOff()
             }
         }
         binding.btnCreatePropertyImage.setOnClickListener {
@@ -156,5 +158,15 @@ class CreatePropertyFragment : Fragment() {
         }
 
         return true
+    }
+
+    private fun turnProgressbarOn() {
+        binding.rootCreateProperty.alpha = 0.5f
+        binding.progressbarCreateProperty.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.rootCreateProperty.alpha = 1f
+        binding.progressbarCreateProperty.visibility = View.GONE
     }
 }
