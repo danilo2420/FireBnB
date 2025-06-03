@@ -2,6 +2,7 @@ package com.example.firebnb.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,9 @@ class RentPlaceFragment : Fragment() {
         get() = checkNotNull(_binding) {"Trying to access null binding"}
 
     lateinit var place: Place
+
+    var arrivalDate: String? = null
+    var endDate: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +65,9 @@ class RentPlaceFragment : Fragment() {
             lifecycleScope.launch {
                 try {
                     val renting = getRenting()
+                    if (renting == null)
+                        return@launch
+                    Log.d("myObject", renting.toString())
                     val success = FirebnbRepository().createRenting(renting)
 
                     if (success) {
@@ -76,11 +83,27 @@ class RentPlaceFragment : Fragment() {
             }
         }
 
-        binding.btnDatePicker.setOnClickListener {
+
+        binding.btnPickArrivalDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(requireContext(),
                 { _, year, month, dayOfMonth ->
-                    showToast("${dayOfMonth}-${month}-${year}", requireContext())
+                    this.arrivalDate = "${year}-${getWithTwoDigits(month)}-${getWithTwoDigits(dayOfMonth)}"
+                    binding.txtArrivalDate.setText(this.arrivalDate)
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePicker.show()
+        }
+
+        binding.btnPickEndDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(requireContext(),
+                { _, year, month, dayOfMonth ->
+                    this.endDate = "${year}-${getWithTwoDigits(month)}-${getWithTwoDigits(dayOfMonth)}"
+                    binding.txtEndDate.setText(this.endDate)
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -90,12 +113,16 @@ class RentPlaceFragment : Fragment() {
         }
     }
 
-    private fun getRenting(): Renting {
+
+    private fun getRenting(): Renting? {
         val place_id = place.id
         val guest_id = checkNotNull(Session.getNonNullUser().id)
-        val start_date = binding.edtStartDate.text.toString()
-        val end_date = binding.edtEndDate.text.toString()
+        val start_date = this.arrivalDate
+        val end_date = this.endDate
         val total_price = place.price_per_night // TODO: this would have to be calculated based on the dates
+
+        if(start_date == null || end_date == null)
+            return null
 
         return Renting(
             -1,
@@ -105,6 +132,14 @@ class RentPlaceFragment : Fragment() {
             end_date,
             total_price
         )
+    }
+
+    private fun getWithTwoDigits(input_: Int): String {
+        var input = input_.toString()
+        if (input.length == 1) {
+            input = "0" + input
+        }
+        return input
     }
 
 }
