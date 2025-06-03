@@ -95,6 +95,44 @@ def create_place(args):
 
     return {'message': 'success'}
 
+@bp.route('/createWithImage', methods=['POST'])
+@bp.arguments(PlaceWithImage_OutputSchema)
+@bp.response(200, Success_OutputSchema)
+def create_place(args):
+    owner_id = args.get('place').get('owner_id')
+    session = getConnection()
+
+    # Check owner exists
+    owner = session.query(User).filter(User.id == owner_id).first()
+    if owner is None:
+        abort(400, message="owner user does not exist")
+
+    place_data = args.get('place')
+    image_data = args.get('image')
+
+    # Create place
+    place = Place(
+        owner_id = place_data.get('owner_id'),
+        name = place_data.get('name'),
+        type = place_data.get('type'),
+        description = place_data.get('description'),
+        price_per_night = place_data.get('price_per_night'),
+        stars = place_data.get('stars')
+    )
+
+    if image_data is not None:
+        image = PlaceImage(
+            title = image_data.get('title'),
+            img = image_data.get('img')
+        )
+        place.images.append(image)
+
+    session.add(place)
+    session.commit()
+
+    return {'message': 'success'}
+
+
 @bp.route('update', methods=['PUT'])
 @bp.arguments(PlaceUpdate_InputSchema)
 @bp.response(200, Success_OutputSchema)
