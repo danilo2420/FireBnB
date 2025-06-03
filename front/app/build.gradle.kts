@@ -50,6 +50,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.ui.text.android)
+    implementation(libs.places)
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

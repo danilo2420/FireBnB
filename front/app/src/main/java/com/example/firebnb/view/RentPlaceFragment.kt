@@ -40,6 +40,7 @@ class RentPlaceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initializeBinding(inflater, container)
+        turnProgressbarOff()
         loadPlace()
         initializeEvents()
 
@@ -63,6 +64,7 @@ class RentPlaceFragment : Fragment() {
     private fun initializeEvents() {
         binding.btnRentPlace.setOnClickListener {
             lifecycleScope.launch {
+                turnProgressbarOn()
                 try {
                     val renting = getRenting()
                     if (renting == null)
@@ -80,6 +82,7 @@ class RentPlaceFragment : Fragment() {
                     showToast("There was an error", requireContext())
                     logError(e)
                 }
+                turnProgressbarOff()
             }
         }
 
@@ -124,6 +127,8 @@ class RentPlaceFragment : Fragment() {
         if(start_date == null || end_date == null)
             return null
 
+        // TODO: validateDates()
+
         return Renting(
             -1,
             place_id,
@@ -134,12 +139,42 @@ class RentPlaceFragment : Fragment() {
         )
     }
 
+    /*
+    private fun validateDates(start_date: String, end_date: String): Boolean {
+        val arrival = LocalDate.parse(start_date) // formato "yyyy-MM-dd"
+        val departure = LocalDate.parse(end_date)
+
+        if (arrival.isBefore(departure)) {
+            return true
+        } else {
+            showToast("Arrival date has to come before the end date!", requireContext())
+            return false
+        }
+
+        val today = LocalDate.now()
+        if (!arrival.isBefore(today) && !departure.isBefore(today)) {
+            // ambas fechas son hoy o después
+        } else {
+            // alguna fecha es antes de hoy
+        }
+    }*/
+
     private fun getWithTwoDigits(input_: Int): String {
         var input = input_.toString()
         if (input.length == 1) {
             input = "0" + input
         }
         return input
+    }
+
+    private fun turnProgressbarOn() {
+        binding.frameLayout10.alpha = 0.5f
+        binding.progressbarRentPlace.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        binding.frameLayout10.alpha = 1f
+        binding.progressbarRentPlace.visibility = View.GONE
     }
 
 }
