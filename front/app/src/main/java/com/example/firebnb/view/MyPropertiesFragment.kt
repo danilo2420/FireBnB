@@ -66,6 +66,7 @@ class MyPropertiesFragment : Fragment() {
                 initializeRecyclerView()
             } catch (e: Exception) {
                 showToast("There was an error. Try again later", requireContext())
+                e.printStackTrace()
             }
             turnProgressbarOff()
         }

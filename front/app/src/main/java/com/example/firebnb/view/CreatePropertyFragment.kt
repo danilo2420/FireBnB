@@ -16,6 +16,7 @@ import com.example.firebnb.databinding.FragmentCreatePropertyBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.PlaceImage
 import com.example.firebnb.model.api.FirebnbRepository
+import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
@@ -81,13 +82,22 @@ class CreatePropertyFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnCreateProperty.setOnClickListener {
+            Log.d("myCounter", "1")
             val place = getPlaceFromInput()
             if (place == null)
                 return@setOnClickListener
 
+            Log.d("myCounter", "2")
+
             lifecycleScope.launch {
                 try {
-                    val success = FirebnbRepository().createPlace(place)
+                    Log.d("myCounter", "3")
+                    val placeWithImage = PlaceWithImage(
+                        place,
+                        this@CreatePropertyFragment.image
+                    )
+
+                    val success = FirebnbRepository().createPlaceWithImage(placeWithImage)
                     if (success) {
                         showToast("Place was created successfully", requireContext())
                         findNavController().popBackStack()
