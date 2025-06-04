@@ -21,6 +21,8 @@ import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class EditProfileFragment : Fragment() {
@@ -31,6 +33,10 @@ class EditProfileFragment : Fragment() {
     lateinit var user: User
 
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
+
+    private var job1: Job? = null
+    private var job2: Job? = null
+    private var job3: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +61,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfileImage(image: String) {
-        lifecycleScope.launch {
+        job1 = lifecycleScope.launch {
             try {
                 user.profile_image = image
                 // Log.d("abcdefg", user.profile_image)
@@ -98,9 +104,14 @@ class EditProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job1?.cancel()
+        job2?.cancel()
+        job3?.cancel()
     }
 
     private fun showUserData() {
+        if (!isAdded || _binding == null)
+            return
         binding.apply {
             if (user.profile_image != null)
                 imgEditProfile.setImage(user.profile_image)
@@ -126,7 +137,7 @@ class EditProfileFragment : Fragment() {
             if (_user == null)
                 return@setOnClickListener
 
-            lifecycleScope.launch {
+            job2 = lifecycleScope.launch {
                 try {
                     val success = FirebnbRepository().updateUser(_user)
 
@@ -149,6 +160,8 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun getUserFromInput(): User? {
+        if (!isAdded || _binding == null)
+            return null
         val name = binding.edtName2.text.toString()
         val lastName = binding.edtLastName2.text.toString()
         val age = binding.edtAge2.text.toString()
@@ -210,7 +223,7 @@ class EditProfileFragment : Fragment() {
                 .setTitle("Delete profile")
                 .setMessage("All your data will be permanently deleted")
                 .setPositiveButton("Yes") {_, _, ->
-                    lifecycleScope.launch {
+                    job3 = lifecycleScope.launch {
                         try {
                             val success = FirebnbRepository().deleteUser(checkNotNull(user.id))
                             if(success) {

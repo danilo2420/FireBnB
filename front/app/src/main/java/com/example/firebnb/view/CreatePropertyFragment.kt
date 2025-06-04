@@ -22,6 +22,7 @@ import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class CreatePropertyFragment : Fragment() {
@@ -33,6 +34,8 @@ class CreatePropertyFragment : Fragment() {
     private var image: PlaceImage? = null
 
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
+
+    private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +82,7 @@ class CreatePropertyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun initializeEvents() {
@@ -90,7 +94,7 @@ class CreatePropertyFragment : Fragment() {
 
             Log.d("myCounter", "2")
 
-            lifecycleScope.launch {
+            job = lifecycleScope.launch {
                 turnProgressbarOn()
                 try {
                     Log.d("myCounter", "3")
@@ -161,11 +165,15 @@ class CreatePropertyFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootCreateProperty.alpha = 0.5f
         binding.progressbarCreateProperty.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootCreateProperty.alpha = 1f
         binding.progressbarCreateProperty.visibility = View.GONE
     }

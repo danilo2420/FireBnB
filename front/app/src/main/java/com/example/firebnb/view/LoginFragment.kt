@@ -15,6 +15,7 @@ import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -22,6 +23,8 @@ class LoginFragment : Fragment() {
     var _binding: FragmentLoginBinding? = null
     val binding: FragmentLoginBinding
         get() = checkNotNull(_binding) {"Trying to access null binding"}
+
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +58,11 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
+    }
+
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
     }
@@ -79,17 +87,19 @@ class LoginFragment : Fragment() {
             return
         }
 
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             try {
                 if(FirebnbRepository().authUser(email, password)) {
                     val user = checkNotNull(FirebnbRepository().getUserByEmail(email)) {"User is null"}
                     Session.logIn(user)
                     navigateToHome()
                 } else {
-                    showToast("User does not exist or data is not correct", requireContext())
+                    if (isAdded && view != null)
+                        showToast("User does not exist or data is not correct", requireContext())
                 }
             } catch (e: Exception) {
-                showToast("There was an error. Please try again.", requireContext())
+                if (isAdded && view != null)
+                    showToast("There was an error. Please try again.", requireContext())
                 logError(e)
             }
             turnProgressbarOff()
@@ -98,14 +108,16 @@ class LoginFragment : Fragment() {
 
     private fun validateInput(email: String, password: String): Boolean {
         if (email.isBlank() || password.isBlank()) {
-            showToast("Fields cannot be empty", requireContext())
+            if (isAdded && view != null)
+                showToast("Fields cannot be empty", requireContext())
             return false
         }
 
         val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
         val matches = regex.matches(email)
         if (!matches) {
-            showToast("Email is not valid", requireContext())
+            if (isAdded && view != null)
+                showToast("Email is not valid", requireContext())
             return false
         }
 
@@ -126,11 +138,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootLogin.alpha = 0.5f
         binding.progressbarLogin.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootLogin.alpha = 1f
         binding.progressbarLogin.visibility = View.GONE
     }

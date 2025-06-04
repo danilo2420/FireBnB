@@ -15,6 +15,7 @@ import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class RentalDetailFragment : Fragment() {
@@ -24,6 +25,9 @@ class RentalDetailFragment : Fragment() {
 
     lateinit var renting: Renting
     lateinit var placeWithImage: PlaceWithImage
+
+    private var job1: Job? = null
+    private var job2: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +46,13 @@ class RentalDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job1?.cancel()
+        job2?.cancel()
     }
 
     private fun loadRenting() {
         val id = RentalDetailFragmentArgs.fromBundle(requireArguments()).rentalId
-        lifecycleScope.launch {
+        job1 = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 renting = FirebnbRepository().getRenting(id)
@@ -55,13 +61,15 @@ class RentalDetailFragment : Fragment() {
                 initializeEvents()
             } catch (e: Exception) {
                 logError(e)
-                showToast("There was an error", requireContext())
+                //showToast("There was an error", requireContext())
             }
             turnProgressbarOff()
         }
     }
 
     private fun showData() {
+        if (!isAdded || _binding == null)
+            return
         binding.apply {
             txtRentalDetailStartDate.setText("Arrival date: ${renting.start_date}")
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
@@ -72,17 +80,17 @@ class RentalDetailFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnDeleteRental.setOnClickListener {
-            lifecycleScope.launch {
+            job2 = lifecycleScope.launch {
                 try {
                     val success = FirebnbRepository().deleteRenting(renting.id)
                     if (success) {
                         showToast("Rental deleted successfully", requireContext())
                         findNavController().popBackStack()
                     } else {
-                        showToast("There was an error", requireContext())
+                        //showToast("There was an error", requireContext())
                     }
                 } catch (e: Exception) {
-                    showToast("There was an error", requireContext())
+                    //showToast("There was an error", requireContext())
                     logError(e)
                 }
             }
@@ -90,11 +98,15 @@ class RentalDetailFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRentalDetail.visibility = View.GONE
         binding.progressbarRentalDetail.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRentalDetail.visibility = View.VISIBLE
         binding.progressbarRentalDetail.visibility = View.GONE
     }

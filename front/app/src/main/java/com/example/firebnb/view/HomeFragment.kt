@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firebnb.MainActivity
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
@@ -20,6 +21,7 @@ import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.logMessage
 import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.homeRecyclerView.PlaceAdapter
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -27,6 +29,8 @@ class HomeFragment : Fragment() {
     var _binding: FragmentHomeBinding? = null
     val binding: FragmentHomeBinding
         get() = checkNotNull(_binding) {"You tried to access the HomeFragment binding at a wrong time"}
+
+    private var job: Job? = null
 
     lateinit var places: List<PlaceWithImage>
 
@@ -41,6 +45,11 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        setBottomNavVisibility(true)
+    }
+
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
     }
@@ -48,10 +57,11 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun loadPlaces() {
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 val _user = Session.getNonNullUser()
@@ -69,6 +79,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
+        if (!isAdded || _binding == null)
+            return
         val adapter = PlaceAdapter(places) { holder ->
             navigateToPlaceDetail(holder.placeWithImage)
         }
@@ -85,17 +97,28 @@ class HomeFragment : Fragment() {
     fun navigateToPlaceDetail(placeWithImage: PlaceWithImage) {
         val navController = findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(placeWithImage)
+        setBottomNavVisibility(false)
         navController.navigate(action)
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootHome.visibility = View.GONE
         binding.progressbarHome.visibility = View.VISIBLE
+
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootHome.visibility = View.VISIBLE
         binding.progressbarHome.visibility = View.GONE
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean) {
+        val mainActivity = activity as MainActivity
+        mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
 }
