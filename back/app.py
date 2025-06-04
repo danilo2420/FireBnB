@@ -20,11 +20,12 @@ from blueprints.guest_reviews_bp import guest_reviews_bp
 from blueprints.renting_bp import renting_bp
 from blueprints.place_reviews_bp import place_reviews_bp
 from blueprints.favorite_lists_bp import favorite_lists_bp
+import time
 
 # Basic setup
-if not connection.testConnection():
-    print("Connection to the DB was not possible. Exiting program...")
-    sys.exit()
+while not connection.testConnection():
+    print("Connection to the DB was not possible. Trying again after a brief delay")
+    time.sleep()
 session = connection.getConnection()
 model.createTables()
 
