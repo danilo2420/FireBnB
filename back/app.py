@@ -25,7 +25,7 @@ import time
 # Basic setup
 while not connection.testConnection():
     print("Connection to the DB was not possible. Trying again after a brief delay")
-    time.sleep()
+    time.sleep(2)
 session = connection.getConnection()
 model.createTables()
 
