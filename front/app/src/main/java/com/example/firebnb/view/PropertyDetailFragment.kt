@@ -18,12 +18,15 @@ import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PropertyDetailFragment : Fragment() {
     var _binding: FragmentPropertyDetailBinding? = null
     val binding: FragmentPropertyDetailBinding
         get() = checkNotNull(_binding) {"Trying to access a null binding"}
+
+    private var job: Job? = null
 
     lateinit var placeWithImage: PlaceWithImage
     lateinit var place: Place
@@ -54,6 +57,7 @@ class PropertyDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun loadPlaceId() {
@@ -61,7 +65,7 @@ class PropertyDetailFragment : Fragment() {
     }
 
     private fun loadPlace() {
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 placeWithImage = FirebnbRepository().getPlaceWithImage(placeId)
@@ -70,7 +74,7 @@ class PropertyDetailFragment : Fragment() {
                 showData()
                 initializeEvents()
             } catch (e: Exception) {
-                showToast("There was an error", requireContext())
+                //showToast("There was an error", requireContext())
                 logError(e)
             }
             turnProgressbarOff()
@@ -78,6 +82,8 @@ class PropertyDetailFragment : Fragment() {
     }
 
     private fun showData() {
+        if (!isAdded || _binding == null)
+            return
         binding.txtPropertyName.text = "${this.place.name}"
         //binding.txtPropertyOwner.text = "Owner id: " + (if (place.owner_id != null) place.owner_id else "-")
         binding.txtPropertyType.text = "${this.place.type}"
@@ -90,6 +96,8 @@ class PropertyDetailFragment : Fragment() {
     }
 
     private fun initializeEvents() {
+        if (!isAdded || _binding == null)
+            return
         binding.btnEditProperty.setOnClickListener {
             val navController = findNavController()
             val action = PropertyDetailFragmentDirections.actionPropertyDetailFragmentToEditPropertyFragment(this.place.id)
@@ -98,11 +106,15 @@ class PropertyDetailFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootPropertyDetail.visibility = View.GONE
         binding.progressbarPropertyDetail.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootPropertyDetail.visibility = View.VISIBLE
         binding.progressbarPropertyDetail.visibility = View.GONE
     }

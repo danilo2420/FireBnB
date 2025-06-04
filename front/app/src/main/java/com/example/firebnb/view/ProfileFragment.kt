@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.example.firebnb.MainActivity
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentProfileBinding
 import com.example.firebnb.model.User
@@ -35,6 +36,7 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        setBottomNavVisibility(true)
         turnProgressbarOn()
         user = Session.getNonNullUser()
         showUserData()
@@ -66,6 +68,7 @@ class ProfileFragment : Fragment() {
         binding.btnGoToEditProfile.setOnClickListener {
             val navController = findNavController()
             val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+            setBottomNavVisibility(false)
             navController.navigate(action)
         }
     }
@@ -78,6 +81,11 @@ class ProfileFragment : Fragment() {
     private fun turnProgressbarOff() {
         binding.rootProfile.visibility = View.VISIBLE
         binding.progressbarProfile.visibility = View.GONE
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean) {
+        val mainActivity = activity as MainActivity
+        mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
 }

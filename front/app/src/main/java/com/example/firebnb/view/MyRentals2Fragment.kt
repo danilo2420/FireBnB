@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firebnb.MainActivity
 import com.example.firebnb.R
 import com.example.firebnb.databinding.FragmentMyRentals2Binding
 import com.example.firebnb.model.api.FirebnbRepository
@@ -18,6 +19,7 @@ import com.example.firebnb.session.Session
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
 import com.example.firebnb.view.rentingsRecyclerView.RentingPreviewAdapter
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -26,6 +28,8 @@ class MyRentals2Fragment : Fragment() {
     var _binding: FragmentMyRentals2Binding? = null
     val binding: FragmentMyRentals2Binding
         get() = checkNotNull(_binding) {"Trying to access null binding"}
+
+    private var job: Job? = null
 
     lateinit var previews: List<RentingPreview>
 
@@ -42,6 +46,7 @@ class MyRentals2Fragment : Fragment() {
     override fun onResume() {
         super.onResume()
         loadRentingPreviews()
+        setBottomNavVisibility(true)
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -51,10 +56,11 @@ class MyRentals2Fragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun loadRentingPreviews() {
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 previews = FirebnbRepository().getRentingPreviewList(checkNotNull(Session.getNonNullUser().id))
@@ -68,10 +74,13 @@ class MyRentals2Fragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
+        if (!isAdded || _binding == null)
+            return
         val adapter = RentingPreviewAdapter(this.previews) { holder ->
             //showToast("You chose " + holder.rentingPreview.name + "!", requireContext())
             val navController = findNavController()
             val action = MyRentals2FragmentDirections.actionMyRentals2FragmentToRentalDetailFragment(holder.rentingPreview.id)
+            setBottomNavVisibility(false)
             navController.navigate(action)
         }
         binding.recyclerRentingPreviews.adapter = adapter
@@ -85,13 +94,22 @@ class MyRentals2Fragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRentals.visibility = View.GONE
         binding.progressbarMyRentals.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRentals.visibility = View.VISIBLE
         binding.progressbarMyRentals.visibility = View.GONE
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean) {
+        val mainActivity = activity as MainActivity
+        mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
 

@@ -17,6 +17,7 @@ import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,6 +28,8 @@ class RegisterFragment : Fragment() {
 
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
     private var chosenImage: String? = null
+
+    private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +77,7 @@ class RegisterFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job?.cancel()
     }
 
     private fun initializeEvents() {
@@ -89,7 +93,7 @@ class RegisterFragment : Fragment() {
     private fun btnCreateUserClicked() {
         val user = createUserFromInput() ?: return
 
-        lifecycleScope.launch {
+        job = lifecycleScope.launch {
             turnProgressbarOn()
             try {
                 val success = FirebnbRepository().createUser(user)
@@ -184,11 +188,15 @@ class RegisterFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRegister.alpha = 0.5f
         binding.progressbarRegister.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootRegister.alpha = 1f
         binding.progressbarRegister.visibility = View.GONE
     }

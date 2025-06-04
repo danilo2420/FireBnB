@@ -138,11 +138,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootLogin.alpha = 0.5f
         binding.progressbarLogin.visibility = View.VISIBLE
     }
 
     private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
         binding.rootLogin.alpha = 1f
         binding.progressbarLogin.visibility = View.GONE
     }

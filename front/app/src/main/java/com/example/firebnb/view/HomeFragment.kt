@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firebnb.MainActivity
 import com.example.firebnb.databinding.FragmentHomeBinding
 import com.example.firebnb.model.Place
 import com.example.firebnb.model.User
@@ -42,6 +43,11 @@ class HomeFragment : Fragment() {
         loadPlaces()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setBottomNavVisibility(true)
     }
 
     private fun initializeBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -91,6 +97,7 @@ class HomeFragment : Fragment() {
     fun navigateToPlaceDetail(placeWithImage: PlaceWithImage) {
         val navController = findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToPlaceDetailFragment(placeWithImage)
+        setBottomNavVisibility(false)
         navController.navigate(action)
     }
 
@@ -107,6 +114,11 @@ class HomeFragment : Fragment() {
             return
         binding.rootHome.visibility = View.VISIBLE
         binding.progressbarHome.visibility = View.GONE
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean) {
+        val mainActivity = activity as MainActivity
+        mainActivity.binding.menuBottomNav.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
 }

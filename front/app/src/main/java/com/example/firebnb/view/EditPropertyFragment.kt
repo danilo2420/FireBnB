@@ -20,6 +20,7 @@ import com.example.firebnb.utils.getBase64FromFileUri
 import com.example.firebnb.utils.logError
 import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class EditPropertyFragment : Fragment() {
@@ -31,6 +32,10 @@ class EditPropertyFragment : Fragment() {
 
     lateinit var place: Place
     var image: PlaceImage? = null
+
+    private var job1: Job? = null
+    private var job2: Job? = null
+    private var job3: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +75,7 @@ class EditPropertyFragment : Fragment() {
 
                 if (success) {
                     showToast("Image updated successfully", requireContext())
-                    binding.imgEditProperty.setImage(image)
+                    binding.imgEditProperty.setImage(placeImage.img)
                     this@EditPropertyFragment.image = placeImage
                 } else {
                     showToast("There was an error uploading the image", requireContext())
@@ -83,12 +88,7 @@ class EditPropertyFragment : Fragment() {
             }
         }
 
-
         binding.imgEditProperty.setImageURI(uri)
-
-        // TODO: I have to update the image in the API
-
-        val remoteImage: PlaceImage
 
         if (this.image != null){
             this.image!!.img = image
@@ -117,8 +117,8 @@ class EditPropertyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        turnProgressbarOff()
         loadData()
-        //showData()
         initializeEvents()
     }
 
@@ -129,11 +129,15 @@ class EditPropertyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        job1?.cancel()
+        job2?.cancel()
+        job3?.cancel()
     }
 
     private fun loadData() {
         val placeId = EditPropertyFragmentArgs.fromBundle(requireArguments()).placeId
-        lifecycleScope.launch {
+        job1 = lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 val placeWithImage = FirebnbRepository().getPlaceWithImage(placeId)
                 this@EditPropertyFragment.place = placeWithImage.place
@@ -141,12 +145,15 @@ class EditPropertyFragment : Fragment() {
                 showData()
             } catch (e: Exception) {
                 logError(e)
-                showToast("There was an error", requireContext())
+                //showToast("There was an error", requireContext())
             }
+            turnProgressbarOff()
         }
     }
 
     private fun showData() {
+        if (!isAdded || _binding == null)
+            return
         binding.apply {
             edtPropertyName.setText(place.name)
             edtPropertyType.setText(place.type)
@@ -160,6 +167,8 @@ class EditPropertyFragment : Fragment() {
 
 
     private fun initializeEvents() {
+        if (!isAdded || _binding == null)
+            return
         initializeBtnSaveProfile()
         initializeBtnDeleteProperty()
         initializeBtnChooseImage()
@@ -167,10 +176,14 @@ class EditPropertyFragment : Fragment() {
 
     private fun initializeBtnSaveProfile() {
         binding.btnSaveProfile.setOnClickListener {
-            lifecycleScope.launch {
+            job2 = lifecycleScope.launch {
+                turnProgressbarOff()
                 try {
                     // get data
                     val _place = getPlaceFromInput()
+
+                    if (_place == null)
+                        return@launch
 
                     // call the api
                     val success = FirebnbRepository().updatePlace(_place)
@@ -186,7 +199,7 @@ class EditPropertyFragment : Fragment() {
                     showToast("There was an error", requireContext())
                     logError(e)
                 }
-
+                turnProgressbarOn()
             }
         }
     }
@@ -203,8 +216,9 @@ class EditPropertyFragment : Fragment() {
     }
 
     private fun deletePlace() {
-        lifecycleScope.launch {
+        job3 = lifecycleScope.launch {
             try {
+                turnProgressbarOn()
                 val success = FirebnbRepository().deletePlace(place.id)
                 if (success) {
                     showToast("Property was deleted successfully", requireContext())
@@ -218,21 +232,29 @@ class EditPropertyFragment : Fragment() {
                 showToast("There was an error", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
-    private fun getPlaceFromInput(): Place {
+    private fun getPlaceFromInput(): Place? {
+        if (!isAdded || _binding == null)
+            return null
         val id = place.id
         val owner_id = place.owner_id
         val name = binding.edtPropertyName.text.toString()
         val type = binding.edtPropertyType.text.toString()
         val description = binding.edtPropertyDescription.text.toString()
-        var price_per_night = binding.edtPropertyPrice.text.toString().toFloat()
+        var price_per_night = binding.edtPropertyPrice.text.toString()
             //.toFloatOrNull()
         /*
         if (price_per_night == null) {
             price_per_night = place.price_per_night
         }*/
+
+        if (!validateInput(name, type, description, price_per_night))
+            return null
+
+        val price_per_night_ = price_per_night.toFloat()
 
         return Place(
             id,
@@ -240,9 +262,28 @@ class EditPropertyFragment : Fragment() {
             name,
             type,
             description,
-            price_per_night,
+            price_per_night_,
             0
         )
+    }
+
+    private fun validateInput(name: String, type: String, description: String, price: String): Boolean {
+        if (name.isBlank() ||
+            type.isBlank() ||
+            description.isBlank() ||
+            price.isBlank()) {
+            showToast("Fields cannot be blank", requireContext())
+            return false
+        }
+
+        try {
+            price.toFloat()
+        } catch (e: Exception) {
+            showToast("Price has to be a number", requireContext())
+            return false
+        }
+
+        return true
     }
 
 
@@ -250,6 +291,21 @@ class EditPropertyFragment : Fragment() {
         binding.btnEditPropertyChooseImage.setOnClickListener {
             openFileChooser()
         }
+    }
+
+    private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
+        binding.rootEditProperty.visibility = View.GONE
+        binding.progressbarEditProperty.visibility = View.VISIBLE
+
+    }
+
+    private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
+        binding.rootEditProperty.visibility = View.VISIBLE
+        binding.progressbarEditProperty.visibility = View.GONE
     }
 
 }
