@@ -4,8 +4,8 @@ from db_config import *
 
 session = None
 # URL = 'postgresql://root:root@localhost:5432/FireBnB'
-# URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@db:{DB_PORT}/{DB_NAME}'
-URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost:{DB_PORT}/{DB_NAME}'
+URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@db:{DB_PORT}/{DB_NAME}'
+# URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost:{DB_PORT}/{DB_NAME}'
 # URL = 'postgresql://postgres:PxiuCSODtPuPvdHPSMbZOrDvKtpzDkaD@postgres.railway.internal:5432/railway'
 # URL = 'postgresql://postgres:PxiuCSODtPuPvdHPSMbZOrDvKtpzDkaD@turntable.proxy.rlwy.net:28336/railway'
 
