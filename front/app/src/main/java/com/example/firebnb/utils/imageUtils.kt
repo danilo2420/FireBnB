@@ -19,9 +19,6 @@ fun ImageView.setImage(image_base64: String?){
             Log.d("abcdef", "error decoding image")
             logError(e)
         }
-
-    } else {
-        // default image?
     }
 }
 

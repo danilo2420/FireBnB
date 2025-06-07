@@ -14,6 +14,7 @@ import com.example.firebnb.model.Renting
 import com.example.firebnb.model.api.FirebnbRepository
 import com.example.firebnb.model.api.PlaceWithImage
 import com.example.firebnb.utils.logError
+import com.example.firebnb.utils.setImage
 import com.example.firebnb.utils.showToast
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -75,6 +76,7 @@ class RentalDetailFragment : Fragment() {
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
             txtRentalDetailPrice.setText("Price: ${renting.total_price}$/night")
             txtRentalDetailPlaceName.setText(this@RentalDetailFragment.placeWithImage.place.name)
+            imageView4.setImage(this@RentalDetailFragment.placeWithImage.image?.img)
         }
     }
 
