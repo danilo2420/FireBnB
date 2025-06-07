@@ -114,7 +114,7 @@ class RegisterFragment : Fragment() {
 
     fun createUserFromInput(): User? {
         val name = binding.edtName.text.toString()
-        val lastName = binding.edtName.text.toString()
+        val lastName = binding.edtLastname.text.toString()
         val age = binding.edtAge.text.toString()
         val nationality = binding.edtNationality.text.toString()
         val email = binding.edtEmail.text.toString()

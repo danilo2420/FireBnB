@@ -74,7 +74,7 @@ class RentalDetailFragment : Fragment() {
         binding.apply {
             txtRentalDetailStartDate.setText("Arrival date: ${renting.start_date}")
             txtRentalDetailEndDate.setText("End date: ${renting.end_date}")
-            txtRentalDetailPrice.setText("Price: ${renting.total_price}$/night")
+            txtRentalDetailPrice.setText("Price: ${renting.total_price}")
             txtRentalDetailPlaceName.setText(this@RentalDetailFragment.placeWithImage.place.name)
             imageView4.setImage(this@RentalDetailFragment.placeWithImage.image?.img)
         }

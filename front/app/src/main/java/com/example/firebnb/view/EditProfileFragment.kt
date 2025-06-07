@@ -119,9 +119,7 @@ class EditProfileFragment : Fragment() {
             edtLastName2.setText(user.lastName)
             edtAge2.setText(user.age.toString())
             edtDescription2.setText(user.description)
-            edtEmail2.setText(user.email)
             edtNationality2.setText(user.nationality)
-            // Add image
         }
     }
 
@@ -165,12 +163,13 @@ class EditProfileFragment : Fragment() {
         val name = binding.edtName2.text.toString()
         val lastName = binding.edtLastName2.text.toString()
         val age = binding.edtAge2.text.toString()
-        val description = binding.edtDescription2.text.toString()
-        val email = binding.edtEmail2.text.toString()
+        var description = binding.edtDescription2.text.toString()
         val nationality = binding.edtNationality2.text.toString()
 
+        if (description.isBlank()) description = ""
+
         if (!validateInput(
-            name, lastName, age, description, email, nationality
+            name, lastName, age, nationality
         )) return null
 
         val ageInt = age.toInt()
@@ -184,17 +183,15 @@ class EditProfileFragment : Fragment() {
             description,
             user.profile_image,
             user.stars,
-            email,
+            user.email,
             user.password
         )
     }
 
-    private fun validateInput(name: String, lastName: String, age: String, description: String, email: String, nationality: String): Boolean {
+    private fun validateInput(name: String, lastName: String, age: String, nationality: String): Boolean {
         if (name.isBlank() ||
             lastName.isBlank() ||
             age.isBlank() ||
-            description.isBlank() ||
-            email.isBlank() ||
             nationality.isBlank()) {
             showToast("Fields cannot be blank", requireContext())
             return false
@@ -204,13 +201,6 @@ class EditProfileFragment : Fragment() {
             age.toInt()
         } catch (e: Exception) {
             showToast("Age has to be a number", requireContext())
-            return false
-        }
-
-        val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
-        val matches = regex.matches(email)
-        if (!matches) {
-            showToast("Email is not valid", requireContext())
             return false
         }
 
