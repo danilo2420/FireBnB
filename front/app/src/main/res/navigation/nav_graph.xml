@@ -44,11 +44,6 @@
             app:destination="@id/createPropertyFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myRentalsFragment"
-        android:name="com.example.firebnb.view.MyRentalsFragment"
-        android:label="fragment_my_rentals"
-        tools:layout="@layout/fragment_my_rentals" />
-    <fragment
         android:id="@+id/placeDetailFragment"
         android:name="com.example.firebnb.view.PlaceDetailFragment"
         android:label="fragment_place_detail"

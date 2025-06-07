@@ -62,6 +62,7 @@ class EditProfileFragment : Fragment() {
 
     private fun updateProfileImage(image: String) {
         job1 = lifecycleScope.launch {
+            turnProgressbarOn()
             try {
                 user.profile_image = image
                 // Log.d("abcdefg", user.profile_image)
@@ -74,6 +75,7 @@ class EditProfileFragment : Fragment() {
                 showToast("There was an error updating the profile picture", requireContext())
                 logError(e)
             }
+            turnProgressbarOff()
         }
     }
 
@@ -87,6 +89,7 @@ class EditProfileFragment : Fragment() {
     ): View? {
         initializeBinding(inflater, container)
         user = Session.getNonNullUser()
+        turnProgressbarOff()
 
         return binding.root
     }
@@ -136,13 +139,14 @@ class EditProfileFragment : Fragment() {
                 return@setOnClickListener
 
             job2 = lifecycleScope.launch {
+                turnProgressbarOn()
                 try {
                     val success = FirebnbRepository().updateUser(_user)
 
                     if(success) {
-                        showToast("Profile updated successfully", requireContext())
                         val userUpdated = Session.updateUser()
                         if(userUpdated) {
+                            showToast("Profile updated successfully", requireContext())
                             findNavController().popBackStack()
                         } else {
                             showToast("There was some type of error updating the global user inside the app", requireContext())
@@ -153,6 +157,7 @@ class EditProfileFragment : Fragment() {
                 } catch (e: Exception) {
                     logError(e)
                 }
+                turnProgressbarOff()
             }
         }
     }
@@ -214,6 +219,7 @@ class EditProfileFragment : Fragment() {
                 .setMessage("All your data will be permanently deleted")
                 .setPositiveButton("Yes") {_, _, ->
                     job3 = lifecycleScope.launch {
+                        turnProgressbarOn()
                         try {
                             val success = FirebnbRepository().deleteUser(checkNotNull(user.id))
                             if(success) {
@@ -226,6 +232,7 @@ class EditProfileFragment : Fragment() {
                             showToast("There was an error", requireContext())
                             logError(e)
                         }
+                        turnProgressbarOff()
                     }
                 }
                 .setNegativeButton("No", null)
@@ -237,6 +244,20 @@ class EditProfileFragment : Fragment() {
         binding.btnChooseImage.setOnClickListener {
             openFileChooser()
         }
+    }
+
+    private fun turnProgressbarOn() {
+        if (!isAdded || _binding == null)
+            return
+        binding.frameLayout7.alpha = 0.5f
+        binding.progressbarEditProfile.visibility = View.VISIBLE
+    }
+
+    private fun turnProgressbarOff() {
+        if (!isAdded || _binding == null)
+            return
+        binding.frameLayout7.alpha = 1f
+        binding.progressbarEditProfile.visibility = View.GONE
     }
 
 }

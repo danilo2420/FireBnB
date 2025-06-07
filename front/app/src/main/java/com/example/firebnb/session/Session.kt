@@ -30,6 +30,7 @@ object Session {
             logMessage("User was updated successfully")
             return true
         } catch (e: Exception) {
+            logError(e)
             return false
         }
     }
