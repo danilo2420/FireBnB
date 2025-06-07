@@ -34,8 +34,8 @@ class LoginFragment : Fragment() {
         initializeEvents()
 
         // THIS IS FOR TESTING:
-        binding.edtLoginEmail.setText("daniel.moraga@example.com")
-        binding.edtLoginPassword.setText("test")
+        // binding.edtLoginEmail.setText("daniel.moraga@example.com")
+        // binding.edtLoginPassword.setText("test")
 
         return binding.root
     }
