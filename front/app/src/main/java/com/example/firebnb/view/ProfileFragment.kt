@@ -60,7 +60,8 @@ class ProfileFragment : Fragment() {
             txtEmail2.text = user.email
             txtNationality2.text = user.nationality
             //txtStars2.text = "Stars: ${user.stars.toString()}"
-            imgProfile.setImage(user.profile_image)
+            if (user.profile_image != null)
+                imgProfile.setImage(user.profile_image)
         }
     }
 

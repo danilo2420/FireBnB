@@ -19,7 +19,7 @@ class PlaceHolder (val binding: ItemPlaceBinding) : RecyclerView.ViewHolder (bin
 
         binding.txtName.text = place.name
         binding.txtType.text = place.type
-        binding.txtPrice.text = place.price_per_night.toString()
+        binding.txtPrice.text = place.price_per_night.toString() + " $/night"
 
         val image: PlaceImage? = this.placeWithImage.image
         if (image != null) {

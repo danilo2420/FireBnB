@@ -14,7 +14,7 @@ class RentingPreviewHolder(var binding: ItemRentingPreviewBinding): RecyclerView
         binding.apply {
             txtRentingPreviewName.setText(rentingPreview.name)
             txtRentingPreviewType.setText(rentingPreview.type)
-            txtRentingPreviewPrice.setText(rentingPreview.total_price.toString())
+            txtRentingPreviewPrice.setText(rentingPreview.total_price.toString() + "$")
         }
     }
 
